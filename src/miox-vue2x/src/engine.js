@@ -59,8 +59,15 @@ export default class Engine {
             try {
                 const Arguments = {};
 
-                if (['web', 'client'].indexOf(this.ctx.env) > -1 && this.ctx.installed) {
-                    Arguments.el = this.createWebviewRoot();
+                switch (this.ctx.env) {
+                    case 'web':
+                        Arguments.el = this.createWebViewRoot();
+                        break;
+                    case 'client':
+                        if (this.ctx.installed) {
+                            Arguments.el = this.createWebViewRoot();
+                        }
+                        break;
                 }
 
                 Arguments.propsData = options || {};
@@ -80,7 +87,7 @@ export default class Engine {
         directives(this.ctx);
     }
 
-    createWebviewRoot(){
+    createWebViewRoot(){
         if (!global.document) return;
         const element = global.document.createElement('div');
         const wrapElement = global.document.createElement('div');

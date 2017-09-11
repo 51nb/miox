@@ -37,7 +37,7 @@ router.patch('/e', async ctx => {
     await ctx.render(E);
 });
 
-const app = global.miox = new Miox({ session: true, max: 2, debug: false});
+const app = global.miox = new Miox({ session: true, max: 2, debug: true });
 app.set('engine', Engine);
 app.set('animate', Animate('slide'));
 app.use(router.routes());
