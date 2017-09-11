@@ -1,28 +1,15 @@
 'use strict';
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.default = WebpackClientRenderer;
+/**
+ * Created by evio on 2017/5/11.
+ */
+var webpack = require('webpack');
+var merge = require('webpack-merge');
+var VueSSRClientPlugin = require('vue-server-renderer/client-plugin');
 
-var _webpack = require('webpack');
+var isProd = process.env.NODE_ENV === 'production';
 
-var _webpack2 = _interopRequireDefault(_webpack);
-
-var _webpackMerge = require('webpack-merge');
-
-var _webpackMerge2 = _interopRequireDefault(_webpackMerge);
-
-var _clientPlugin = require('vue-server-renderer/client-plugin');
-
-var _clientPlugin2 = _interopRequireDefault(_clientPlugin);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var isProd = process.env.NODE_ENV === 'production'; /**
-                                                     * Created by evio on 2017/5/11.
-                                                     */
-function WebpackClientRenderer() {
+module.exports = function WebpackClientRenderer() {
     var base = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
@@ -44,12 +31,12 @@ function WebpackClientRenderer() {
             hints: isProd ? 'warning' : false
         },
 
-        plugins: [new _webpack2.default.DefinePlugin({
+        plugins: [new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
             'process.env.MIOX_ENV': '"client"'
         }),
         // extract vendor chunks for better caching
-        new _webpack2.default.optimize.CommonsChunkPlugin({
+        new webpack.optimize.CommonsChunkPlugin({
             name: 'vendor',
             minChunks: function minChunks(module) {
                 // a module is extracted into the vendor chunk if...
@@ -64,19 +51,18 @@ function WebpackClientRenderer() {
         // Important: this splits the webpack runtime into a leading chunk
         // so that async chunks can be injected right after it.
         // this also enables better caching for your app/vendor code.
-        new _webpack2.default.optimize.CommonsChunkPlugin({
+        new webpack.optimize.CommonsChunkPlugin({
             name: 'manifest',
             minChunks: Infinity
         }),
         // This plugins generates `vue-ssr-client-manifest.json` in the
         // output directory.
-        new _clientPlugin2.default()]
+        new VueSSRClientPlugin()]
     };
 
     if (options.app) {
         configs.entry.app = options.app;
     }
 
-    return (0, _webpackMerge2.default)(base, configs);
-}
-module.exports = exports['default'];
+    return merge(base, configs);
+};

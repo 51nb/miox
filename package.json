@@ -7,7 +7,8 @@
   "scripts": {
     "version": "node cmd/version.js",
     "build": "node cmd/build.js",
-    "ssr": "NODE_ENV=dev babel-node ssr/index.js"
+    "ssr": "NODE_ENV=dev babel-node ssr/index.js",
+    "h5": "NODE_ENV=dev node_modules/.bin/webpack-dev-server --config config/webpack.h5.dev.config.js --hot"
   },
   "dependencies": {
     "co": "^4.6.0",
@@ -63,6 +64,7 @@
     "vue-loader": "^13.0.4",
     "vue-style-loader": "^3.0.1",
     "vue-template-compiler": "^2.4.2",
-    "vuex": "^2.4.0"
+    "vuex": "^2.4.0",
+    "webpack-dev-server": "^2.7.1"
   }
 }

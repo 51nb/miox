@@ -1,7 +1,6 @@
 /**
  * Created by evio on 2017/5/12.
  */
-import Connection from './connect';
-import cache from './cahce';
+const Connection = module.exports = require('./connect');
+const cache = require('./cahce');
 Connection.static = cache;
-export default Connection;

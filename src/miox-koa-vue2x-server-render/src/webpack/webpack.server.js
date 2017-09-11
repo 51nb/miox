@@ -1,14 +1,14 @@
 /**
  * Created by evio on 2017/5/11.
  */
-import webpack from 'webpack';
-import merge from 'webpack-merge';
-import nodeExternals from 'webpack-node-externals';
-import VueSSRServerPlugin from 'vue-server-renderer/server-plugin';
+const webpack = require('webpack');
+const merge = require('webpack-merge');
+const nodeExternals = require('webpack-node-externals');
+const VueSSRServerPlugin = require('vue-server-renderer/server-plugin');
 
 const isProd = process.env.NODE_ENV === 'production';
 
-export default function WebpackServerRenderer(base = {}, options = {}) {
+module.exports = function WebpackServerRenderer(base = {}, options = {}) {
     const configs = {
         // This allows webpack to handle dynamic imports in a Node-appropriate
         // fashion, and also tells `vue-loader` to emit server-oriented code when

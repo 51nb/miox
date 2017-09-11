@@ -1,13 +1,13 @@
 /**
  * Created by evio on 2017/5/11.
  */
-import webpack from 'webpack';
-import merge from 'webpack-merge';
-import VueSSRClientPlugin from 'vue-server-renderer/client-plugin';
+const webpack = require('webpack');
+const merge = require('webpack-merge');
+const VueSSRClientPlugin = require('vue-server-renderer/client-plugin');
 
 const isProd = process.env.NODE_ENV === 'production';
 
-export default function WebpackClientRenderer(base = {}, options = {}) {
+module.exports = function WebpackClientRenderer(base = {}, options = {}) {
     const configs = {
         entry: {},
 

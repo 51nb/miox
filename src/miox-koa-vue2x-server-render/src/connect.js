@@ -1,22 +1,22 @@
 /**
  * Created by evio on 2017/5/11.
  */
-import fs from 'fs';
-import path from 'path';
-import webpack from 'webpack';
-import ctk from 'koa-connect';
-import MFS from 'memory-fs';
-import LRU from 'lru-cache';
-import staticCache from './cahce';
-import WebpackServerRenderer from './webpack/webpack.server';
-import WebpackClientRenderer from './webpack/webpack.client';
-import WebpackBabelCompileSourceModuleCompile from './webpack/webpack.babel.compile';
-import webpackDevMiddleWare from 'webpack-dev-middleware';
-import hotMiddleWare from 'webpack-hot-middleware';
-import { EventEmitter } from 'events';
-import { createBundleRenderer } from 'vue-server-renderer';
+const fs = require('fs');
+const path = require('path');
+const webpack = require('webpack');
+const ctk = require('koa-connect');
+const MFS = require('memory-fs');
+const LRU = require('lru-cache');
+const staticCache = require('./cahce');
+const WebpackServerRenderer = require('./webpack/webpack.server');
+const WebpackClientRenderer = require('./webpack/webpack.client');
+const WebpackBabelCompileSourceModuleCompile = require('./webpack/webpack.babel.compile');
+const webpackDevMiddleWare = require('webpack-dev-middleware');
+const hotMiddleWare = require('webpack-hot-middleware');
+const { EventEmitter } = require('events');
+const { createBundleRenderer } = require('vue-server-renderer');
 
-export default class MioxKoaVue2xServerSideRenderer extends EventEmitter {
+module.exports = class MioxKoaVue2xServerSideRenderer extends EventEmitter {
     /**
      * 初始化函数
      * @param options {Json} 配置参数

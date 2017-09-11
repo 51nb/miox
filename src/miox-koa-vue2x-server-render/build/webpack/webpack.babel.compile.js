@@ -1,18 +1,12 @@
 'use strict';
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.default = WebpackBabelCompileSourceModuleCompile;
+/**
+ * Created by evio on 2017/5/11.
+ */
+var path = require('path');
 
-var _path = require('path');
-
-var _path2 = _interopRequireDefault(_path);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function WebpackBabelCompileSourceModuleCompile(cwd, includes) {
-    var node_modules = _path2.default.resolve(cwd, 'node_modules');
+module.exports = function WebpackBabelCompileSourceModuleCompile(cwd, includes) {
+    var node_modules = path.resolve(cwd, 'node_modules');
     var source_position = [];
 
     if (!Array.isArray(includes)) {
@@ -28,7 +22,7 @@ function WebpackBabelCompileSourceModuleCompile(cwd, includes) {
     }
 
     return function (pather) {
-        var position = _path2.default.relative(node_modules, pather);
+        var position = path.relative(node_modules, pather);
         var i = source_position.length;
 
         while (i--) {
@@ -39,7 +33,4 @@ function WebpackBabelCompileSourceModuleCompile(cwd, includes) {
 
         return false;
     };
-} /**
-   * Created by evio on 2017/5/11.
-   */
-module.exports = exports['default'];
+};

@@ -1,10 +1,5 @@
 'use strict';
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.default = undefined;
-
 var _extends2 = require('babel-runtime/helpers/extends');
 
 var _extends3 = _interopRequireDefault(_extends2);
@@ -37,64 +32,31 @@ var _inherits2 = require('babel-runtime/helpers/inherits');
 
 var _inherits3 = _interopRequireDefault(_inherits2);
 
-var _fs = require('fs');
-
-var _fs2 = _interopRequireDefault(_fs);
-
-var _path = require('path');
-
-var _path2 = _interopRequireDefault(_path);
-
-var _webpack = require('webpack');
-
-var _webpack2 = _interopRequireDefault(_webpack);
-
-var _koaConnect = require('koa-connect');
-
-var _koaConnect2 = _interopRequireDefault(_koaConnect);
-
-var _memoryFs = require('memory-fs');
-
-var _memoryFs2 = _interopRequireDefault(_memoryFs);
-
-var _lruCache = require('lru-cache');
-
-var _lruCache2 = _interopRequireDefault(_lruCache);
-
-var _cahce = require('./cahce');
-
-var _cahce2 = _interopRequireDefault(_cahce);
-
-var _webpack3 = require('./webpack/webpack.server');
-
-var _webpack4 = _interopRequireDefault(_webpack3);
-
-var _webpack5 = require('./webpack/webpack.client');
-
-var _webpack6 = _interopRequireDefault(_webpack5);
-
-var _webpackBabel = require('./webpack/webpack.babel.compile');
-
-var _webpackBabel2 = _interopRequireDefault(_webpackBabel);
-
-var _webpackDevMiddleware = require('webpack-dev-middleware');
-
-var _webpackDevMiddleware2 = _interopRequireDefault(_webpackDevMiddleware);
-
-var _webpackHotMiddleware = require('webpack-hot-middleware');
-
-var _webpackHotMiddleware2 = _interopRequireDefault(_webpackHotMiddleware);
-
-var _events = require('events');
-
-var _vueServerRenderer = require('vue-server-renderer');
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * Created by evio on 2017/5/11.
  */
-var MioxKoaVue2xServerSideRenderer = function (_EventEmitter) {
+var fs = require('fs');
+var path = require('path');
+var webpack = require('webpack');
+var ctk = require('koa-connect');
+var MFS = require('memory-fs');
+var LRU = require('lru-cache');
+var staticCache = require('./cahce');
+var WebpackServerRenderer = require('./webpack/webpack.server');
+var WebpackClientRenderer = require('./webpack/webpack.client');
+var WebpackBabelCompileSourceModuleCompile = require('./webpack/webpack.babel.compile');
+var webpackDevMiddleWare = require('webpack-dev-middleware');
+var hotMiddleWare = require('webpack-hot-middleware');
+
+var _require = require('events'),
+    EventEmitter = _require.EventEmitter;
+
+var _require2 = require('vue-server-renderer'),
+    createBundleRenderer = _require2.createBundleRenderer;
+
+module.exports = function (_EventEmitter) {
     (0, _inherits3.default)(MioxKoaVue2xServerSideRenderer, _EventEmitter);
 
     /**
@@ -118,11 +80,11 @@ var MioxKoaVue2xServerSideRenderer = function (_EventEmitter) {
 
         _this.options = { base: options, client: {}, server: {} };
         _this.pro = process.env.NODE_ENV === 'production';
-        _this.options.base.dir = _path2.default.dirname(_this.options.base.app);
+        _this.options.base.dir = path.dirname(_this.options.base.app);
         _this.options.base.whitelist = _this.options.base.whitelist || [];
         _this.renderer = null;
         _this.readyPromise = null;
-        _this.microCache = (0, _lruCache2.default)({ max: 100, maxAge: 1000 });
+        _this.microCache = LRU({ max: 100, maxAge: 1000 });
         _this.options.base.whitelist.push(/\.css$/i, /miox[^\/]+/i);
         return _this;
     }
@@ -131,24 +93,24 @@ var MioxKoaVue2xServerSideRenderer = function (_EventEmitter) {
         key: 'include',
         value: function include() {
             var cwd = this.options.base.cwd || process.cwd();
-            return (0, _webpackBabel2.default)(cwd, this.options.base.whitelist);
+            return WebpackBabelCompileSourceModuleCompile(cwd, this.options.base.whitelist);
         }
     }, {
         key: 'use',
         value: function use() {
             var base = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-            this.options.client = (0, _webpack6.default)(base, this.options.base);
-            this.options.server = (0, _webpack4.default)(base, this.options.base);
+            this.options.client = WebpackClientRenderer(base, this.options.base);
+            this.options.server = WebpackServerRenderer(base, this.options.base);
             this.options.clientPublicPath = this.options.client.output.publicPath || '/';
             this.options.hmr = (this.options.clientPublicPath + '/__webpack_hot_module_reload_threat__').replace(/^\/\//, '/');
-            this.options.dist = _path2.default.resolve(this.options.server.output.path);
+            this.options.dist = path.resolve(this.options.server.output.path);
         }
     }, {
         key: 'connect',
         value: function connect(context) {
             this.context = context;
-            this.template = _fs2.default.readFileSync(_path2.default.resolve(this.options.base.dir, 'index.html'), 'utf-8').replace('<!--vue-ssr-outlet-->', '<div class="mx-app"><div class="mx-webviews"><div class="mx-webview active"><!--vue-ssr-outlet--></div></div></div>');
+            this.template = fs.readFileSync(path.resolve(this.options.base.dir, 'index.html'), 'utf-8').replace('<!--vue-ssr-outlet-->', '<div class="mx-app"><div class="mx-webviews"><div class="mx-webview active"><!--vue-ssr-outlet--></div></div></div>');
             if (this.pro) {
                 this.production();
             } else {
@@ -169,18 +131,18 @@ var MioxKoaVue2xServerSideRenderer = function (_EventEmitter) {
                 runInNewContext: runInNewContext || true
             };
             if (cache) {
-                configs.cache = (0, _lruCache2.default)({
+                configs.cache = LRU({
                     max: 1000,
                     maxAge: 1000 * 60 * 15
                 });
             }
-            return (0, _vueServerRenderer.createBundleRenderer)(bundle, Object.assign(options, configs));
+            return createBundleRenderer(bundle, Object.assign(options, configs));
         }
     }, {
         key: 'production',
         value: function production() {
-            var SSR_Bundle = _path2.default.resolve(this.options.dist, 'vue-ssr-server-bundle.json');
-            var SSR_Manifest = _path2.default.resolve(this.options.dist, 'vue-ssr-client-manifest.json');
+            var SSR_Bundle = path.resolve(this.options.dist, 'vue-ssr-server-bundle.json');
+            var SSR_Manifest = path.resolve(this.options.dist, 'vue-ssr-client-manifest.json');
             var bundle = require(SSR_Bundle);
             var clientManifest = require(SSR_Manifest);
             this.renderer = this.createRenderer(bundle, { clientManifest: clientManifest });
@@ -214,19 +176,19 @@ var MioxKoaVue2xServerSideRenderer = function (_EventEmitter) {
 
             if (this.options.base.hot) {
                 this.options.client.entry.app = ['webpack-hot-middleware/client?path=' + this.options.hmr, this.options.client.entry.app];
-                this.options.client.plugins.push(new _webpack2.default.HotModuleReplacementPlugin());
+                this.options.client.plugins.push(new webpack.HotModuleReplacementPlugin());
             }
             this.options.client.output.filename = '[name].js';
-            this.options.client.plugins.push(new _webpack2.default.NoEmitOnErrorsPlugin());
-            var clientCompiler = (0, _webpack2.default)(this.options.client);
-            var devMiddleware = (0, _webpackDevMiddleware2.default)(clientCompiler, {
+            this.options.client.plugins.push(new webpack.NoEmitOnErrorsPlugin());
+            var clientCompiler = webpack(this.options.client);
+            var devMiddleware = webpackDevMiddleWare(clientCompiler, {
                 publicPath: (clientPublicPath + '/').replace(/^\/\//, '/'),
                 noInfo: true
             });
 
             if (this.options.base.hot) {
                 this.emit('DEV:HMR:BEFORE', this.context);
-                this.context.use((0, _koaConnect2.default)((0, _webpackHotMiddleware2.default)(clientCompiler, { path: this.options.hmr })));
+                this.context.use(ctk(hotMiddleWare(clientCompiler, { path: this.options.hmr })));
             }
 
             this.emit('DEV:SERVER:BEFORE', this.context);
@@ -254,19 +216,19 @@ var MioxKoaVue2xServerSideRenderer = function (_EventEmitter) {
             }());
 
             this.emit('DEV:SERVER:INJECT', this.context);
-            this.context.use((0, _koaConnect2.default)(devMiddleware));
+            this.context.use(ctk(devMiddleware));
 
             clientCompiler.plugin('done', function () {
                 var fs = devMiddleware.fileSystem;
                 var readFile = function readFile(file) {
-                    return fs.readFileSync(_path2.default.join(_this3.options.client.output.path, file), 'utf-8');
+                    return fs.readFileSync(path.join(_this3.options.client.output.path, file), 'utf-8');
                 };
                 clientManifest = JSON.parse(readFile('vue-ssr-client-manifest.json'));
                 bundle && ready(bundle, { clientManifest: clientManifest });
             });
 
-            var serverCompiler = (0, _webpack2.default)(this.options.server);
-            var mfs = new _memoryFs2.default();
+            var serverCompiler = webpack(this.options.server);
+            var mfs = new MFS();
             serverCompiler.outputFileSystem = mfs;
             serverCompiler.watch({}, function (err, stats) {
                 if (err) throw err;
@@ -278,7 +240,7 @@ var MioxKoaVue2xServerSideRenderer = function (_EventEmitter) {
                     return console.warn(err);
                 });
                 var readFile = function readFile(file) {
-                    return mfs.readFileSync(_path2.default.join(_this3.options.client.output.path, file), 'utf-8');
+                    return mfs.readFileSync(path.join(_this3.options.client.output.path, file), 'utf-8');
                 };
                 bundle = JSON.parse(readFile('vue-ssr-server-bundle.json'));
                 clientManifest && ready(bundle, { clientManifest: clientManifest });
@@ -297,7 +259,7 @@ var MioxKoaVue2xServerSideRenderer = function (_EventEmitter) {
 
             var clientPublicPath = this.options.clientPublicPath;
             this.emit('PRO:STATIC:BEFORE', this.context);
-            this.context.use((0, _cahce2.default)(this.options.dist, (0, _extends3.default)({
+            this.context.use(staticCache(this.options.dist, (0, _extends3.default)({
                 "prefix": clientPublicPath,
                 "maxAge": maxAge === undefined ? 31536000 : maxAge,
                 "gzip": gzip ? true : !!gzip,
@@ -424,7 +386,4 @@ var MioxKoaVue2xServerSideRenderer = function (_EventEmitter) {
         }
     }]);
     return MioxKoaVue2xServerSideRenderer;
-}(_events.EventEmitter);
-
-exports.default = MioxKoaVue2xServerSideRenderer;
-module.exports = exports['default'];
+}(EventEmitter);

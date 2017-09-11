@@ -1,9 +1,9 @@
 /**
  * Created by evio on 2017/5/11.
  */
-import path from 'path';
+const path = require('path');
 
-export default function WebpackBabelCompileSourceModuleCompile(cwd, includes) {
+module.exports = function WebpackBabelCompileSourceModuleCompile(cwd, includes) {
     const node_modules = path.resolve(cwd, 'node_modules');
     const source_position = [];
 
