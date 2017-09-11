@@ -1,0 +1,23 @@
+{
+	"presets": [
+		"es2015",
+		"stage-0"
+	],
+	"plugins": [
+		"add-module-exports",
+		"transform-vue-jsx",
+		"transform-decorators-legacy",
+		"transform-class-properties",
+		["import", {
+			"libraryName": "@u51/miox-vant",
+			"libraryDirectory": "packages/"
+		}],
+		[
+			"transform-runtime",
+			{
+				"polyfill": false,
+				"regenerator": true
+			}
+		]
+	]
+}

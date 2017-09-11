@@ -1,0 +1,12 @@
+{
+  "name": "miox-vue2x-classify",
+  "version": "5.0.0",
+  "main": "build/index.js",
+  "files": [
+    "build",
+    "package.json"
+  ],
+  "dependencies": {
+    "vue": "^2.4.2"
+  }
+}

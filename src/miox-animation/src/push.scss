@@ -1,0 +1,90 @@
+.page-push-in,
+.page-push-out{
+    &.mx-webview{
+        overflow-x: unset;
+        overflow: unset;
+        overflow-y: unset;
+        &:before{
+            content:"";
+            display: block;
+            position:absolute;
+            width:100%;
+            height: 30px;
+            left:0;
+            top: -30px;
+            background-image: linear-gradient(to bottom,transparent, #000);
+        }
+    }
+}
+
+.page-push-in{
+    &.direction-forward{
+        z-index: 2;
+        animation:push-in-forward $defaultDuration ease;
+        &::before{
+            animation:shadow-fadein $defaultDuration ease-out;
+        }
+    }
+    &.direction-backward{
+        animation:push-in-backward $defaultDuration ease;
+        &::before{
+            display: none;
+        }
+    }
+}
+
+.page-push-out{
+    &.direction-forward{
+        animation: push-out-forward $defaultDuration ease;
+        box-shadow: 0 0 10px #666;
+        &::before{
+            display: none;
+        }
+    }
+    &.direction-backward{
+        z-index: 2;
+        animation: push-out-backward $defaultDuration ease;
+        &::before{
+            animation:shadow-fadeout $defaultDuration ease-in;
+        } 
+    }
+}
+
+
+@keyframes push-in-forward{
+    0%{
+        transform: translateY(100%);
+    }
+    100%{
+        transform: translateY(0);
+    }
+}
+@keyframes push-in-backward{
+    0%{
+        transform: scale(0.96);
+        box-shadow: 0 0 20px #666;
+    }
+    100%{
+        transform: scale(1);
+        
+    }
+}
+
+@keyframes push-out-backward{
+    0%{
+        transform: translateY(0);
+    }
+    100%{
+        transform: translateY(100%);
+    }
+}
+
+@keyframes push-out-forward{
+    0%{
+        transform: scale(1);
+    }
+    100%{
+        transform: scale(0.96);
+        box-shadow: 0 0 20px #666;
+    }
+}

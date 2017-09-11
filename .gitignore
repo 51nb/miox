@@ -1,0 +1,10 @@
+archive
+node_modules
+.idea
+bower_components
+explorations
+.DS_Store
+coverage
+perf
+*.map
+npm-debug.log

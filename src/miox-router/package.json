@@ -1,0 +1,14 @@
+{
+  "name": "miox-router",
+  "version": "5.0.0",
+  "main": "build/index.js",
+  "files": [
+    "build",
+    "package.json"
+  ],
+  "dependencies": {
+    "path-to-regexp": "^2.0.0",
+    "querystring": "^0.2.0",
+    "miox-compose": "^5.0.0"
+  }
+}

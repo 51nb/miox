@@ -1,0 +1,10 @@
+{
+  "name": "miox-animation",
+  "version": "5.0.0",
+  "main": "build/index.js",
+  "files": [
+    "build",
+    "package.json"
+  ],
+  "dependencies": {}
+}

@@ -1,0 +1,100 @@
+$defaultDuration: 300ms;
+
+@import './push.scss';
+
+.page-slide-in,
+.page-slide-out{
+    &.mx-webview{
+        overflow-x: unset;
+        overflow: unset;
+        overflow-y: unset;
+        &:before{
+            content:"";
+            display: block;
+            position:absolute;
+            width:30px;
+            height: 100%;
+            left:-30px;
+            top: 0;
+            background-image: linear-gradient(to right,transparent, #000);
+        }
+    }
+}
+
+.page-slide-in{
+    &.direction-forward{
+        z-index: 2;
+        animation: slide-in $defaultDuration ease-out;
+        &::before{
+            animation:shadow-fadein $defaultDuration ease-out;
+        }
+    }
+    &.direction-backward{
+        animation: slide-out-back $defaultDuration ease-in;    
+    }
+}
+.page-slide-out{
+    &.direction-forward{
+        animation: slide-out $defaultDuration ease-in;    
+    }
+    &.direction-backward{
+        z-index: 2;
+        animation: slide-in-back $defaultDuration ease-in; 
+        &::before{
+            animation:shadow-fadeout $defaultDuration ease-in;
+        }   
+    }
+}
+
+@keyframes shadow-fadein{
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: .3;
+    }
+}
+@keyframes shadow-fadeout{
+    0%{
+        opacity: .3;
+    }
+    100%{
+        opacity: 0;
+    }
+}
+
+@keyframes slide-in{
+    0%{
+        transform: translateX(100%);
+    }
+    100%{
+        transform: translateX(0)
+    }
+}
+@keyframes slide-in-back{
+    0%{
+        transform: translateX(0)
+    }
+    100%{
+        transform: translateX(100%)
+    }
+}
+
+@keyframes slide-out{
+    0%{
+        transform: translateX(0)
+    }
+    100%{
+        transform: translateX(-30%);
+    }
+}
+@keyframes slide-out-back{
+    0%{
+        transform: translateX(-30%)
+    }
+    100%{
+        transform: translateX(0);
+    }
+}
+
+
