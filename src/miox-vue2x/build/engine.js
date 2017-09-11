@@ -111,8 +111,15 @@ var Engine = function () {
                                     try {
                                         var Arguments = {};
 
-                                        if (['web', 'client'].indexOf(_this.ctx.env) > -1 && _this.ctx.installed) {
-                                            Arguments.el = _this.createWebviewRoot();
+                                        switch (_this.ctx.env) {
+                                            case 'web':
+                                                Arguments.el = _this.createWebViewRoot();
+                                                break;
+                                            case 'client':
+                                                if (_this.ctx.installed) {
+                                                    Arguments.el = _this.createWebViewRoot();
+                                                }
+                                                break;
                                         }
 
                                         Arguments.propsData = options || {};
@@ -150,8 +157,8 @@ var Engine = function () {
             (0, _directives2.default)(this.ctx);
         }
     }, {
-        key: 'createWebviewRoot',
-        value: function createWebviewRoot() {
+        key: 'createWebViewRoot',
+        value: function createWebViewRoot() {
             if (!global.document) return;
             var element = global.document.createElement('div');
             var wrapElement = global.document.createElement('div');
