@@ -75,12 +75,12 @@ var MiddleWares = function (_EventEmitter) {
     (0, _createClass3.default)(MiddleWares, [{
         key: 'use',
         value: function use() {
-            var result = [];
-
             for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
                 args[_key] = arguments[_key];
             }
 
+            args = (0, _flatten2.default)(args);
+            var result = [];
             for (var i = 0; i < args.length; i++) {
                 var cb = args[i];
                 if (typeof cb !== 'function') {
@@ -93,7 +93,7 @@ var MiddleWares = function (_EventEmitter) {
 
                 result.push(cb);
             }
-            this.middlewares.push.apply(this.middlewares, (0, _flatten2.default)(result));
+            this.middlewares.push.apply(this.middlewares, result);
             return this;
         }
 

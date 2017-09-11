@@ -19,6 +19,7 @@ export default class MiddleWares extends EventEmitter {
      * @returns {MiddleWares}
      */
     use(...args) {
+        args = flatten(args);
         const result = [];
         for (let i = 0; i < args.length; i++) {
             let cb = args[i];
@@ -35,7 +36,7 @@ export default class MiddleWares extends EventEmitter {
 
             result.push(cb);
         }
-        this.middlewares.push.apply(this.middlewares, flatten(result));
+        this.middlewares.push.apply(this.middlewares, result);
         return this;
     }
 

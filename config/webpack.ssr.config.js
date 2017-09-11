@@ -10,7 +10,8 @@ module.exports = {
     "hot": true,
     "whitelist": [
         /client/i,
-        /miox\-/i
+        /miox\-/i,
+        /test/
     ],
     "port": 3001,
     "ip": "0.0.0.0"

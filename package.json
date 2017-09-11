@@ -8,7 +8,9 @@
     "version": "node cmd/version.js",
     "build": "node cmd/build.js",
     "ssr": "NODE_ENV=dev babel-node ssr/index.js",
-    "h5": "NODE_ENV=dev node_modules/.bin/webpack-dev-server --config config/webpack.h5.dev.config.js --hot"
+    "h5": "NODE_ENV=dev node_modules/.bin/webpack-dev-server --config config/webpack.h5.dev.config.js --hot",
+    "test:start": "./node_modules/karma/bin/karma start",
+    "test:end": "./node_modules/karma/bin/karma run"
   },
   "dependencies": {
     "co": "^4.6.0",
@@ -54,6 +56,14 @@
     "extract-text-webpack-plugin": "^3.0.0",
     "friendly-errors-webpack-plugin": "^1.6.1",
     "html-webpack-plugin": "^2.30.1",
+    "istanbul": "^0.4.5",
+    "jasmine-core": "^2.8.0",
+    "karma": "^1.7.1",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-jasmine": "^1.1.0",
+    "karma-mocha-reporter": "^2.2.4",
+    "karma-sourcemap-loader": "^0.3.7",
+    "karma-webpack": "^2.0.4",
     "koa": "^2.3.0",
     "less": "^2.7.2",
     "less-loader": "^4.0.5",
