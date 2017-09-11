@@ -1,17 +1,17 @@
 <template>
-    <div class="B">
-        <p style="color:#000;" @click="go">B Page</p>
+    <div class="A">
+        <p style="color:#000;" @click="go">A Page</p>
     </div>
 </template>
 <script>
     import { Component } from 'miox-vue2x-classify';
 
     @Component({
-        name: 'B'
+        name: 'A'
     })
-    export default class Index {
+    export default class Home {
         go() {
-            this.$miox.push('/c');
+            this.$miox.push('/b');
         }
     }
 </script>

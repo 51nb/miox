@@ -7,8 +7,7 @@
     "package.json"
   ],
   "dependencies": {
-    "vue": "^2.4.2",
     "is-class": "0.0.4",
-    "miox-vue2x-classify": "^5.0.0"
+    "vue": "^2.4.2"
   }
 }
