@@ -10,6 +10,8 @@ import Plugin from './plugin';
 import WebTree from './webtree';
 import { extend } from './util';
 
+const toString = Object.prototype.toString;
+
 export default class Miox extends MiddleWare {
     /**
      * 参数详解：
@@ -37,6 +39,7 @@ export default class Miox extends MiddleWare {
         this.installed = false;
         this.err = null;
         this.doing = false;
+        this.clientMounted = false;
 
         this.set('request', {});
         this.set('response', {});
@@ -75,6 +78,15 @@ export default class Miox extends MiddleWare {
         const existsWebView = this.get('exists-webview');
         if (existsWebView) {
             return existsWebView.basic.dic.get(existsWebView.mark);
+        }
+    }
+
+    get reference() {
+        return {
+            fetch: this.fetch.bind(this),
+            application: this.$application,
+            service: this.$context,
+            ctx: this,
         }
     }
 
@@ -245,6 +257,7 @@ export default class Miox extends MiddleWare {
                 this.history.action = 'push';
                 this.createServerProgress(this.history.location()).then(() => {
                     this.history.clear();
+                    this.clientMounted = true;
                     this.emit('app:end');
                 });
                 break;
@@ -256,5 +269,46 @@ export default class Miox extends MiddleWare {
                 });
                 break;
         }
+    }
+
+    mock(args = {}) {
+        if (toString.call(args) !== '[object Object]') {
+            throw new Error('`args` must be an object which type of json.');
+        }
+
+        args.fetch = this.fetch.bind(this);
+
+        return args;
+    }
+
+    async fetch(callback = {}) {
+        let client, server;
+
+        if (typeof callback === 'function') {
+            client = server = callback;
+        } else {
+            client = callback.client;
+            server = callback.server;
+        }
+        if (
+            (!this.clientMounted && this.env === 'client') ||
+            (this.env === 'server' && this.clientMounted)
+        ) {
+            return;
+        }
+
+        if (!client || !server) {
+            throw new Error('client and server must be both function');
+        }
+
+        if (this.env === 'client' && this.clientMounted) {
+            return await client(this.reference);
+        }
+
+        if (this.env === 'server' && !this.clientMounted) {
+            return await server(this.reference);
+        }
+
+        return await client(this.reference);
     }
 }

@@ -64,6 +64,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /**
  * Created by evio on 2017/8/29.
  */
+var toString = Object.prototype.toString;
+
 var Miox = function (_MiddleWare) {
     (0, _inherits3.default)(Miox, _MiddleWare);
 
@@ -96,6 +98,7 @@ var Miox = function (_MiddleWare) {
         _this.installed = false;
         _this.err = null;
         _this.doing = false;
+        _this.clientMounted = false;
 
         _this.set('request', {});
         _this.set('response', {});
@@ -730,6 +733,7 @@ var Miox = function (_MiddleWare) {
                     this.history.action = 'push';
                     this.createServerProgress(this.history.location()).then(function () {
                         _this5.history.clear();
+                        _this5.clientMounted = true;
                         _this5.emit('app:end');
                     });
                     break;
@@ -742,6 +746,99 @@ var Miox = function (_MiddleWare) {
                     break;
             }
         }
+    }, {
+        key: 'mock',
+        value: function mock() {
+            var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+            if (toString.call(args) !== '[object Object]') {
+                throw new Error('`args` must be an object which type of json.');
+            }
+
+            args.fetch = this.fetch.bind(this);
+
+            return args;
+        }
+    }, {
+        key: 'fetch',
+        value: function () {
+            var _ref13 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee13() {
+                var callback = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+                var client, server;
+                return _regenerator2.default.wrap(function _callee13$(_context13) {
+                    while (1) {
+                        switch (_context13.prev = _context13.next) {
+                            case 0:
+                                client = void 0, server = void 0;
+
+
+                                if (typeof callback === 'function') {
+                                    client = server = callback;
+                                } else {
+                                    client = callback.client;
+                                    server = callback.server;
+                                }
+
+                                if (!(!this.clientMounted && this.env === 'client' || this.env === 'server' && this.clientMounted)) {
+                                    _context13.next = 4;
+                                    break;
+                                }
+
+                                return _context13.abrupt('return');
+
+                            case 4:
+                                if (!(!client || !server)) {
+                                    _context13.next = 6;
+                                    break;
+                                }
+
+                                throw new Error('client and server must be both function');
+
+                            case 6:
+                                if (!(this.env === 'client' && this.clientMounted)) {
+                                    _context13.next = 10;
+                                    break;
+                                }
+
+                                _context13.next = 9;
+                                return client(this.reference);
+
+                            case 9:
+                                return _context13.abrupt('return', _context13.sent);
+
+                            case 10:
+                                if (!(this.env === 'server' && !this.clientMounted)) {
+                                    _context13.next = 14;
+                                    break;
+                                }
+
+                                _context13.next = 13;
+                                return server(this.reference);
+
+                            case 13:
+                                return _context13.abrupt('return', _context13.sent);
+
+                            case 14:
+                                _context13.next = 16;
+                                return client(this.reference);
+
+                            case 16:
+                                return _context13.abrupt('return', _context13.sent);
+
+                            case 17:
+                            case 'end':
+                                return _context13.stop();
+                        }
+                    }
+                }, _callee13, this);
+            }));
+
+            function fetch() {
+                return _ref13.apply(this, arguments);
+            }
+
+            return fetch;
+        }()
     }, {
         key: 'request',
         get: function get() {
@@ -784,6 +881,16 @@ var Miox = function (_MiddleWare) {
             if (existsWebView) {
                 return existsWebView.basic.dic.get(existsWebView.mark);
             }
+        }
+    }, {
+        key: 'reference',
+        get: function get() {
+            return {
+                fetch: this.fetch.bind(this),
+                application: this.$application,
+                service: this.$context,
+                ctx: this
+            };
         }
     }]);
     return Miox;
