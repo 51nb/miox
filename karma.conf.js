@@ -21,13 +21,12 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'test/*.js'
+        'test/*.js'
     ],
 
 
     // list of files to exclude
-    exclude: [
-    ],
+    exclude: [],
 
 
     // preprocess matching files before serving them to the browser
@@ -77,7 +76,6 @@ module.exports = function(config) {
     webpack: webpackHtml5Configs,
     plugins: [
         'karma-jasmine',
-        'karma-mocha-reporter',
         'karma-sourcemap-loader',
         'karma-webpack',
         'karma-chrome-launcher'

@@ -16,7 +16,7 @@ describe('Miox module [middleware] test', () => {
         function singleFunction() {}
     });
 
-    it('run middlewares', () => {
+    it('run middlewares', cb => {
         const that = Object.create(null);
         let context;
 
@@ -35,6 +35,7 @@ describe('Miox module [middleware] test', () => {
             expect(context).toBe(that);
             expect(that.a).toEqual(1);
             expect(that.b).toEqual(2);
+            cb();
         })
     });
 });
