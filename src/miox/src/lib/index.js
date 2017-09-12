@@ -153,11 +153,17 @@ export default class Miox extends MiddleWare {
         if (error) {
             if (!error.code) error.code = 500;
         } else {
-            const { basic, mark } = this.get('active-webview');
-            const webview = basic.dic.get(mark);
+            const value = this.get('active-webview');
+            if (value) {
+                const { basic, mark } = value;
+                const webview = basic.dic.get(mark);
 
-            if (webview) {
-                this.exchange();
+                if (webview) {
+                    this.exchange();
+                } else {
+                    error = new Error('webview lost');
+                    error.code = 404;
+                }
             } else {
                 error = new Error('webview lost');
                 error.code = 404;
@@ -228,10 +234,11 @@ export default class Miox extends MiddleWare {
 
         WebTree(this);
         this.__defineProcessHandle__();
+        let historyListener;
 
         if (this.env !== 'server') {
             this.history = new History(this);
-            this.history.listen();
+            historyListener = this.history.listen();
             this.pathChange();
             this.searchChange();
             this.hashChange();
@@ -260,14 +267,14 @@ export default class Miox extends MiddleWare {
                     this.clientMounted = true;
                     this.emit('app:end');
                 });
-                break;
+                return historyListener;
             case 'web':
                 this.history.action = 'push';
                 this.createServerProgress(this.history.location()).then(() => {
                     this.history.clear();
                     this.emit('app:end');
                 });
-                break;
+                return historyListener;
         }
     }
 

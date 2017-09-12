@@ -2,7 +2,7 @@ import Miox from 'miox';
 import Animate from 'miox-animation';
 import Engine from 'miox-vue2x';
 
-describe('miox core options', () => {
+describe('miox core options test:', () => {
 
     it('options.session=true + animate', () => {
         const app = new Miox({ session: true });

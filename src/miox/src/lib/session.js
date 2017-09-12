@@ -80,8 +80,8 @@ export default class SessionStorage extends Dictionary {
         this.setSession(this.current, this.app.req.pathname, this.app.req.sortQuery);
     }
 
-    autoRemove() {
-        const index = global.history.length;
+    autoRemove(i) {
+        const index = i || global.history.length;
         this.each(key => {
             key = Number(key);
             if (key > index) {

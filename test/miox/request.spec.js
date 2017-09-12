@@ -1,8 +1,8 @@
 import Request from 'miox/miox_modules/request';
 
-describe('Miox module [request] test', () => {
+describe('Miox module [request] test:', () => {
 
-    it('init method 1', () => {
+    it('req.init.1', () => {
         const req = new Request();
         expect(req.pathname).toEqual('/');
         expect(req.search).toEqual('');
@@ -11,7 +11,7 @@ describe('Miox module [request] test', () => {
         expect(req.sortQuery).toEqual('');
     });
 
-    it('init method 2', () => {
+    it('req.init.2', () => {
         const req = new Request('/a/b/c?a=1&c=3&b=2#abc');
         expect(req.pathname).toEqual('/a/b/c');
         expect(req.search).toEqual('?a=1&c=3&b=2');

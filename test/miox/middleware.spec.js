@@ -1,7 +1,7 @@
 import MDW from 'miox/miox_modules/middleware';
 
-describe('Miox module [middleware] test', () => {
-    it('use middlewares', () => {
+describe('Miox module [middleware] test:', () => {
+    it('mdw.use', () => {
         const mw = new MDW();
         mw.use(singleFunction, singleFunction, singleFunction);
         expect(mw.middlewares.length).toEqual(3);
@@ -16,7 +16,7 @@ describe('Miox module [middleware] test', () => {
         function singleFunction() {}
     });
 
-    it('run middlewares', cb => {
+    it('mdw.run', cb => {
         const that = Object.create(null);
         let context;
 

@@ -104,6 +104,7 @@ export default class Dictionary extends EventEmitter {
      * @param key
      */
     del(key) {
+        key = typeof key === 'number' ?  String(key) : key;
         const index = this.maps.indexOf(key);
         if (index > -1) {
             delete this[key];

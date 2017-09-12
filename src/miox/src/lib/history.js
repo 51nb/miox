@@ -163,8 +163,10 @@ export default class History extends EventEmitter {
     }
 
     listen() {
-        global.addEventListener(this.popState ? 'popstate' : 'hashchange', () =>
-            this.change(this.request, new Request(this.location()))
-        );
+        const callback = () => this.change(this.request, new Request(this.location()));
+        global.addEventListener(this.popState ? 'popstate' : 'hashchange', callback);
+        return () => {
+            global.removeEventListener(this.popState ? 'popstate' : 'hashchange', callback);
+        }
     }
 }
