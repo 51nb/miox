@@ -87,8 +87,7 @@ var Miox = function (_MiddleWare) {
             max: 1,
             popState: false,
             session: false,
-            strict: true,
-            debug: false
+            strict: true
         });
 
         _this.env = process.env.MIOX_ENV || 'web';
@@ -111,14 +110,6 @@ var Miox = function (_MiddleWare) {
     }
 
     (0, _createClass3.default)(Miox, [{
-        key: 'log',
-        value: function log() {
-            var _console;
-
-            if (process.env.NODE_ENV === 'production') return;
-            if (this.options.debug) (_console = console).log.apply(_console, arguments);
-        }
-    }, {
         key: 'set',
         value: function set() {
             var _vars;
@@ -387,25 +378,20 @@ var Miox = function (_MiddleWare) {
         key: 'createServerProgress',
         value: function () {
             var _ref7 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee7(uri) {
-                var error, index, _get, basic, mark, webview;
-
+                var error, index, value, basic, mark, webview;
                 return _regenerator2.default.wrap(function _callee7$(_context7) {
                     while (1) {
                         switch (_context7.prev = _context7.next) {
                             case 0:
-                                this.log('%c------------ Process Start ------------', 'color:#000;font-weight:bold;');
-
                                 if (!this.doing) {
-                                    _context7.next = 3;
+                                    _context7.next = 2;
                                     break;
                                 }
 
                                 return _context7.abrupt('return');
 
-                            case 3:
+                            case 2:
                                 this.doing = true;
-
-                                this.log('History type:', this.history ? this.history.action || 'native' : '服务端渲染无行为');
 
                                 error = void 0, index = void 0;
 
@@ -414,60 +400,66 @@ var Miox = function (_MiddleWare) {
                                 this.request.app = this.response.app = this;
                                 if (this.history) {
                                     index = this.history.processDirection(this.request);
-                                    this.log('Animate direction:', this.history.direction);
                                 }
 
-                                _context7.next = 12;
+                                _context7.next = 10;
                                 return this.emit('process:start');
 
-                            case 12:
-                                _context7.prev = 12;
-                                _context7.next = 15;
+                            case 10:
+                                _context7.prev = 10;
+                                _context7.next = 13;
                                 return this.execute(this);
 
-                            case 15:
-                                _context7.next = 20;
+                            case 13:
+                                _context7.next = 18;
                                 break;
 
-                            case 17:
-                                _context7.prev = 17;
-                                _context7.t0 = _context7['catch'](12);
+                            case 15:
+                                _context7.prev = 15;
+                                _context7.t0 = _context7['catch'](10);
                                 error = _context7.t0;
 
-                            case 20:
+                            case 18:
 
                                 if (error) {
                                     if (!error.code) error.code = 500;
                                 } else {
-                                    _get = this.get('active-webview'), basic = _get.basic, mark = _get.mark;
-                                    webview = basic.dic.get(mark);
+                                    value = this.get('active-webview');
+
+                                    if (value) {
+                                        basic = value.basic, mark = value.mark;
+                                        webview = basic.dic.get(mark);
 
 
-                                    if (webview) {
-                                        this.exchange();
+                                        if (webview) {
+                                            this.exchange();
+                                        } else {
+                                            error = new Error('webview lost');
+                                            error.code = 404;
+                                        }
                                     } else {
                                         error = new Error('webview lost');
                                         error.code = 404;
                                     }
                                 }
 
-                                _context7.next = 23;
+                                _context7.next = 21;
                                 return this.error(error);
+
+                            case 21:
+                                _context7.next = 23;
+                                return this.notify(index);
 
                             case 23:
                                 _context7.next = 25;
-                                return this.notify(index);
-
-                            case 25:
-                                _context7.next = 27;
                                 return this.emit('process:end');
 
-                            case 27:
+                            case 25:
                             case 'end':
                                 return _context7.stop();
                         }
                     }
-                }, _callee7, this, [[12, 17]]);
+                }, _callee7, this, [[10, 15]]);
             }));
 
             function createServerProgress(_x4) {
@@ -674,10 +666,11 @@ var Miox = function (_MiddleWare) {
 
             (0, _webtree2.default)(this);
             this.__defineProcessHandle__();
+            var historyListener = void 0;
 
             if (this.env !== 'server') {
                 this.history = new _history6.default(this);
-                this.history.listen();
+                historyListener = this.history.listen();
                 this.pathChange();
                 this.searchChange();
                 this.hashChange();
@@ -736,14 +729,14 @@ var Miox = function (_MiddleWare) {
                         _this5.clientMounted = true;
                         _this5.emit('app:end');
                     });
-                    break;
+                    return historyListener;
                 case 'web':
                     this.history.action = 'push';
                     this.createServerProgress(this.history.location()).then(function () {
                         _this5.history.clear();
                         _this5.emit('app:end');
                     });
-                    break;
+                    return historyListener;
             }
         }
     }, {

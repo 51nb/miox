@@ -149,7 +149,6 @@ var History = function (_EventEmitter) {
                     break;
                 default:
                     var index = this.session.findSession(req.pathname, req.sortQuery);
-                    this.app.log('SessionStorage index:', index);
                     if (index === undefined) {
                         throw new Error('can not find this request of `' + req.href + '` in sessionStorage');
                     }
@@ -459,9 +458,13 @@ var History = function (_EventEmitter) {
         value: function listen() {
             var _this3 = this;
 
-            global.addEventListener(this.popState ? 'popstate' : 'hashchange', function () {
+            var callback = function callback() {
                 return _this3.change(_this3.request, new _request2.default(_this3.location()));
-            });
+            };
+            global.addEventListener(this.popState ? 'popstate' : 'hashchange', callback);
+            return function () {
+                global.removeEventListener(_this3.popState ? 'popstate' : 'hashchange', callback);
+            };
         }
     }, {
         key: 'useSessionStorage',

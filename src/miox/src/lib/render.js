@@ -53,48 +53,33 @@ export default async (app, engine, webview, data) => {
 
     const oldCacheChangeStatus = oldCacheWebViewConstructor && oldCacheWebViewConstructor !== webview && oldCacheWebView;
     app.cache.set(pathname, webview);
-    app.log('Cache change status:', !!oldCacheChangeStatus);
-    app.log('%c[Start]', 'color:#108ee9', 'History stacks:', app.history.stacks.slice(0));
 
     switch (action) {
         case 'push':
             pushWebViewExtras = app.history.stacks.slice(webViews.existWebViewIndex + 1);
             oldCacheChangeStatus && pushWebViewExtras.push(oldCacheWebView);
-            app.log('%c[Action:Push]', 'color:#108ee9', 'Reduce stacks:', pushWebViewExtras.slice(0));
             destroyWebViews(app, pushWebViewExtras);
             if (pushWebViewExtras.indexOf(newCacheWebView) > -1) {
                 newCacheWebView = await createNewCachedWebView(engine, webview, data, mark);
             }
-            app.log('%c[Action:Push]', 'color:#108ee9', 'Add stacks:', newCacheWebView);
             app.history.stacks.push(newCacheWebView);
             break;
         case 'replace':
             if (oldCacheChangeStatus) {
-                app.log('%c[Action:Replace]', 'color:#108ee9', 'Destroy stacks:', oldCacheWebView);
                 destroyWebViews(app, oldCacheWebView);
             }
-            app.log('%c[Action:Replace]', 'color:#108ee9', 'Reduce stacks:', webViews.existsWebView);
-            app.log('%c[Action:Replace]', 'color:#108ee9', 'Add stacks:', newCacheWebView);
             destroyWebViews(app, webViews.existsWebView, newCacheWebView);
             break;
         default:
             if (oldCacheChangeStatus) {
-                app.log('%c[Action:Any]', 'color:#108ee9', 'Reduce stacks:', oldCacheWebView);
-                app.log('%c[Action:Any]', 'color:#108ee9', 'Add stacks:', newCacheWebView);
                 destroyWebViews(app, oldCacheWebView, newCacheWebView);
             } else {
                 if (app.history.stacks.indexOf(newCacheWebView) === -1) {
                     if (app.history.direction < 0) {
-                        app.log('%c[Action:Any]', 'color:#108ee9', 'History back');
-                        app.log('%c[Action:Any]', 'color:#108ee9', 'Insert stacks:', newCacheWebView, 'Position:', webViews.existWebViewIndex);
                         insertStacks(app, webViews.existWebViewIndex, newCacheWebView);
                     } else if (app.history.direction > 0) {
-                        app.log('%c[Action:Any]', 'color:#108ee9', 'History forward');
-                        app.log('%c[Action:Any]', 'color:#108ee9', 'Insert stacks:', newCacheWebView, 'Position:', webViews.existWebViewIndex + 1);
                         insertStacks(app, webViews.existWebViewIndex + 1, newCacheWebView);
                     } else {
-                        app.log('%c[Action:Any]', 'color:#108ee9', 'History unknown');
-                        app.log('%c[Action:Any]', 'color:#108ee9', 'Push stacks:', newCacheWebView);
                         app.history.stacks.push(newCacheWebView);
                     }
                 }
@@ -111,7 +96,6 @@ export default async (app, engine, webview, data) => {
     // SSR的client端渲染的时候，在没有mounted情况下，取不到节点；
     // 那么直接返回，不做任何动画。
     if (!webViews.activeWebViewElement) {
-        app.log('%c[End:Install]', 'color:#108ee9', 'History stacks:', app.history.stacks.slice(0));
         return webViews.activeWebView;
     }
 
@@ -123,8 +107,6 @@ export default async (app, engine, webview, data) => {
     );
 
     if (app.history.stacks.length > app.options.max) {
-        app.log('%c[Action:Max]', 'color:#108ee9', 'Over max length', app.options.max);
-        app.log('%c[Action:Queue]', 'color:#108ee9', 'Old queue', app.history.stacks.slice(0));
         if (action === 'push') {
             remindExtra = app.history.stacks[0];
         } else if (action !== 'replace') {
@@ -135,11 +117,7 @@ export default async (app, engine, webview, data) => {
             }
         }
         destroyWebViews(app, remindExtra);
-        app.log('%c[Action:Queue]', 'color:#108ee9', 'Delete', remindExtra);
-        app.log('%c[Action:Queue]', 'color:#108ee9', 'Remind', app.history.stacks.slice(0));
     }
-
-    app.log('%c[End]', 'color:#108ee9', 'History stacks:', app.history.stacks);
 
     return webViews.activeWebView;
 }

@@ -157,6 +157,7 @@ var Dictionary = function (_EventEmitter) {
     }, {
         key: 'del',
         value: function del(key) {
+            key = typeof key === 'number' ? String(key) : key;
             var index = this.maps.indexOf(key);
             if (index > -1) {
                 delete this[key];

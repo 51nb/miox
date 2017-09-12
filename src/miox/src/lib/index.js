@@ -28,8 +28,7 @@ export default class Miox extends MiddleWare {
             max: 1,
             popState: false,
             session: false,
-            strict: true,
-            debug: false
+            strict: true
         });
 
         this.env = process.env.MIOX_ENV || 'web';
@@ -48,11 +47,6 @@ export default class Miox extends MiddleWare {
 
         this.vars.on('engine', this.plugin.Engine.bind(this.plugin));
         this.vars.on('animate', this.plugin.Animate.bind(this.plugin));
-    }
-
-    log(...args) {
-        if (process.env.NODE_ENV === 'production') return;
-        if (this.options.debug) console.log(...args);
     }
 
     set(...args){ return this.vars.set(...args); }
@@ -131,12 +125,10 @@ export default class Miox extends MiddleWare {
      * @returns {Promise.<*>}
      */
     async createServerProgress(uri) {
-        this.log('%c------------ Process Start ------------', 'color:#000;font-weight:bold;');
 
         if (this.doing) return;
         this.doing = true;
 
-        this.log('History type:', this.history ? (this.history.action || 'native') : '服务端渲染无行为');
 
         let error, index;
         this.set('request', uri instanceof Request ? uri : new Request(uri));
@@ -144,7 +136,6 @@ export default class Miox extends MiddleWare {
         this.request.app = this.response.app = this;
         if (this.history) {
             index = this.history.processDirection(this.request);
-            this.log('Animate direction:', this.history.direction);
         }
 
         await this.emit('process:start');

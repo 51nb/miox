@@ -124,10 +124,10 @@ var SessionStorage = function (_Dictionary) {
         }
     }, {
         key: 'autoRemove',
-        value: function autoRemove() {
+        value: function autoRemove(i) {
             var _this2 = this;
 
-            var index = global.history.length;
+            var index = i || global.history.length;
             this.each(function (key) {
                 key = Number(key);
                 if (key > index) {

@@ -61,7 +61,6 @@ export default class History extends EventEmitter {
             case 'replace': break;
             default:
                 const index = this.session.findSession(req.pathname, req.sortQuery);
-                this.app.log('SessionStorage index:', index);
                 if (index === undefined) {
                     throw new Error('can not find this request of `' + req.href + '` in sessionStorage');
                 }

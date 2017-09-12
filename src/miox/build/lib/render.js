@@ -116,69 +116,54 @@ exports.default = function () {
                         oldCacheChangeStatus = oldCacheWebViewConstructor && oldCacheWebViewConstructor !== webview && oldCacheWebView;
 
                         app.cache.set(pathname, webview);
-                        app.log('Cache change status:', !!oldCacheChangeStatus);
-                        app.log('%c[Start]', 'color:#108ee9', 'History stacks:', app.history.stacks.slice(0));
 
                         _context.t0 = action;
-                        _context.next = _context.t0 === 'push' ? 24 : _context.t0 === 'replace' ? 35 : 40;
+                        _context.next = _context.t0 === 'push' ? 22 : _context.t0 === 'replace' ? 31 : 34;
                         break;
 
-                    case 24:
+                    case 22:
                         pushWebViewExtras = app.history.stacks.slice(webViews.existWebViewIndex + 1);
                         oldCacheChangeStatus && pushWebViewExtras.push(oldCacheWebView);
-                        app.log('%c[Action:Push]', 'color:#108ee9', 'Reduce stacks:', pushWebViewExtras.slice(0));
                         destroyWebViews(app, pushWebViewExtras);
 
                         if (!(pushWebViewExtras.indexOf(newCacheWebView) > -1)) {
-                            _context.next = 32;
+                            _context.next = 29;
                             break;
                         }
 
-                        _context.next = 31;
+                        _context.next = 28;
                         return createNewCachedWebView(engine, webview, data, mark);
 
-                    case 31:
+                    case 28:
                         newCacheWebView = _context.sent;
 
-                    case 32:
-                        app.log('%c[Action:Push]', 'color:#108ee9', 'Add stacks:', newCacheWebView);
+                    case 29:
                         app.history.stacks.push(newCacheWebView);
-                        return _context.abrupt('break', 41);
+                        return _context.abrupt('break', 35);
 
-                    case 35:
+                    case 31:
                         if (oldCacheChangeStatus) {
-                            app.log('%c[Action:Replace]', 'color:#108ee9', 'Destroy stacks:', oldCacheWebView);
                             destroyWebViews(app, oldCacheWebView);
                         }
-                        app.log('%c[Action:Replace]', 'color:#108ee9', 'Reduce stacks:', webViews.existsWebView);
-                        app.log('%c[Action:Replace]', 'color:#108ee9', 'Add stacks:', newCacheWebView);
                         destroyWebViews(app, webViews.existsWebView, newCacheWebView);
-                        return _context.abrupt('break', 41);
+                        return _context.abrupt('break', 35);
 
-                    case 40:
+                    case 34:
                         if (oldCacheChangeStatus) {
-                            app.log('%c[Action:Any]', 'color:#108ee9', 'Reduce stacks:', oldCacheWebView);
-                            app.log('%c[Action:Any]', 'color:#108ee9', 'Add stacks:', newCacheWebView);
                             destroyWebViews(app, oldCacheWebView, newCacheWebView);
                         } else {
                             if (app.history.stacks.indexOf(newCacheWebView) === -1) {
                                 if (app.history.direction < 0) {
-                                    app.log('%c[Action:Any]', 'color:#108ee9', 'History back');
-                                    app.log('%c[Action:Any]', 'color:#108ee9', 'Insert stacks:', newCacheWebView, 'Position:', webViews.existWebViewIndex);
                                     insertStacks(app, webViews.existWebViewIndex, newCacheWebView);
                                 } else if (app.history.direction > 0) {
-                                    app.log('%c[Action:Any]', 'color:#108ee9', 'History forward');
-                                    app.log('%c[Action:Any]', 'color:#108ee9', 'Insert stacks:', newCacheWebView, 'Position:', webViews.existWebViewIndex + 1);
                                     insertStacks(app, webViews.existWebViewIndex + 1, newCacheWebView);
                                 } else {
-                                    app.log('%c[Action:Any]', 'color:#108ee9', 'History unknown');
-                                    app.log('%c[Action:Any]', 'color:#108ee9', 'Push stacks:', newCacheWebView);
                                     app.history.stacks.push(newCacheWebView);
                                 }
                             }
                         }
 
-                    case 41:
+                    case 35:
 
                         webViews.activeWebView = newCacheWebView;
 
@@ -191,22 +176,19 @@ exports.default = function () {
                         // 那么直接返回，不做任何动画。
 
                         if (webViews.activeWebViewElement) {
-                            _context.next = 46;
+                            _context.next = 39;
                             break;
                         }
 
-                        app.log('%c[End:Install]', 'color:#108ee9', 'History stacks:', app.history.stacks.slice(0));
                         return _context.abrupt('return', webViews.activeWebView);
 
-                    case 46:
-                        _context.next = 48;
+                    case 39:
+                        _context.next = 41;
                         return (0, _animate2.default)(app, webViews.existsWebViewElement, webViews.activeWebViewElement);
 
-                    case 48:
+                    case 41:
 
                         if (app.history.stacks.length > app.options.max) {
-                            app.log('%c[Action:Max]', 'color:#108ee9', 'Over max length', app.options.max);
-                            app.log('%c[Action:Queue]', 'color:#108ee9', 'Old queue', app.history.stacks.slice(0));
                             if (action === 'push') {
                                 remindExtra = app.history.stacks[0];
                             } else if (action !== 'replace') {
@@ -217,15 +199,11 @@ exports.default = function () {
                                 }
                             }
                             destroyWebViews(app, remindExtra);
-                            app.log('%c[Action:Queue]', 'color:#108ee9', 'Delete', remindExtra);
-                            app.log('%c[Action:Queue]', 'color:#108ee9', 'Remind', app.history.stacks.slice(0));
                         }
-
-                        app.log('%c[End]', 'color:#108ee9', 'History stacks:', app.history.stacks);
 
                         return _context.abrupt('return', webViews.activeWebView);
 
-                    case 51:
+                    case 43:
                     case 'end':
                         return _context.stop();
                 }
