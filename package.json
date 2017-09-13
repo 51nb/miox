@@ -7,6 +7,9 @@
   "scripts": {
     "version": "node cmd/version.js",
     "build": "node cmd/build.js",
+    "post": "node cmd/publish.js",
+    "git": "git add . && git commit -am \"Auto update\" && git push",
+    "lazy": "npm run version && npm run build && npm run git && npm run post",
     "ssr": "NODE_ENV=dev babel-node ssr/index.js",
     "h5": "NODE_ENV=dev node_modules/.bin/webpack-dev-server --config config/webpack.h5.dev.config.js --hot",
     "test:start": "./node_modules/karma/bin/karma start",

@@ -5,6 +5,7 @@ const { modules } = require('../config/util');
 const widgets = resolvePackageDir(Object.keys(modules));
 
 writeVersion(widgets);
+process.exit(0);
 
 function resolvePackageDir(packages) {
     return packages.map(pkg => path.resolve(__dirname, '..', 'src', pkg));
@@ -20,5 +21,4 @@ function writeVersion(packages) {
         console.log(`[${_version} -> ${globalPackage.version}]`, pkgFile);
     });
     console.log('');
-    process.exit(0);
 }

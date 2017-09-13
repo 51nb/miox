@@ -13,7 +13,7 @@ var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
 var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
 
 var createNewCachedWebView = function () {
-    var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(engine, webview, data, mark) {
+    var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(app, engine, webview, data, mark) {
         var newCacheWebView;
         return _regenerator2.default.wrap(function _callee2$(_context2) {
             while (1) {
@@ -27,9 +27,10 @@ var createNewCachedWebView = function () {
 
                         newCacheWebView.__MioxMark__ = mark;
                         webview.dic.set(mark, newCacheWebView);
+                        defineWebViewHistoryIndex(app, newCacheWebView);
                         return _context2.abrupt('return', newCacheWebView);
 
-                    case 6:
+                    case 7:
                     case 'end':
                         return _context2.stop();
                 }
@@ -37,7 +38,7 @@ var createNewCachedWebView = function () {
         }, _callee2, this);
     }));
 
-    return function createNewCachedWebView(_x5, _x6, _x7, _x8) {
+    return function createNewCachedWebView(_x5, _x6, _x7, _x8, _x9) {
         return _ref2.apply(this, arguments);
     };
 }();
@@ -58,7 +59,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  */
 exports.default = function () {
     var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(app, engine, webview, data) {
-        var pathname, action, mark, existsWebViewConfigs, webViews, oldCacheWebViewConstructor, oldCacheWebView, pushWebViewExtras, remindExtra, newCacheWebView, oldCacheChangeStatus;
+        var pathname, action, mark, existsWebViewConfigs, webViews, oldCacheWebViewConstructor, oldCacheWebView, pushWebViewExtras, remindExtra, newCacheWebView, oldCacheChangeStatus, reduce, index, targetWebView, targetIndex, sourceIndex;
         return _regenerator2.default.wrap(function _callee$(_context) {
             while (1) {
                 switch (_context.prev = _context.next) {
@@ -102,7 +103,7 @@ exports.default = function () {
                         }
 
                         _context.next = 15;
-                        return createNewCachedWebView(engine, webview, data, mark);
+                        return createNewCachedWebView(app, engine, webview, data, mark);
 
                     case 15:
                         newCacheWebView = _context.sent;
@@ -117,53 +118,91 @@ exports.default = function () {
 
                         app.cache.set(pathname, webview);
 
-                        _context.t0 = action;
-                        _context.next = _context.t0 === 'push' ? 22 : _context.t0 === 'replace' ? 31 : 34;
+                        if (!(app.history.stacks.length === 0)) {
+                            _context.next = 24;
+                            break;
+                        }
+
+                        app.history.stacks.push(newCacheWebView);
+                        app.tick = -1;
+                        _context.next = 41;
                         break;
 
-                    case 22:
+                    case 24:
+                        _context.t0 = action;
+                        _context.next = _context.t0 === 'push' ? 27 : _context.t0 === 'replace' ? 37 : 40;
+                        break;
+
+                    case 27:
                         pushWebViewExtras = app.history.stacks.slice(webViews.existWebViewIndex + 1);
                         oldCacheChangeStatus && pushWebViewExtras.push(oldCacheWebView);
                         destroyWebViews(app, pushWebViewExtras);
 
                         if (!(pushWebViewExtras.indexOf(newCacheWebView) > -1)) {
-                            _context.next = 29;
+                            _context.next = 34;
                             break;
                         }
 
-                        _context.next = 28;
-                        return createNewCachedWebView(engine, webview, data, mark);
+                        _context.next = 33;
+                        return createNewCachedWebView(app, engine, webview, data, mark);
 
-                    case 28:
+                    case 33:
                         newCacheWebView = _context.sent;
 
-                    case 29:
-                        app.history.stacks.push(newCacheWebView);
-                        return _context.abrupt('break', 35);
-
-                    case 31:
-                        if (oldCacheChangeStatus) {
-                            destroyWebViews(app, oldCacheWebView);
-                        }
-                        destroyWebViews(app, webViews.existsWebView, newCacheWebView);
-                        return _context.abrupt('break', 35);
-
                     case 34:
+                        app.history.stacks.push(newCacheWebView);
+                        app.tick = -1;
+                        return _context.abrupt('break', 41);
+
+                    case 37:
+                        if (oldCacheChangeStatus) destroyWebViews(app, oldCacheWebView);
+                        destroyWebViews(app, webViews.existsWebView, newCacheWebView);
+                        return _context.abrupt('break', 41);
+
+                    case 40:
                         if (oldCacheChangeStatus) {
                             destroyWebViews(app, oldCacheWebView, newCacheWebView);
                         } else {
                             if (app.history.stacks.indexOf(newCacheWebView) === -1) {
+                                reduce = app.history.session ? app.history.session.current - (app.index || 0) : 0;
+                                index = webViews.existWebViewIndex - reduce;
+
+
+                                if (index < 0) index = 0;
+                                if (index >= app.options.max) index = app.options.max - 1;
+                                targetWebView = app.history.stacks[index];
+                                targetIndex = targetWebView.historyIndex;
+                                sourceIndex = app.webView.historyIndex;
+
+
                                 if (app.history.direction < 0) {
-                                    insertStacks(app, webViews.existWebViewIndex, newCacheWebView);
+                                    if (sourceIndex - reduce < targetIndex) {
+                                        app.tick = 1;
+                                        insertStacks(app, index, newCacheWebView);
+                                    } else if (sourceIndex - reduce > targetIndex) {
+                                        app.tick = -1;
+                                        insertStacks(app, index + 1, newCacheWebView);
+                                    } else {
+                                        destroyWebViews(app, targetWebView, newCacheWebView);
+                                    }
                                 } else if (app.history.direction > 0) {
-                                    insertStacks(app, webViews.existWebViewIndex + 1, newCacheWebView);
+                                    if (sourceIndex - reduce < targetIndex) {
+                                        app.tick = 1;
+                                        insertStacks(app, index, newCacheWebView);
+                                    } else if (sourceIndex - reduce > targetIndex) {
+                                        app.tick = -1;
+                                        insertStacks(app, index + 1, newCacheWebView);
+                                    } else {
+                                        destroyWebViews(app, targetWebView, newCacheWebView);
+                                    }
                                 } else {
                                     app.history.stacks.push(newCacheWebView);
+                                    app.tick = -1;
                                 }
                             }
                         }
 
-                    case 35:
+                    case 41:
 
                         webViews.activeWebView = newCacheWebView;
 
@@ -176,34 +215,45 @@ exports.default = function () {
                         // 那么直接返回，不做任何动画。
 
                         if (webViews.activeWebViewElement) {
-                            _context.next = 39;
+                            _context.next = 45;
                             break;
                         }
 
                         return _context.abrupt('return', webViews.activeWebView);
 
-                    case 39:
-                        _context.next = 41;
+                    case 45:
+                        _context.next = 47;
                         return (0, _animate2.default)(app, webViews.existsWebViewElement, webViews.activeWebViewElement);
 
-                    case 41:
-
-                        if (app.history.stacks.length > app.options.max) {
-                            if (action === 'push') {
-                                remindExtra = app.history.stacks[0];
-                            } else if (action !== 'replace') {
-                                if (app.history.direction >= 0) {
-                                    remindExtra = app.history.stacks[0];
-                                } else {
-                                    remindExtra = app.history.stacks[app.history.stacks.length - 1];
-                                }
-                            }
-                            destroyWebViews(app, remindExtra);
+                    case 47:
+                        if (!(app.history.stacks.length > app.options.max)) {
+                            _context.next = 56;
+                            break;
                         }
+
+                        _context.t1 = app.tick;
+                        _context.next = _context.t1 === 1 ? 51 : _context.t1 === -1 ? 53 : 55;
+                        break;
+
+                    case 51:
+                        remindExtra = app.history.stacks[app.history.stacks.length - 1];
+                        return _context.abrupt('break', 55);
+
+                    case 53:
+                        remindExtra = app.history.stacks[0];
+                        return _context.abrupt('break', 55);
+
+                    case 55:
+
+                        destroyWebViews(app, remindExtra);
+
+                    case 56:
+
+                        if (app.tick) delete app.tick;
 
                         return _context.abrupt('return', webViews.activeWebView);
 
-                    case 43:
+                    case 58:
                     case 'end':
                         return _context.stop();
                 }
@@ -264,4 +314,19 @@ function insertStacks(app, i) {
     app.history.stacks = left.concat(args).concat(right);
 }
 
+function defineWebViewHistoryIndex(app, object) {
+    Object.defineProperty(object, 'historyIndex', {
+        get: function get() {
+            if (!app.history.session) return 0;
+            var vars = app.history.session.variables;
+            var strict = app.options.strict;
+            for (var i in vars) {
+                var mark = strict && vars[i].search ? vars[i].pathname + ':' + vars[i].search : vars[i].pathname;
+                if (mark === object.__MioxMark__) {
+                    return Number(i);
+                }
+            }
+        }
+    });
+}
 module.exports = exports['default'];

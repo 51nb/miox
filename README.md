@@ -10,6 +10,23 @@ Miox 可以自动帮你处理路由切换、webview 生命周期管理等各种�
 
 Miox 实现了生命周期和路由管理的最佳实践，避免了不统一的开发方式可能造成的性能下降和错误，并且可以平滑接入 SSR 和 Weex 这样业界最先进的混合开发技术，达到开发效率和接近原生体验两者之间的最佳平衡。
 
+
+# 下载安装
+
+```bash
+# 安装核心
+npm install --save miox
+
+# 安装路由
+npm install --save miox-router
+
+# 安装样式
+npm install --save miox-css
+
+# 安装引擎
+npm install --save miox-vue2x
+```
+
 # 优势
 
 - 强大的中间件和生命周期管理体系

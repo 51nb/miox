@@ -406,20 +406,22 @@ var Miox = function (_MiddleWare) {
                                 return this.emit('process:start');
 
                             case 10:
-                                _context7.prev = 10;
-                                _context7.next = 13;
+                                this.index = index;
+                                _context7.prev = 11;
+                                _context7.next = 14;
                                 return this.execute(this);
 
-                            case 13:
-                                _context7.next = 18;
+                            case 14:
+                                _context7.next = 19;
                                 break;
 
-                            case 15:
-                                _context7.prev = 15;
-                                _context7.t0 = _context7['catch'](10);
+                            case 16:
+                                _context7.prev = 16;
+                                _context7.t0 = _context7['catch'](11);
                                 error = _context7.t0;
 
-                            case 18:
+                            case 19:
+                                delete this.index;
 
                                 if (error) {
                                     if (!error.code) error.code = 500;
@@ -443,23 +445,23 @@ var Miox = function (_MiddleWare) {
                                     }
                                 }
 
-                                _context7.next = 21;
-                                return this.error(error);
-
-                            case 21:
                                 _context7.next = 23;
-                                return this.notify(index);
+                                return this.error(error);
 
                             case 23:
                                 _context7.next = 25;
-                                return this.emit('process:end');
+                                return this.notify(index);
 
                             case 25:
+                                _context7.next = 27;
+                                return this.emit('process:end');
+
+                            case 27:
                             case 'end':
                                 return _context7.stop();
                         }
                     }
-                }, _callee7, this, [[10, 15]]);
+                }, _callee7, this, [[11, 16]]);
             }));
 
             function createServerProgress(_x4) {

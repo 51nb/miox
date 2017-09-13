@@ -29,7 +29,7 @@ exports.compile = function(cmd, cwd, prefix) {
 exports.alias = moduleAlias();
 exports.resolve = resolve;
 
-    function consoleInject(prefix) {
+function consoleInject(prefix) {
     return (...data) => {
         if (prefix) {
             data.unshift(prefix);
