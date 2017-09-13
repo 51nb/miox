@@ -1,6 +1,6 @@
 {
   "name": "miox-vue2x",
-  "version": "5.0.1",
+  "version": "5.0.3",
   "main": "build/index.js",
   "files": [
     "build",
@@ -8,6 +8,6 @@
   ],
   "dependencies": {
     "is-class": "0.0.4",
-    "vue": "^2.4.2"
+    "vue": "^2.4.3"
   }
 }

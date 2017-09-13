@@ -15,6 +15,16 @@ for (const widget in modules) {
         const cmd = `rm -rf build/ && babel src -d build`;
         console.log(`------------- Compile \`${name}\` -------------`);
         await compile(cmd, dir, '[#]');
+        const pkg = require(path.resolve(dir, 'package.json'));
+        if (pkg.copyfile) {
+            let i = pkg.copyfile.length;
+            while (i--) {
+                const src = path.resolve(dir, 'src', pkg.copyfile[i]);
+                const tar = path.resolve(dir, 'build', pkg.copyfile[i]);
+                await compile(`cp ${src} ${tar}`, dir);
+                console.log('[@]', `src:${pkg.copyfile[i]}`, `->`, `build:${pkg.copyfile[i]}`);
+            }
+        }
         console.log('');
     }
 
