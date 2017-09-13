@@ -139,7 +139,9 @@ export default class Miox extends MiddleWare {
         }
 
         await this.emit('process:start');
+        this.index = index;
         try{ await this.execute(this); } catch(e) { error = e; }
+        delete this.index;
 
         if (error) {
             if (!error.code) error.code = 500;

@@ -44,7 +44,7 @@ export default async (app, engine, webview, data) => {
     let oldCacheWebView, pushWebViewExtras, remindExtra, newCacheWebView = webview.dic.get(mark);
 
     if (!newCacheWebView) {
-        newCacheWebView = await createNewCachedWebView(engine, webview, data, mark);
+        newCacheWebView = await createNewCachedWebView(app, engine, webview, data, mark);
     }
 
     if (oldCacheWebViewConstructor) {
@@ -54,36 +54,69 @@ export default async (app, engine, webview, data) => {
     const oldCacheChangeStatus = oldCacheWebViewConstructor && oldCacheWebViewConstructor !== webview && oldCacheWebView;
     app.cache.set(pathname, webview);
 
-    switch (action) {
-        case 'push':
-            pushWebViewExtras = app.history.stacks.slice(webViews.existWebViewIndex + 1);
-            oldCacheChangeStatus && pushWebViewExtras.push(oldCacheWebView);
-            destroyWebViews(app, pushWebViewExtras);
-            if (pushWebViewExtras.indexOf(newCacheWebView) > -1) {
-                newCacheWebView = await createNewCachedWebView(engine, webview, data, mark);
-            }
-            app.history.stacks.push(newCacheWebView);
-            break;
-        case 'replace':
-            if (oldCacheChangeStatus) {
-                destroyWebViews(app, oldCacheWebView);
-            }
-            destroyWebViews(app, webViews.existsWebView, newCacheWebView);
-            break;
-        default:
-            if (oldCacheChangeStatus) {
-                destroyWebViews(app, oldCacheWebView, newCacheWebView);
-            } else {
-                if (app.history.stacks.indexOf(newCacheWebView) === -1) {
-                    if (app.history.direction < 0) {
-                        insertStacks(app, webViews.existWebViewIndex, newCacheWebView);
-                    } else if (app.history.direction > 0) {
-                        insertStacks(app, webViews.existWebViewIndex + 1, newCacheWebView);
-                    } else {
-                        app.history.stacks.push(newCacheWebView);
+    if (app.history.stacks.length === 0) {
+        app.history.stacks.push(newCacheWebView);
+        app.tick = -1;
+    } else {
+        switch (action) {
+            case 'push':
+                pushWebViewExtras = app.history.stacks.slice(webViews.existWebViewIndex + 1);
+                oldCacheChangeStatus && pushWebViewExtras.push(oldCacheWebView);
+                destroyWebViews(app, pushWebViewExtras);
+                if (pushWebViewExtras.indexOf(newCacheWebView) > -1) {
+                    newCacheWebView = await createNewCachedWebView(app, engine, webview, data, mark);
+                }
+                app.history.stacks.push(newCacheWebView);
+                app.tick = -1;
+                break;
+            case 'replace':
+                if (oldCacheChangeStatus) destroyWebViews(app, oldCacheWebView);
+                destroyWebViews(app, webViews.existsWebView, newCacheWebView);
+                break;
+            default:
+                if (oldCacheChangeStatus) {
+                    destroyWebViews(app, oldCacheWebView, newCacheWebView);
+                } else {
+                    if (app.history.stacks.indexOf(newCacheWebView) === -1) {
+                        const reduce = app.history.session
+                            ? app.history.session.current - (app.index || 0)
+                            : 0;
+
+                        let index = webViews.existWebViewIndex - reduce;
+
+                        if (index < 0) index = 0;
+                        if (index >= app.options.max) index = app.options.max - 1;
+                        const targetWebView = app.history.stacks[index];
+                        const targetIndex = targetWebView.historyIndex;
+                        const sourceIndex = app.webView.historyIndex;
+
+                        if (app.history.direction < 0) {
+                            if (sourceIndex - reduce < targetIndex) {
+                                app.tick = 1;
+                                insertStacks(app, index, newCacheWebView);
+                            } else if (sourceIndex - reduce > targetIndex) {
+                                app.tick = -1;
+                                insertStacks(app, index + 1, newCacheWebView);
+                            } else {
+                                destroyWebViews(app, targetWebView, newCacheWebView);
+                            }
+                        } else if (app.history.direction > 0) {
+                            if (sourceIndex - reduce < targetIndex) {
+                                app.tick = 1;
+                                insertStacks(app, index, newCacheWebView);
+                            } else if (sourceIndex - reduce > targetIndex) {
+                                app.tick = -1;
+                                insertStacks(app, index + 1, newCacheWebView);
+                            } else {
+                                destroyWebViews(app, targetWebView, newCacheWebView);
+                            }
+                        } else {
+                            app.history.stacks.push(newCacheWebView);
+                            app.tick = -1;
+                        }
                     }
                 }
-            }
+        }
     }
 
     webViews.activeWebView = newCacheWebView;
@@ -107,17 +140,19 @@ export default async (app, engine, webview, data) => {
     );
 
     if (app.history.stacks.length > app.options.max) {
-        if (action === 'push') {
-            remindExtra = app.history.stacks[0];
-        } else if (action !== 'replace') {
-            if (app.history.direction >= 0) {
-                remindExtra = app.history.stacks[0];
-            } else {
+        switch (app.tick) {
+            case 1:
                 remindExtra = app.history.stacks[app.history.stacks.length - 1];
-            }
+                break;
+            case -1:
+                remindExtra = app.history.stacks[0];
+                break;
         }
+
         destroyWebViews(app, remindExtra);
     }
+
+    if (app.tick) delete app.tick;
 
     return webViews.activeWebView;
 }
@@ -155,9 +190,26 @@ function insertStacks(app, i, ...args) {
     app.history.stacks = left.concat(args).concat(right);
 }
 
-async function createNewCachedWebView(engine, webview, data, mark) {
+async function createNewCachedWebView(app, engine, webview, data, mark) {
     const newCacheWebView = await engine.create(webview, data);
     newCacheWebView.__MioxMark__ = mark;
     webview.dic.set(mark, newCacheWebView);
+    defineWebViewHistoryIndex(app, newCacheWebView);
     return newCacheWebView;
+}
+
+function defineWebViewHistoryIndex(app, object) {
+    Object.defineProperty(object, 'historyIndex', {
+        get() {
+            if (!app.history.session) return 0;
+            const vars = app.history.session.variables;
+            const strict = app.options.strict;
+            for (const i in vars) {
+                const mark = strict && vars[i].search ? `${vars[i].pathname}:${vars[i].search}` : vars[i].pathname;
+                if (mark === object.__MioxMark__) {
+                    return Number(i);
+                }
+            }
+        }
+    });
 }
