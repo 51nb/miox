@@ -59,7 +59,6 @@ class WebPack {
             this.result = webpackMerge(this.result, this.merger);
         }
     }
-
 }
 
 module.exports = function(callback) {
