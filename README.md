@@ -128,3 +128,7 @@ export default app.listen();
 [MIT](https://opensource.org/licenses/MIT)
 
 Copyright (c) 2015-present, evio(沈赟杰) 51信用卡管家 杭州恩牛网络技术有限公司
+
+# Todo List
+
+1. 给miox增加一个外部不刷新的固定容器用来实现宏观局部刷新
