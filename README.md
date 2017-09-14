@@ -93,6 +93,36 @@ export default app.listen();
 
 ![Miox效果预览](http://pic.51zhangdan.com/u51/storage/a2/a878e1c6-2750-2b36-13f0-3f29544b3802.gif)
 
+# 本项目指引
+
+**命名指引**
+
+- `npm run version` 同步所有模块版本
+- `npm run build` 编译所有模块到`ES5`
+- `npm run post` 发布所有模块到NPM，仅限作者使用。
+- `npm run del` 打包前清空文件夹
+- `npm run dep` 搜集所有模块的依赖到根目录的`package.json`
+- `npm run git` 自动提交到GITLAB，仅限作者使用。
+- `npm run lazy` 懒工作模式，用于一键处理所有从同步版本打包到发布NPM的工作，仅限作者使用。
+- `npm run ssr` 启动服务端渲染调试
+- `npm run ssr:debug` 启动服务端渲染真实线上环境预览
+- `npm run ssr:client:build` 启动服务端渲染的client端打包
+- `npm run ssr:server:build` 启动服务端渲染的server端打包
+- `npm run ssr:build` 启动服务端渲染的总打包
+- `npm run web` 启动web端渲染调试
+- `npm run web:build` 启动web端打包
+- `npm run test:start` 启动karma单元测试
+- `npm run test:end` 启动karma测试结果服务
+- `npm run all:build` 三端打包模式
+
+**模块指引**
+
+所有模块都放在`src`目录下面，使用`webpack.resolve.alias`来调用模块
+
+**注意**
+
+项目下载完毕，运行`npm install`完毕后，请前往`node_modules`文件夹下面将`miox-`开头的模块都删除，否则服务端运行出错。
+
 # License
 
 [MIT](https://opensource.org/licenses/MIT)
