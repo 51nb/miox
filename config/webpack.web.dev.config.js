@@ -1,6 +1,6 @@
 const webpackConfig = require('../src/miox-vue2x-webpack-config/src');
 const { alias, port, ip } =  require('./util');
-const proxy = require('./webpack.proxy');
+const proxy = require('./webpack.web.proxy.config');
 
 module.exports = webpackConfig(config => {
 
