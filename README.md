@@ -95,7 +95,7 @@ export default app.listen();
 
 # 本项目指引
 
-**命名指引**
+**命令指引**
 
 - `npm run version` 同步所有模块版本
 - `npm run build` 编译所有模块到`ES5`
