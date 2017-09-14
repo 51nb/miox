@@ -1,13 +1,13 @@
 {
   "name": "miox-koa-vue2x-server-render",
-  "version": "5.0.5",
+  "version": "5.0.6",
   "main": "build/index.js",
   "files": [
     "build",
     "package.json"
   ],
   "dependencies": {
-    "mz": "^2.6.0",
+    "mz": "^2.7.0",
     "mime-types": "^2.1.17",
     "compressible": "^2.0.11",
     "fs-readdir-recursive": "^1.0.0",
@@ -21,6 +21,7 @@
     "events": "^1.1.1",
     "vue-server-renderer": "^2.4.3",
     "webpack-merge": "^4.1.0",
-    "webpack-node-externals": "^1.6.0"
+    "webpack-node-externals": "^1.6.0",
+    "async-events-listener": "0.0.4"
   }
 }

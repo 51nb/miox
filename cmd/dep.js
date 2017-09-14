@@ -2,7 +2,8 @@ const { modules } = require('../config/util');
 const MyPkg = require('../package.json');
 const path = require('path');
 const fs = require('fs');
-const widgets = resolvePackageDir(Object.keys(modules));
+const mds = Object.keys(modules);
+const widgets = resolvePackageDir(mds);
 const dep = {}, devDep = {}, diff = [], maps = {};
 
 for (let j = 0 ; j < widgets.length; j++) {
@@ -19,7 +20,7 @@ if (diff.length) {
 }
 
 MyPkg.dependencies = dep;
-MyPkg.devDependencies = devDep;
+MyPkg.devDependencies = Object.assign(MyPkg.devDependencies, devDep);
 
 const text = JSON.stringify(MyPkg, null, 2);
 fs.writeFileSync(path.resolve(__dirname, '..', 'package.json'), JSON.stringify(MyPkg, null, 2), 'utf8');
@@ -44,6 +45,7 @@ function collect(pkg) {
 function insert(dep, which, pkg) {
     for (const i in dep) {
         if (!which[i]) {
+            if (mds.indexOf(i) > -1) continue;
             which[i] = dep[i];
             if (!maps[i]) maps[i] = [];
             if (maps[i].indexOf(pkg) === -1) maps[i].push(pkg);

@@ -1,6 +1,9 @@
 const shell = require('shelljs');
 const path = require('path');
+const PKG = require('../package.json');
 
+exports.port = PKG.service.port;
+exports.ip = PKG.service.ip;
 const modules = exports.modules = {
     'miox': { build: true, alias: 'src/' },
     'miox-css': { build: false, alias: 'index.css' },

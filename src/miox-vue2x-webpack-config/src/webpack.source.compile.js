@@ -14,9 +14,9 @@ module.exports = function WebpackBabelCompileSourceModuleCompile(cwd, options = 
     pushMaps(modules, moduleMaps);
 
     return file => {
-        const moduleChecked = checkPool(node_modules, file, moduleMaps);
+        const moduleChecked = checkPool(true, node_modules, file, moduleMaps);
         if (moduleChecked) return true;
-        const dirChecked = checkPool(cwd, file, dirMaps);
+        const dirChecked = checkPool(false, cwd, file, dirMaps);
         if (dirChecked) return true;
         return false;
     }
@@ -33,13 +33,19 @@ function pushMaps(which, pool) {
     }
 }
 
-function checkPool(cwd, file, pool) {
+function checkPool(isModule, cwd, file, pool) {
     const position = path.relative(cwd, file);
     let i = pool.length;
 
     while (i--) {
-        if (pool[i].test(position)) {
-            return true;
+        if (isModule) {
+            if (pool[i].test(position)) {
+                return true;
+            }
+        } else {
+            if (pool[i].test(position) && !/node_modules/i.test(position)) {
+                return true;
+            }
         }
     }
 }

@@ -20,6 +20,7 @@ var VueSSRServerPlugin = require('vue-server-renderer/server-plugin');
 var webpackMerge = require('webpack-merge');
 var webpack = require('webpack');
 var path = require('path');
+var isProd = process.env.NODE_ENV === 'production';
 
 var WebPack = function () {
     function WebPack() {
@@ -102,6 +103,20 @@ var WebPack = function () {
             return new (Function.prototype.bind.apply(webpack.optimize.UglifyJsPlugin, [null].concat(args)))();
         }
     }, {
+        key: 'hmr',
+        value: function hmr() {
+            for (var _len7 = arguments.length, args = Array(_len7), _key7 = 0; _key7 < _len7; _key7++) {
+                args[_key7] = arguments[_key7];
+            }
+
+            return new (Function.prototype.bind.apply(webpack.HotModuleReplacementPlugin, [null].concat(args)))();
+        }
+    }, {
+        key: 'extend',
+        value: function extend(object) {
+            this.result = webpackMerge(this.result, object);
+        }
+    }, {
         key: 'html',
         value: function html() {
             var htmlFile = this.resolve.apply(this, arguments);
@@ -114,7 +129,6 @@ var WebPack = function () {
     }, {
         key: 'init',
         value: function init() {
-            this.result.devtool = "#inline-source-map";
             this.result.module = {
                 noParse: /es6-promise\.js$/,
                 rules: createLoaders(sourceCompile(this.cwd, this.setter["source-compile"]))
@@ -123,9 +137,11 @@ var WebPack = function () {
                 'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
                 'process.env.MIOX_ENV': '"' + (this.setter.env || 'web') + '"'
             }), new FriendlyErrorsPlugin()];
-            if (this.merger) {
-                this.result = webpackMerge(this.result, this.merger);
+            if (!isProd) {
+                this.result.devtool = "#inline-source-map";
             }
+
+            this.merger && this.extend(this.merger);
         }
     }]);
     return WebPack;

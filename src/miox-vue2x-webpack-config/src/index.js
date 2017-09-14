@@ -8,6 +8,7 @@ const VueSSRServerPlugin = require('vue-server-renderer/server-plugin');
 const webpackMerge = require('webpack-merge');
 const webpack = require('webpack');
 const path = require('path');
+const isProd = process.env.NODE_ENV === 'production';
 
 class WebPack {
     constructor() {
@@ -32,6 +33,11 @@ class WebPack {
     vueClient(...args) { return new VueSSRClientPlugin(...args); }
     vueServer(...args) { return new VueSSRServerPlugin(...args); }
     jsCompress(...args) { return new webpack.optimize.UglifyJsPlugin(...args); }
+    hmr(...args) { return new webpack.HotModuleReplacementPlugin(...args); }
+
+    extend(object) {
+        this.result = webpackMerge(this.result, object);
+    }
 
     html(...args) {
         const htmlFile = this.resolve(...args);
@@ -43,7 +49,6 @@ class WebPack {
     }
 
     init() {
-        this.result.devtool = "#inline-source-map";
         this.result.module = {
             noParse: /es6-promise\.js$/,
             rules: createLoaders(sourceCompile(this.cwd, this.setter["source-compile"]))
@@ -55,9 +60,11 @@ class WebPack {
             }),
             new FriendlyErrorsPlugin()
         ];
-        if (this.merger) {
-            this.result = webpackMerge(this.result, this.merger);
+        if (!isProd) {
+            this.result.devtool = "#inline-source-map";
         }
+
+        this.merger && this.extend(this.merger);
     }
 }
 
