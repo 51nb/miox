@@ -26,7 +26,7 @@ exports.default = function (ctx) {
             container = global.document.body.querySelector('.mx-webviews');
             break;
         default:
-            var element = global.document.body;
+            var element = ctx.get('container');
             var root = global.document.createElement('div');
             container = global.document.createElement('div');
 

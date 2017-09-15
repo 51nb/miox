@@ -9,6 +9,7 @@ import B from './webviews/1.vue';
 import C from './webviews/2.vue';
 import D from './webviews/3.vue';
 import E from './webviews/4.vue';
+import Container from './webviews/container.vue';
 
 const router = new Router();
 

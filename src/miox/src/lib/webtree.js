@@ -18,7 +18,7 @@ export default ctx => {
             container = global.document.body.querySelector('.mx-webviews');
             break;
         default:
-            const element = global.document.body;
+            const element = ctx.get('container');
             const root = global.document.createElement('div');
             container = global.document.createElement('div');
 

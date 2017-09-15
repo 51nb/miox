@@ -45,6 +45,8 @@ export default class Miox extends MiddleWare {
         this.set('exists-webview', null);
         this.set('active-webview', null);
 
+        if (this.env === 'web') this.set('container', global.document.body);
+
         this.vars.on('engine', this.plugin.Engine.bind(this.plugin));
         this.vars.on('animate', this.plugin.Animate.bind(this.plugin));
     }
@@ -215,7 +217,7 @@ export default class Miox extends MiddleWare {
         });
     }
 
-    listen() {
+    async listen(containerWebView) {
         if (!this.plugin.get('engine')) {
             throw new Error(
                 'You have not set webview rendering engine, ' +
@@ -223,11 +225,17 @@ export default class Miox extends MiddleWare {
             );
         }
 
-        this.emit('app:start');
+        let historyListener;
+
+        await this.emit(
+            'app:start',
+            this.env === 'web'
+                ? containerWebView
+                : null
+        );
 
         WebTree(this);
         this.__defineProcessHandle__();
-        let historyListener;
 
         if (this.env !== 'server') {
             this.history = new History(this);
@@ -244,7 +252,7 @@ export default class Miox extends MiddleWare {
                     this.$application = app;
                     this.$context = ctx;
                     await this.createServerProgress(url);
-                    this.emit('app:end');
+                    await this.emit('app:end');
                     if (this.err) {
                         throw this.err;
                     } else {
@@ -253,19 +261,19 @@ export default class Miox extends MiddleWare {
                     }
                 };
             case 'client':
-                this.emit('client:render:polyfill');
+                await this.emit('client:render:polyfill');
                 this.history.action = 'push';
                 this.createServerProgress(this.history.location()).then(() => {
                     this.history.clear();
                     this.clientMounted = true;
-                    this.emit('app:end');
+                    return this.emit('app:end');
                 });
                 return historyListener;
             case 'web':
                 this.history.action = 'push';
                 this.createServerProgress(this.history.location()).then(() => {
                     this.history.clear();
-                    this.emit('app:end');
+                    return this.emit('app:end');
                 });
                 return historyListener;
         }

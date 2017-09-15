@@ -51,10 +51,7 @@ export default class Engine {
     }
 
     async create(webview, options) {
-        if ( !isClass(webview) && typeof webview !== 'function' ){
-            throw new Error('`webview` argument is not a class object.');
-        }
-
+        webview = checkWebViewObject(webview);
         return await new Promise((resolve, reject) => {
             try {
                 const Arguments = {};
@@ -85,6 +82,24 @@ export default class Engine {
     install() {
         Vue.prototype.$miox = this.ctx;
         directives(this.ctx);
+        const element = this.ctx.get('container') || global.document.body;
+        this.ctx.on('app:start', async webView => {
+            if (!webView) return;
+            webView = checkWebViewObject(webView);
+            if (element) {
+                const el = await new Promise((resolve, reject) => {
+                    const vm = new webView();
+                    if (typeof vm.MioxInjectDestroy !== 'function') {
+                        return reject(new Error('wrong webView container'));
+                    }
+                    vm.$mount(element);
+                    vm.$on('webview:mounted', () => resolve(vm.mioxContainerElement));
+                });
+
+                if (!el) throw new Error('miss container element');
+                this.ctx.set('container', el);
+            }
+        });
     }
 
     createWebViewRoot(){
@@ -98,4 +113,15 @@ export default class Engine {
 
         return wrapElement;
     }
+}
+
+function checkWebViewObject(webview) {
+    if ( !isClass(webview) && typeof webview !== 'function' ){
+        try{
+            webview = Vue.extend(webview);
+        } catch(e) {
+            throw new Error('`webview` argument is not a class object or a function or an object.');
+        }
+    }
+    return webview;
 }

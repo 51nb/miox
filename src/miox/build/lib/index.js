@@ -104,6 +104,8 @@ var Miox = function (_MiddleWare) {
         _this.set('exists-webview', null);
         _this.set('active-webview', null);
 
+        if (_this.env === 'web') _this.set('container', global.document.body);
+
         _this.vars.on('engine', _this.plugin.Engine.bind(_this.plugin));
         _this.vars.on('animate', _this.plugin.Animate.bind(_this.plugin));
         return _this;
@@ -657,90 +659,126 @@ var Miox = function (_MiddleWare) {
         }
     }, {
         key: 'listen',
-        value: function listen() {
-            var _this5 = this;
+        value: function () {
+            var _ref12 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee13(containerWebView) {
+                var _this5 = this;
 
-            if (!this.plugin.get('engine')) {
-                throw new Error('You have not set webview rendering engine, ' + 'you must set it first.');
-            }
-
-            this.emit('app:start');
-
-            (0, _webtree2.default)(this);
-            this.__defineProcessHandle__();
-            var historyListener = void 0;
-
-            if (this.env !== 'server') {
-                this.history = new _history6.default(this);
-                historyListener = this.history.listen();
-                this.pathChange();
-                this.searchChange();
-                this.hashChange();
-            }
-
-            switch (this.env) {
-                case 'server':
-                    return function () {
-                        var _ref12 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee12(options) {
-                            var url, app, ctx;
-                            return _regenerator2.default.wrap(function _callee12$(_context12) {
-                                while (1) {
-                                    switch (_context12.prev = _context12.next) {
-                                        case 0:
-                                            url = options.url, app = options.app, ctx = options.ctx;
-
-                                            _this5.$application = app;
-                                            _this5.$context = ctx;
-                                            _context12.next = 5;
-                                            return _this5.createServerProgress(url);
-
-                                        case 5:
-                                            _this5.emit('app:end');
-
-                                            if (!_this5.err) {
-                                                _context12.next = 10;
-                                                break;
-                                            }
-
-                                            throw _this5.err;
-
-                                        case 10:
-                                            _context12.next = 12;
-                                            return _this5.emit('server:render:polyfill', options);
-
-                                        case 12:
-                                            return _context12.abrupt('return', _this5.webView);
-
-                                        case 13:
-                                        case 'end':
-                                            return _context12.stop();
-                                    }
+                var historyListener;
+                return _regenerator2.default.wrap(function _callee13$(_context13) {
+                    while (1) {
+                        switch (_context13.prev = _context13.next) {
+                            case 0:
+                                if (this.plugin.get('engine')) {
+                                    _context13.next = 2;
+                                    break;
                                 }
-                            }, _callee12, _this5);
-                        }));
 
-                        return function (_x12) {
-                            return _ref12.apply(this, arguments);
-                        };
-                    }();
-                case 'client':
-                    this.emit('client:render:polyfill');
-                    this.history.action = 'push';
-                    this.createServerProgress(this.history.location()).then(function () {
-                        _this5.history.clear();
-                        _this5.clientMounted = true;
-                        _this5.emit('app:end');
-                    });
-                    return historyListener;
-                case 'web':
-                    this.history.action = 'push';
-                    this.createServerProgress(this.history.location()).then(function () {
-                        _this5.history.clear();
-                        _this5.emit('app:end');
-                    });
-                    return historyListener;
+                                throw new Error('You have not set webview rendering engine, ' + 'you must set it first.');
+
+                            case 2:
+                                historyListener = void 0;
+                                _context13.next = 5;
+                                return this.emit('app:start', this.env === 'web' ? containerWebView : null);
+
+                            case 5:
+
+                                (0, _webtree2.default)(this);
+                                this.__defineProcessHandle__();
+
+                                if (this.env !== 'server') {
+                                    this.history = new _history6.default(this);
+                                    historyListener = this.history.listen();
+                                    this.pathChange();
+                                    this.searchChange();
+                                    this.hashChange();
+                                }
+
+                                _context13.t0 = this.env;
+                                _context13.next = _context13.t0 === 'server' ? 11 : _context13.t0 === 'client' ? 12 : _context13.t0 === 'web' ? 17 : 20;
+                                break;
+
+                            case 11:
+                                return _context13.abrupt('return', function () {
+                                    var _ref13 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee12(options) {
+                                        var url, app, ctx;
+                                        return _regenerator2.default.wrap(function _callee12$(_context12) {
+                                            while (1) {
+                                                switch (_context12.prev = _context12.next) {
+                                                    case 0:
+                                                        url = options.url, app = options.app, ctx = options.ctx;
+
+                                                        _this5.$application = app;
+                                                        _this5.$context = ctx;
+                                                        _context12.next = 5;
+                                                        return _this5.createServerProgress(url);
+
+                                                    case 5:
+                                                        _context12.next = 7;
+                                                        return _this5.emit('app:end');
+
+                                                    case 7:
+                                                        if (!_this5.err) {
+                                                            _context12.next = 11;
+                                                            break;
+                                                        }
+
+                                                        throw _this5.err;
+
+                                                    case 11:
+                                                        _context12.next = 13;
+                                                        return _this5.emit('server:render:polyfill', options);
+
+                                                    case 13:
+                                                        return _context12.abrupt('return', _this5.webView);
+
+                                                    case 14:
+                                                    case 'end':
+                                                        return _context12.stop();
+                                                }
+                                            }
+                                        }, _callee12, _this5);
+                                    }));
+
+                                    return function (_x13) {
+                                        return _ref13.apply(this, arguments);
+                                    };
+                                }());
+
+                            case 12:
+                                _context13.next = 14;
+                                return this.emit('client:render:polyfill');
+
+                            case 14:
+                                this.history.action = 'push';
+                                this.createServerProgress(this.history.location()).then(function () {
+                                    _this5.history.clear();
+                                    _this5.clientMounted = true;
+                                    return _this5.emit('app:end');
+                                });
+                                return _context13.abrupt('return', historyListener);
+
+                            case 17:
+                                this.history.action = 'push';
+                                this.createServerProgress(this.history.location()).then(function () {
+                                    _this5.history.clear();
+                                    return _this5.emit('app:end');
+                                });
+                                return _context13.abrupt('return', historyListener);
+
+                            case 20:
+                            case 'end':
+                                return _context13.stop();
+                        }
+                    }
+                }, _callee13, this);
+            }));
+
+            function listen(_x12) {
+                return _ref12.apply(this, arguments);
             }
-        }
+
+            return listen;
+        }()
     }, {
         key: 'mock',
         value: function mock() {
@@ -757,12 +795,12 @@ var Miox = function (_MiddleWare) {
     }, {
         key: 'fetch',
         value: function () {
-            var _ref13 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee13() {
+            var _ref14 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee14() {
                 var callback = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
                 var client, server;
-                return _regenerator2.default.wrap(function _callee13$(_context13) {
+                return _regenerator2.default.wrap(function _callee14$(_context14) {
                     while (1) {
-                        switch (_context13.prev = _context13.next) {
+                        switch (_context14.prev = _context14.next) {
                             case 0:
                                 client = void 0, server = void 0;
 
@@ -775,15 +813,15 @@ var Miox = function (_MiddleWare) {
                                 }
 
                                 if (!(!this.clientMounted && this.env === 'client' || this.env === 'server' && this.clientMounted)) {
-                                    _context13.next = 4;
+                                    _context14.next = 4;
                                     break;
                                 }
 
-                                return _context13.abrupt('return');
+                                return _context14.abrupt('return');
 
                             case 4:
                                 if (!(!client || !server)) {
-                                    _context13.next = 6;
+                                    _context14.next = 6;
                                     break;
                                 }
 
@@ -791,45 +829,45 @@ var Miox = function (_MiddleWare) {
 
                             case 6:
                                 if (!(this.env === 'client' && this.clientMounted)) {
-                                    _context13.next = 10;
+                                    _context14.next = 10;
                                     break;
                                 }
 
-                                _context13.next = 9;
+                                _context14.next = 9;
                                 return client(this.reference);
 
                             case 9:
-                                return _context13.abrupt('return', _context13.sent);
+                                return _context14.abrupt('return', _context14.sent);
 
                             case 10:
                                 if (!(this.env === 'server' && !this.clientMounted)) {
-                                    _context13.next = 14;
+                                    _context14.next = 14;
                                     break;
                                 }
 
-                                _context13.next = 13;
+                                _context14.next = 13;
                                 return server(this.reference);
 
                             case 13:
-                                return _context13.abrupt('return', _context13.sent);
+                                return _context14.abrupt('return', _context14.sent);
 
                             case 14:
-                                _context13.next = 16;
+                                _context14.next = 16;
                                 return client(this.reference);
 
                             case 16:
-                                return _context13.abrupt('return', _context13.sent);
+                                return _context14.abrupt('return', _context14.sent);
 
                             case 17:
                             case 'end':
-                                return _context13.stop();
+                                return _context14.stop();
                         }
                     }
-                }, _callee13, this);
+                }, _callee14, this);
             }));
 
             function fetch() {
-                return _ref13.apply(this, arguments);
+                return _ref14.apply(this, arguments);
             }
 
             return fetch;
