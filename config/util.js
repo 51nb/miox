@@ -14,7 +14,8 @@ const modules = exports.modules = {
     'miox-router': { build: true, alias: 'src/' },
     'miox-vue2x': { build: true, alias: 'src/' },
     'miox-vue2x-classify': { build: true, alias: 'src/' },
-    'miox-vue2x-webpack-config': { build: true, alias: 'src/' }
+    'miox-vue2x-webpack-config': { build: true, alias: 'src/' },
+    'miox-vue2x-container': { build: true, alias: 'src/' }
 };
 
 exports.compile = function(cmd, cwd, prefix) {

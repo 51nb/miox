@@ -1,0 +1,13 @@
+{
+  "name": "miox-vue2x-container",
+  "version": "5.0.8",
+  "main": "build/index.js",
+  "files": [
+    "build",
+    "package.json"
+  ],
+  "dependencies": {
+    "is-class": "0.0.4",
+    "vue": "^2.4.3"
+  }
+}

@@ -15,7 +15,7 @@ export default ctx => {
         case 'server':
             return html => `<div class="mx-app"><div class="mx-webviews">${html}</div></div>`;
         case 'client':
-            container = global.document.body.querySelector('.mx-webviews');
+            container = ctx.get('container').querySelector('.mx-webviews');
             break;
         default:
             const element = ctx.get('container');

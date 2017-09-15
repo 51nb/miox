@@ -146,70 +146,8 @@ var Engine = function () {
     }, {
         key: 'install',
         value: function install() {
-            var _this2 = this;
-
             _vue2.default.prototype.$miox = this.ctx;
             (0, _directives2.default)(this.ctx);
-            var element = this.ctx.get('container') || global.document.body;
-            this.ctx.on('app:start', function () {
-                var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(webView) {
-                    var el;
-                    return _regenerator2.default.wrap(function _callee2$(_context2) {
-                        while (1) {
-                            switch (_context2.prev = _context2.next) {
-                                case 0:
-                                    if (webView) {
-                                        _context2.next = 2;
-                                        break;
-                                    }
-
-                                    return _context2.abrupt('return');
-
-                                case 2:
-                                    webView = checkWebViewObject(webView);
-
-                                    if (!element) {
-                                        _context2.next = 10;
-                                        break;
-                                    }
-
-                                    _context2.next = 6;
-                                    return new Promise(function (resolve, reject) {
-                                        var vm = new webView();
-                                        if (typeof vm.MioxInjectDestroy !== 'function') {
-                                            return reject(new Error('wrong webView container'));
-                                        }
-                                        vm.$mount(element);
-                                        vm.$on('webview:mounted', function () {
-                                            return resolve(vm.mioxContainerElement);
-                                        });
-                                    });
-
-                                case 6:
-                                    el = _context2.sent;
-
-                                    if (el) {
-                                        _context2.next = 9;
-                                        break;
-                                    }
-
-                                    throw new Error('miss container element');
-
-                                case 9:
-                                    _this2.ctx.set('container', el);
-
-                                case 10:
-                                case 'end':
-                                    return _context2.stop();
-                            }
-                        }
-                    }, _callee2, _this2);
-                }));
-
-                return function (_x3) {
-                    return _ref2.apply(this, arguments);
-                };
-            }());
         }
     }, {
         key: 'createWebViewRoot',

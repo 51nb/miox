@@ -51,6 +51,14 @@ export default class Miox extends MiddleWare {
         this.vars.on('animate', this.plugin.Animate.bind(this.plugin));
     }
 
+    install(...args) {
+        args.forEach(arg => {
+            if (typeof arg === 'function') {
+                arg(this);
+            }
+        })
+    }
+
     set(...args){ return this.vars.set(...args); }
     get(...args){ return this.vars.get(...args); }
     del(...args){ return this.vars.del(...args); }
@@ -217,7 +225,7 @@ export default class Miox extends MiddleWare {
         });
     }
 
-    async listen(containerWebView) {
+    async listen() {
         if (!this.plugin.get('engine')) {
             throw new Error(
                 'You have not set webview rendering engine, ' +
@@ -227,13 +235,7 @@ export default class Miox extends MiddleWare {
 
         let historyListener;
 
-        await this.emit(
-            'app:start',
-            this.env === 'web'
-                ? containerWebView
-                : null
-        );
-
+        await this.emit('app:start');
         WebTree(this);
         this.__defineProcessHandle__();
 

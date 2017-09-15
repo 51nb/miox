@@ -112,6 +112,21 @@ var Miox = function (_MiddleWare) {
     }
 
     (0, _createClass3.default)(Miox, [{
+        key: 'install',
+        value: function install() {
+            var _this2 = this;
+
+            for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+                args[_key] = arguments[_key];
+            }
+
+            args.forEach(function (arg) {
+                if (typeof arg === 'function') {
+                    arg(_this2);
+                }
+            });
+        }
+    }, {
         key: 'set',
         value: function set() {
             var _vars;
@@ -503,7 +518,7 @@ var Miox = function (_MiddleWare) {
     }, {
         key: 'pathChange',
         value: function pathChange() {
-            var _this2 = this;
+            var _this3 = this;
 
             this.history.on('pathchange', function () {
                 var _ref9 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee9(next) {
@@ -512,16 +527,16 @@ var Miox = function (_MiddleWare) {
                             switch (_context9.prev = _context9.next) {
                                 case 0:
                                     _context9.next = 2;
-                                    return _this2.createServerProgress(next);
+                                    return _this3.createServerProgress(next);
 
                                 case 2:
-                                    if (!_this2.err) {
+                                    if (!_this3.err) {
                                         _context9.next = 7;
                                         break;
                                     }
 
                                     _context9.next = 5;
-                                    return _this2.emit(String(_this2.err.code), _this2.err);
+                                    return _this3.emit(String(_this3.err.code), _this3.err);
 
                                 case 5:
                                     _context9.next = 9;
@@ -529,14 +544,14 @@ var Miox = function (_MiddleWare) {
 
                                 case 7:
                                     _context9.next = 9;
-                                    return _this2.emit('200', _this2.webView);
+                                    return _this3.emit('200', _this3.webView);
 
                                 case 9:
                                 case 'end':
                                     return _context9.stop();
                             }
                         }
-                    }, _callee9, _this2);
+                    }, _callee9, _this3);
                 }));
 
                 return function (_x7) {
@@ -547,7 +562,7 @@ var Miox = function (_MiddleWare) {
     }, {
         key: 'searchChange',
         value: function searchChange() {
-            var _this3 = this;
+            var _this4 = this;
 
             this.history.on('searchchange', function () {
                 var _ref10 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee10(next, prev) {
@@ -555,22 +570,22 @@ var Miox = function (_MiddleWare) {
                         while (1) {
                             switch (_context10.prev = _context10.next) {
                                 case 0:
-                                    if (!_this3.options.strict) {
+                                    if (!_this4.options.strict) {
                                         _context10.next = 12;
                                         break;
                                     }
 
                                     _context10.next = 3;
-                                    return _this3.createServerProgress(next);
+                                    return _this4.createServerProgress(next);
 
                                 case 3:
-                                    if (!_this3.err) {
+                                    if (!_this4.err) {
                                         _context10.next = 8;
                                         break;
                                     }
 
                                     _context10.next = 6;
-                                    return _this3.emit(String(_this3.err.code), _this3.err);
+                                    return _this4.emit(String(_this4.err.code), _this4.err);
 
                                 case 6:
                                     _context10.next = 10;
@@ -578,20 +593,20 @@ var Miox = function (_MiddleWare) {
 
                                 case 8:
                                     _context10.next = 10;
-                                    return _this3.emit('200', _this3.webView);
+                                    return _this4.emit('200', _this4.webView);
 
                                 case 10:
                                     _context10.next = 19;
                                     break;
 
                                 case 12:
-                                    if (!(_this3.webView && typeof _this3.webView.MioxInjectWebviewSearchChange === 'function')) {
+                                    if (!(_this4.webView && typeof _this4.webView.MioxInjectWebviewSearchChange === 'function')) {
                                         _context10.next = 17;
                                         break;
                                     }
 
                                     _context10.next = 15;
-                                    return _this3.webView.MioxInjectWebviewSearchChange(prev, next);
+                                    return _this4.webView.MioxInjectWebviewSearchChange(prev, next);
 
                                 case 15:
                                     _context10.next = 19;
@@ -599,14 +614,14 @@ var Miox = function (_MiddleWare) {
 
                                 case 17:
                                     _context10.next = 19;
-                                    return _this3.emit('searchchange', prev, next);
+                                    return _this4.emit('searchchange', prev, next);
 
                                 case 19:
                                 case 'end':
                                     return _context10.stop();
                             }
                         }
-                    }, _callee10, _this3);
+                    }, _callee10, _this4);
                 }));
 
                 return function (_x8, _x9) {
@@ -617,7 +632,7 @@ var Miox = function (_MiddleWare) {
     }, {
         key: 'hashChange',
         value: function hashChange() {
-            var _this4 = this;
+            var _this5 = this;
 
             this.history.on('hashchange', function () {
                 var _ref11 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee11(next, prev) {
@@ -625,16 +640,16 @@ var Miox = function (_MiddleWare) {
                         while (1) {
                             switch (_context11.prev = _context11.next) {
                                 case 0:
-                                    _this4.set('request', next instanceof _request2.default ? next : new _request2.default(next));
-                                    _this4.set('response', new _response2.default());
+                                    _this5.set('request', next instanceof _request2.default ? next : new _request2.default(next));
+                                    _this5.set('response', new _response2.default());
 
-                                    if (!(_this4.webView && typeof _this4.webView.MioxInjectWebviewHashChange === 'function')) {
+                                    if (!(_this5.webView && typeof _this5.webView.MioxInjectWebviewHashChange === 'function')) {
                                         _context11.next = 7;
                                         break;
                                     }
 
                                     _context11.next = 5;
-                                    return _this4.webView.MioxInjectWebviewHashChange(prev, next);
+                                    return _this5.webView.MioxInjectWebviewHashChange(prev, next);
 
                                 case 5:
                                     _context11.next = 9;
@@ -642,14 +657,14 @@ var Miox = function (_MiddleWare) {
 
                                 case 7:
                                     _context11.next = 9;
-                                    return _this4.emit('hashchange', prev, next);
+                                    return _this5.emit('hashchange', prev, next);
 
                                 case 9:
                                 case 'end':
                                     return _context11.stop();
                             }
                         }
-                    }, _callee11, _this4);
+                    }, _callee11, _this5);
                 }));
 
                 return function (_x10, _x11) {
@@ -660,8 +675,8 @@ var Miox = function (_MiddleWare) {
     }, {
         key: 'listen',
         value: function () {
-            var _ref12 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee13(containerWebView) {
-                var _this5 = this;
+            var _ref12 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee13() {
+                var _this6 = this;
 
                 var historyListener;
                 return _regenerator2.default.wrap(function _callee13$(_context13) {
@@ -678,10 +693,9 @@ var Miox = function (_MiddleWare) {
                             case 2:
                                 historyListener = void 0;
                                 _context13.next = 5;
-                                return this.emit('app:start', this.env === 'web' ? containerWebView : null);
+                                return this.emit('app:start');
 
                             case 5:
-
                                 (0, _webtree2.default)(this);
                                 this.__defineProcessHandle__();
 
@@ -707,39 +721,39 @@ var Miox = function (_MiddleWare) {
                                                     case 0:
                                                         url = options.url, app = options.app, ctx = options.ctx;
 
-                                                        _this5.$application = app;
-                                                        _this5.$context = ctx;
+                                                        _this6.$application = app;
+                                                        _this6.$context = ctx;
                                                         _context12.next = 5;
-                                                        return _this5.createServerProgress(url);
+                                                        return _this6.createServerProgress(url);
 
                                                     case 5:
                                                         _context12.next = 7;
-                                                        return _this5.emit('app:end');
+                                                        return _this6.emit('app:end');
 
                                                     case 7:
-                                                        if (!_this5.err) {
+                                                        if (!_this6.err) {
                                                             _context12.next = 11;
                                                             break;
                                                         }
 
-                                                        throw _this5.err;
+                                                        throw _this6.err;
 
                                                     case 11:
                                                         _context12.next = 13;
-                                                        return _this5.emit('server:render:polyfill', options);
+                                                        return _this6.emit('server:render:polyfill', options);
 
                                                     case 13:
-                                                        return _context12.abrupt('return', _this5.webView);
+                                                        return _context12.abrupt('return', _this6.webView);
 
                                                     case 14:
                                                     case 'end':
                                                         return _context12.stop();
                                                 }
                                             }
-                                        }, _callee12, _this5);
+                                        }, _callee12, _this6);
                                     }));
 
-                                    return function (_x13) {
+                                    return function (_x12) {
                                         return _ref13.apply(this, arguments);
                                     };
                                 }());
@@ -751,17 +765,17 @@ var Miox = function (_MiddleWare) {
                             case 14:
                                 this.history.action = 'push';
                                 this.createServerProgress(this.history.location()).then(function () {
-                                    _this5.history.clear();
-                                    _this5.clientMounted = true;
-                                    return _this5.emit('app:end');
+                                    _this6.history.clear();
+                                    _this6.clientMounted = true;
+                                    return _this6.emit('app:end');
                                 });
                                 return _context13.abrupt('return', historyListener);
 
                             case 17:
                                 this.history.action = 'push';
                                 this.createServerProgress(this.history.location()).then(function () {
-                                    _this5.history.clear();
-                                    return _this5.emit('app:end');
+                                    _this6.history.clear();
+                                    return _this6.emit('app:end');
                                 });
                                 return _context13.abrupt('return', historyListener);
 
@@ -773,7 +787,7 @@ var Miox = function (_MiddleWare) {
                 }, _callee13, this);
             }));
 
-            function listen(_x12) {
+            function listen() {
                 return _ref12.apply(this, arguments);
             }
 

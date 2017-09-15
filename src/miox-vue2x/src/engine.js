@@ -82,24 +82,6 @@ export default class Engine {
     install() {
         Vue.prototype.$miox = this.ctx;
         directives(this.ctx);
-        const element = this.ctx.get('container') || global.document.body;
-        this.ctx.on('app:start', async webView => {
-            if (!webView) return;
-            webView = checkWebViewObject(webView);
-            if (element) {
-                const el = await new Promise((resolve, reject) => {
-                    const vm = new webView();
-                    if (typeof vm.MioxInjectDestroy !== 'function') {
-                        return reject(new Error('wrong webView container'));
-                    }
-                    vm.$mount(element);
-                    vm.$on('webview:mounted', () => resolve(vm.mioxContainerElement));
-                });
-
-                if (!el) throw new Error('miss container element');
-                this.ctx.set('container', el);
-            }
-        });
     }
 
     createWebViewRoot(){

@@ -3,6 +3,7 @@ import Miox from 'miox';
 import Engine from 'miox-vue2x';
 import Animate from 'miox-animation';
 import Router from 'miox-router';
+import VueContainer from 'miox-vue2x-container';
 
 import A from './webviews/0.vue';
 import B from './webviews/1.vue';
@@ -38,8 +39,9 @@ router.patch('/e', async ctx => {
     await ctx.render(E);
 });
 
-const app = global.miox = new Miox({ session: true, max: 2, debug: true });
+const app = global.miox = new Miox({ session: false, max: 1 });
 app.set('engine', Engine);
 app.set('animate', Animate('slide'));
 app.use(router.routes());
+app.install(VueContainer(Container));
 export default app.listen();
