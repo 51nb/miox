@@ -110,7 +110,7 @@ export default class Miox extends MiddleWare {
     }
 
     async error(value) {
-        if (value instanceof Error) {
+        if (value instanceof Error || Object.prototype.toString.call(value) === '[object Error]') {
             this.err = value;
             await this.emit(String(value.code), value);
         } else {
@@ -246,7 +246,7 @@ export default class Miox extends MiddleWare {
                     await this.createServerProgress(url);
                     this.emit('app:end');
                     if (this.err) {
-                        return this.err;
+                        throw this.err;
                     } else {
                         await this.emit('server:render:polyfill', options);
                         return this.webView;

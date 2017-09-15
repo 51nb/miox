@@ -86,8 +86,9 @@ export default async (app, engine, webview, data) => {
 
                         if (index < 0) index = 0;
                         if (index >= app.options.max) index = app.options.max - 1;
+
                         const targetWebView = app.history.stacks[index];
-                        const targetIndex = targetWebView.historyIndex;
+                        const targetIndex = targetWebView ? targetWebView.historyIndex : 0;
                         const sourceIndex = app.webView.historyIndex;
 
                         if (app.history.direction < 0) {
@@ -131,6 +132,7 @@ export default async (app, engine, webview, data) => {
     if (!webViews.activeWebViewElement) {
         return webViews.activeWebView;
     }
+
 
     // 动画渲染两个页面的家在过程。
     await renderWebViewWithAnimate(

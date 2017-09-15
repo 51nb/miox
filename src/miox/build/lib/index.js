@@ -335,7 +335,7 @@ var Miox = function (_MiddleWare) {
                     while (1) {
                         switch (_context6.prev = _context6.next) {
                             case 0:
-                                if (!(value instanceof Error)) {
+                                if (!(value instanceof Error || Object.prototype.toString.call(value) === '[object Error]')) {
                                     _context6.next = 6;
                                     break;
                                 }
@@ -702,7 +702,7 @@ var Miox = function (_MiddleWare) {
                                                 break;
                                             }
 
-                                            return _context12.abrupt('return', _this5.err);
+                                            throw _this5.err;
 
                                         case 10:
                                             _context12.next = 12;

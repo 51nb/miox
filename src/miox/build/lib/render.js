@@ -170,8 +170,9 @@ exports.default = function () {
 
                                 if (index < 0) index = 0;
                                 if (index >= app.options.max) index = app.options.max - 1;
+
                                 targetWebView = app.history.stacks[index];
-                                targetIndex = targetWebView.historyIndex;
+                                targetIndex = targetWebView ? targetWebView.historyIndex : 0;
                                 sourceIndex = app.webView.historyIndex;
 
 

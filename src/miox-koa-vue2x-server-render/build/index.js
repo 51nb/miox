@@ -144,13 +144,12 @@ var MioxKoaVue2xServerSideRenderer = function (_EventEmitter) {
         value: function clientDevServer(object, callback) {
             var _this3 = this;
 
-            this.configs.client.plugins.push(new webpack.NoEmitOnErrorsPlugin());
-
             if (this.options.hot) {
-                this.configs.client.entry.app = ['webpack-hot-middleware/client?path=' + this.data.hmr, this.configs.client.entry.app];
+                this.configs.client.entry.app = ['webpack-hot-middleware/client?reload=true', this.configs.client.entry.app];
                 this.configs.client.plugins.push(new webpack.HotModuleReplacementPlugin());
             }
 
+            this.configs.client.plugins.push(new webpack.NoEmitOnErrorsPlugin());
             var clientCompiler = webpack(this.configs.client);
             var devMiddleware = webpackDevMiddleWare(clientCompiler, {
                 publicPath: this.data.publicPath,
@@ -158,7 +157,9 @@ var MioxKoaVue2xServerSideRenderer = function (_EventEmitter) {
             });
 
             if (this.options.hot) {
-                this.app.use(ctk(hotMiddleWare(clientCompiler, { path: this.data.hmr })));
+                this.app.use(ctk(hotMiddleWare(clientCompiler, {
+                    heartbeat: 2000
+                })));
             }
 
             this.app.use(function () {
@@ -301,8 +302,20 @@ var MioxKoaVue2xServerSideRenderer = function (_EventEmitter) {
                         while (1) {
                             switch (_context2.prev = _context2.next) {
                                 case 0:
-                                    cache = _this6.options.cache;
+                                    if (_this6.render) {
+                                        _context2.next = 4;
+                                        break;
+                                    }
+
                                     _context2.next = 3;
+                                    return next();
+
+                                case 3:
+                                    return _context2.abrupt('return', _context2.sent);
+
+                                case 4:
+                                    cache = _this6.options.cache;
+                                    _context2.next = 7;
                                     return new Promise(function (resolve, reject) {
                                         if (_this6.isProd) {
                                             _this6.render(ctx, resolve, reject);
@@ -315,7 +328,7 @@ var MioxKoaVue2xServerSideRenderer = function (_EventEmitter) {
                                         return Promise.resolve(e);
                                     });
 
-                                case 3:
+                                case 7:
                                     body = _context2.sent;
 
 
@@ -326,39 +339,39 @@ var MioxKoaVue2xServerSideRenderer = function (_EventEmitter) {
                                     }
 
                                     if (!(body instanceof Error || Object.prototype.toString.call(body) === '[object Error]')) {
-                                        _context2.next = 22;
+                                        _context2.next = 26;
                                         break;
                                     }
 
                                     _context2.t0 = body.code;
-                                    _context2.next = _context2.t0 === 404 ? 9 : _context2.t0 === 302 ? 13 : 19;
+                                    _context2.next = _context2.t0 === 404 ? 13 : _context2.t0 === 302 ? 17 : 23;
                                     break;
 
-                                case 9:
+                                case 13:
                                     ctx.status = 404;
-                                    _context2.next = 12;
+                                    _context2.next = 16;
                                     return next();
 
-                                case 12:
+                                case 16:
                                     return _context2.abrupt('return', _context2.sent);
 
-                                case 13:
+                                case 17:
                                     if (!body.url) {
-                                        _context2.next = 17;
+                                        _context2.next = 21;
                                         break;
                                     }
 
                                     ctx.redirect(body.url);
-                                    _context2.next = 18;
+                                    _context2.next = 22;
                                     break;
 
-                                case 17:
+                                case 21:
                                     throw new Error('302 redirect: miss url');
 
-                                case 18:
-                                    return _context2.abrupt('break', 20);
+                                case 22:
+                                    return _context2.abrupt('break', 24);
 
-                                case 19:
+                                case 23:
                                     if (EventEmitter.listenerCount(_this6, 'error') === 0) {
                                         ctx.status = body.code || 500;
                                         ctx.body = '<h1>Internet Server Error ' + ctx.status + '</h1><pre>' + body.stack + '</pre>';
@@ -366,14 +379,14 @@ var MioxKoaVue2xServerSideRenderer = function (_EventEmitter) {
                                         _this6.emit('error', ctx, body);
                                     }
 
-                                case 20:
-                                    _context2.next = 23;
+                                case 24:
+                                    _context2.next = 27;
                                     break;
 
-                                case 22:
+                                case 26:
                                     ctx.body = body;
 
-                                case 23:
+                                case 27:
                                 case 'end':
                                     return _context2.stop();
                             }

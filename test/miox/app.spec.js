@@ -123,7 +123,8 @@ describe('Miox全场景测试:', () => {
             await delay(300);
             expect(app.webView.text).toEqual('C');
             expect(getPool(app)).toEqual('C');
-            app.history.stacks = [];
+            app.history.stacks = [app.webView];
+            clearWebViewCaches(C, app.webView);
             app.go(-1);
             await delay(300);
             expect(app.webView.text).toEqual('B');
@@ -147,7 +148,8 @@ describe('Miox全场景测试:', () => {
             await delay(1000);
             expect(app.webView.text).toEqual('C');
             expect(getPool(app)).toEqual('C');
-            app.history.stacks = [];
+            app.history.stacks = [app.webView];
+            clearWebViewCaches(C, app.webView);
             app.go(-1);
             await delay(1000);
             expect(app.webView.text).toEqual('B');
@@ -171,15 +173,16 @@ describe('Miox全场景测试:', () => {
             await delay(300);
             expect(app.webView.text).toEqual('C');
             expect(getPool(app)).toEqual('A.B.C');
-            app.history.stacks = [];
+            app.history.stacks = [app.webView];
+            clearWebViewCaches(C, app.webView);
             app.go(-1);
             await delay(300);
             expect(app.webView.text).toEqual('B');
-            expect(getPool(app)).toEqual('B');
+            expect(getPool(app)).toEqual('C.B');
             app.go(-1);
             await delay(300);
             expect(app.webView.text).toEqual('A');
-            expect(getPool(app)).toEqual('B.A');
+            expect(getPool(app)).toEqual('C.B.A');
         });
     }, 10000);
 
@@ -195,14 +198,41 @@ describe('Miox全场景测试:', () => {
             await delay(1000);
             expect(app.webView.text).toEqual('C');
             expect(getPool(app)).toEqual('A.B.C');
-            app.history.stacks = [];
+            app.history.stacks = [app.webView];
+            clearWebViewCaches(C, app.webView);
+            console.log('start')
             app.go(-1);
             await delay(1000);
             expect(app.webView.text).toEqual('B');
-            expect(getPool(app)).toEqual('B');
+            expect(getPool(app)).toEqual('B.C');
             app.go(-1);
             await delay(1000);
             expect(app.webView.text).toEqual('A');
+            expect(getPool(app)).toEqual('A.B.C');
+        });
+    }, 10000);
+
+    it('中途刷新场景:带session:最大2个页面', cb => {
+        progress({ max: 2, session: true, animate: true }, cb, async app => {
+            expect(app.webView.text).toEqual('A');
+            expect(getPool(app)).toEqual('A');
+            app.push('/b');
+            await delay(600);
+            expect(app.webView.text).toEqual('B');
+            expect(getPool(app)).toEqual('A.B');
+            app.push('/c');
+            await delay(600);
+            expect(app.webView.text).toEqual('C');
+            expect(getPool(app)).toEqual('B.C');
+            app.go(-2);
+            await delay(600);
+            expect(app.webView.text).toEqual('A');
+            expect(getPool(app)).toEqual('A.B');
+            app.history.stacks = [app.webView];
+            clearWebViewCaches(A, app.webView);
+            app.go(1);
+            await delay(600);
+            expect(app.webView.text).toEqual('B');
             expect(getPool(app)).toEqual('A.B');
         });
     }, 10000);
@@ -485,9 +515,7 @@ function removeAll() {
 
     global.history.pushState(null, document.title, '/');
 
-    [A, B, C, D, E].forEach(cmp => {
-        delete cmp.dic;
-    });
+    clearWebViewCaches();
 
     switcher = false;
 
@@ -501,6 +529,19 @@ function removeAll() {
         const key = session.key(i);
         global.sessionStorage.removeItem(key);
     }
+}
+
+function clearWebViewCaches(webView, object) {
+    [A, B, C, D, E].forEach(cmp => {
+        if (cmp === webView) {
+            for (const i in cmp.dic.variables) {
+                if (cmp.dic.variables[i] === object) continue;
+                cmp.dic.del(i);
+            }
+        } else {
+            delete cmp.dic;
+        }
+    });
 }
 
 async function delay(time = 0) {

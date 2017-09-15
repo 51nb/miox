@@ -1,11 +1,7 @@
 // Karma configuration
 // Generated on Mon Sep 11 2017 18:10:10 GMT+0800 (CST)
 const webpack = require('webpack');
-const webpackHtml5Configs = require('./config/webpack.h5.dev.config');
-
-delete webpackHtml5Configs.entry;
-delete webpackHtml5Configs.output;
-delete webpackHtml5Configs.devServer;
+const webpackHtml5Configs = require('./config/webpack.karma.config');
 
 module.exports = function(config) {
   config.set({

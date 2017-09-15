@@ -91,13 +91,12 @@ class MioxKoaVue2xServerSideRenderer extends EventEmitter {
     }
 
     clientDevServer(object, callback) {
-        this.configs.client.plugins.push(new webpack.NoEmitOnErrorsPlugin());
-
         if (this.options.hot) {
-            this.configs.client.entry.app = [`webpack-hot-middleware/client?path=${this.data.hmr}`, this.configs.client.entry.app];
+            this.configs.client.entry.app = [`webpack-hot-middleware/client?reload=true`, this.configs.client.entry.app];
             this.configs.client.plugins.push(new webpack.HotModuleReplacementPlugin());
         }
 
+        this.configs.client.plugins.push(new webpack.NoEmitOnErrorsPlugin());
         const clientCompiler = webpack(this.configs.client);
         const devMiddleware = webpackDevMiddleWare(clientCompiler, {
             publicPath: this.data.publicPath,
@@ -105,7 +104,9 @@ class MioxKoaVue2xServerSideRenderer extends EventEmitter {
         });
 
         if (this.options.hot) {
-            this.app.use(ctk(hotMiddleWare(clientCompiler, { path: this.data.hmr })));
+            this.app.use(ctk(hotMiddleWare(clientCompiler, {
+                heartbeat: 2000
+            })));
         }
 
         this.app.use(async (ctx, next) => {
@@ -194,6 +195,8 @@ class MioxKoaVue2xServerSideRenderer extends EventEmitter {
 
     createServer() {
         this.app.use(async (ctx, next) => {
+            if (!this.render) return await next();
+
             const { cache } = this.options;
             const body = await new Promise((resolve, reject) => {
                 if (this.isProd) { this.render(ctx, resolve, reject); }
