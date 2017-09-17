@@ -1,6 +1,6 @@
 {
   "name": "miox",
-  "version": "5.0.11",
+  "version": "5.0.12",
   "main": "build/index.js",
   "files": [
     "build",
