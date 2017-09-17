@@ -4,7 +4,7 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var isProd = process.env.NODE_ENV === 'production';
 
 module.exports = function (includeCompiler) {
-    return [vue(includeCompiler), js(includeCompiler), jsx(includeCompiler), css(), less(), sass()];
+    return [vue(includeCompiler), js(includeCompiler), jsx(includeCompiler), css(includeCompiler), less(includeCompiler), sass(includeCompiler)];
 };
 
 function postCssLoader() {
@@ -107,23 +107,26 @@ function jsx(includeCompiler) {
     };
 }
 
-function css() {
+function css(includeCompiler) {
     return {
         test: /\.css$/,
+        include: includeCompiler,
         use: cssBlock()
     };
 }
 
-function less() {
+function less(includeCompiler) {
     return {
         test: /\.less$/,
+        include: includeCompiler,
         use: lessBlock()
     };
 }
 
-function sass() {
+function sass(includeCompiler) {
     return {
         test: /\.scss$/,
+        include: includeCompiler,
         use: sassBlock()
     };
 }

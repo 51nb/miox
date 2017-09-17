@@ -6,9 +6,9 @@ module.exports = function(includeCompiler) {
         vue(includeCompiler),
         js(includeCompiler),
         jsx(includeCompiler),
-        css(),
-        less(),
-        sass()
+        css(includeCompiler),
+        less(includeCompiler),
+        sass(includeCompiler)
     ];
 };
 
@@ -141,23 +141,26 @@ function jsx(includeCompiler) {
     }
 }
 
-function css() {
+function css(includeCompiler) {
     return {
         test: /\.css$/,
+        include: includeCompiler,
         use: cssBlock()
     }
 }
 
-function less() {
+function less(includeCompiler) {
     return {
         test: /\.less$/,
+        include: includeCompiler,
         use: lessBlock()
     }
 }
 
-function sass() {
+function sass(includeCompiler) {
     return {
         test: /\.scss$/,
+        include: includeCompiler,
         use: sassBlock()
     }
 }
