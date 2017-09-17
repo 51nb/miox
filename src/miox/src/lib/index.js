@@ -225,7 +225,7 @@ export default class Miox extends MiddleWare {
         });
     }
 
-    async listen() {
+    listen() {
         if (!this.plugin.get('engine')) {
             throw new Error(
                 'You have not set webview rendering engine, ' +
@@ -235,7 +235,7 @@ export default class Miox extends MiddleWare {
 
         let historyListener;
 
-        await this.emit('app:start');
+        this.emit('app:start');
         WebTree(this);
         this.__defineProcessHandle__();
 
@@ -263,7 +263,7 @@ export default class Miox extends MiddleWare {
                     }
                 };
             case 'client':
-                await this.emit('client:render:polyfill');
+                this.emit('client:render:polyfill');
                 this.history.action = 'push';
                 this.createServerProgress(this.history.location()).then(() => {
                     this.history.clear();

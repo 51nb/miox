@@ -12,12 +12,10 @@ export default ctx => {
     });
 
     switch (ctx.env) {
-        case 'server':
-            return html => `<div class="mx-app"><div class="mx-webviews">${html}</div></div>`;
         case 'client':
             container = ctx.get('container').querySelector('.mx-webviews');
             break;
-        default:
+        case 'web':
             const element = ctx.get('container');
             const root = global.document.createElement('div');
             container = global.document.createElement('div');
@@ -27,5 +25,6 @@ export default ctx => {
 
             root.classList.add('mx-app');
             container.classList.add('mx-webviews');
+            break;
     }
 }
