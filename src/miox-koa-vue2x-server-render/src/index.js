@@ -50,6 +50,7 @@ class MioxKoaVue2xServerSideRenderer extends EventEmitter {
 
     onDevelopment() {
         this.data.dir = this.options.dir || path.dirname(this.configs.client.entry.app);
+        // this.data.dir = this.configs.client.entry.app;
         this.readyPromise = this.createDevServer((bundle, options) => {
             this.renderer = this.createRenderer(bundle, options);
         });
@@ -187,6 +188,7 @@ class MioxKoaVue2xServerSideRenderer extends EventEmitter {
         };
 
         this.renderer.renderToString(context, (err, html) => {
+            if (isError(err)) err.originUri = url;
             if (err) return reject(err);
             cache && this.microCache.set(url, html);
             resolve(html);
@@ -209,7 +211,7 @@ class MioxKoaVue2xServerSideRenderer extends EventEmitter {
                 ctx.set('Pragma', 'no-cache');
             }
 
-            if (body instanceof Error || Object.prototype.toString.call(body) === '[object Error]') {
+            if (isError(body)) {
                 switch (body.code) {
                     case 404:
                         ctx.status = 404;
@@ -224,7 +226,11 @@ class MioxKoaVue2xServerSideRenderer extends EventEmitter {
                     default:
                         if (EventEmitter.listenerCount(this, 'error') === 0) {
                             ctx.status = body.code || 500;
-                            ctx.body = `<h1>Internet Server Error ${ctx.status}</h1><pre>${body.stack}</pre>`;
+                            ctx.body = `
+                                <h1>Internet Server Error ${ctx.status}</h1>
+                                <p>Origin url: ${body.originUri}</p>
+                                <pre>${body.stack}</pre>
+                            `;
                         } else {
                             this.emit('error', ctx, body);
                         }
@@ -237,3 +243,7 @@ class MioxKoaVue2xServerSideRenderer extends EventEmitter {
 }
 
 module.exports = MioxKoaVue2xServerSideRenderer;
+
+function isError(err) {
+    return err instanceof Error || Object.prototype.toString.call(err) === '[object Error]';
+}

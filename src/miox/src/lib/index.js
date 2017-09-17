@@ -45,7 +45,7 @@ export default class Miox extends MiddleWare {
         this.set('exists-webview', null);
         this.set('active-webview', null);
 
-        if (this.env === 'web') this.set('container', global.document.body);
+        if (this.env !== 'server') this.set('container', global.document.body);
 
         this.vars.on('engine', this.plugin.Engine.bind(this.plugin));
         this.vars.on('animate', this.plugin.Animate.bind(this.plugin));

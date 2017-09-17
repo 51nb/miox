@@ -104,7 +104,7 @@ var Miox = function (_MiddleWare) {
         _this.set('exists-webview', null);
         _this.set('active-webview', null);
 
-        if (_this.env === 'web') _this.set('container', global.document.body);
+        if (_this.env !== 'server') _this.set('container', global.document.body);
 
         _this.vars.on('engine', _this.plugin.Engine.bind(_this.plugin));
         _this.vars.on('animate', _this.plugin.Animate.bind(_this.plugin));

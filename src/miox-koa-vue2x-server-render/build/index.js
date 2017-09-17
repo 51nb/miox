@@ -97,6 +97,7 @@ var MioxKoaVue2xServerSideRenderer = function (_EventEmitter) {
             var _this2 = this;
 
             this.data.dir = this.options.dir || path.dirname(this.configs.client.entry.app);
+            // this.data.dir = this.configs.client.entry.app;
             this.readyPromise = this.createDevServer(function (bundle, options) {
                 _this2.renderer = _this2.createRenderer(bundle, options);
             });
@@ -285,6 +286,7 @@ var MioxKoaVue2xServerSideRenderer = function (_EventEmitter) {
             };
 
             this.renderer.renderToString(context, function (err, html) {
+                if (isError(err)) err.originUri = url;
                 if (err) return reject(err);
                 cache && _this5.microCache.set(url, html);
                 resolve(html);
@@ -338,7 +340,7 @@ var MioxKoaVue2xServerSideRenderer = function (_EventEmitter) {
                                         ctx.set('Pragma', 'no-cache');
                                     }
 
-                                    if (!(body instanceof Error || Object.prototype.toString.call(body) === '[object Error]')) {
+                                    if (!isError(body)) {
                                         _context2.next = 26;
                                         break;
                                     }
@@ -374,7 +376,7 @@ var MioxKoaVue2xServerSideRenderer = function (_EventEmitter) {
                                 case 23:
                                     if (EventEmitter.listenerCount(_this6, 'error') === 0) {
                                         ctx.status = body.code || 500;
-                                        ctx.body = '<h1>Internet Server Error ' + ctx.status + '</h1><pre>' + body.stack + '</pre>';
+                                        ctx.body = '\n                                <h1>Internet Server Error ' + ctx.status + '</h1>\n                                <p>Origin url: ' + body.originUri + '</p>\n                                <pre>' + body.stack + '</pre>\n                            ';
                                     } else {
                                         _this6.emit('error', ctx, body);
                                     }
@@ -404,3 +406,7 @@ var MioxKoaVue2xServerSideRenderer = function (_EventEmitter) {
 }(EventEmitter);
 
 module.exports = MioxKoaVue2xServerSideRenderer;
+
+function isError(err) {
+    return err instanceof Error || Object.prototype.toString.call(err) === '[object Error]';
+}
