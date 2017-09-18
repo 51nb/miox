@@ -1,32 +1,36 @@
 .page-push-in,
 .page-push-out{
-    &.mx-webview{
-        overflow-x: unset;
-        overflow: unset;
-        overflow-y: unset;
-        &:before{
-            content:"";
-            display: block;
-            position:absolute;
-            width:100%;
-            height: 30px;
-            left:0;
-            top: -30px;
-            background-image: linear-gradient(to bottom,transparent, #000);
+    &-forward,
+    &-backward{
+        &.mx-webview{
+            overflow-x: unset;
+            overflow: unset;
+            overflow-y: unset;
+            &:before{
+                content:"";
+                display: block;
+                position:absolute;
+                width:100%;
+                height: 30px;
+                left:0;
+                top: -30px;
+                background-image: linear-gradient(to bottom,transparent,rgba(0,0,0,0.2));
+            }
         }
+
     }
 }
 
 .page-push-in{
-    &.direction-forward{
+    &-forward{
         z-index: 2;
         animation:push-in-forward $defaultDuration ease;
         &::before{
             animation:shadow-fadein $defaultDuration ease-out;
         }
     }
-    &.direction-backward{
-        animation:push-in-backward $defaultDuration ease;
+    &-backward{
+        // animation:push-in-backward $defaultDuration ease;
         &::before{
             display: none;
         }
@@ -34,14 +38,14 @@
 }
 
 .page-push-out{
-    &.direction-forward{
-        animation: push-out-forward $defaultDuration ease;
+    &-forward{
+        // animation: push-out-forward $defaultDuration ease;
         box-shadow: 0 0 10px #666;
         &::before{
             display: none;
         }
     }
-    &.direction-backward{
+    &-backward{
         z-index: 2;
         animation: push-out-backward $defaultDuration ease;
         &::before{
@@ -61,12 +65,11 @@
 }
 @keyframes push-in-backward{
     0%{
-        transform: scale(0.96);
-        box-shadow: 0 0 20px #666;
+        // transform: scale(0.96);
+        // box-shadow: 0 0 20px #666;
     }
     100%{
         transform: scale(1);
-        
     }
 }
 
@@ -86,5 +89,21 @@
     100%{
         transform: scale(0.96);
         box-shadow: 0 0 20px #666;
+    }
+}
+@keyframes shadow-fadein{
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: .3;
+    }
+}
+@keyframes shadow-fadeout{
+    0%{
+        opacity: .3;
+    }
+    100%{
+        opacity: 0;
     }
 }
