@@ -16,7 +16,7 @@ $defaultDuration: 300ms;
             height: 100%;
             left:-30px;
             top: 0;
-            background-image: linear-gradient(to right,transparent, #000);
+            background-image: linear-gradient(to right,transparent, rgba(0,0,0,0.2));
         }
     }
 }
@@ -80,21 +80,21 @@ $defaultDuration: 300ms;
     }
 }
 
-@keyframes slide-out{
-    0%{
-        transform: translateX(0)
-    }
-    100%{
-        transform: translateX(-30%);
-    }
-}
-@keyframes slide-out-back{
-    0%{
-        transform: translateX(-30%)
-    }
-    100%{
-        transform: translateX(0);
-    }
-}
+// @keyframes slide-out{
+//     0%{
+//         transform: translateX(0)
+//     }
+//     100%{
+//         transform: translateX(-30%);
+//     }
+// }
+// @keyframes slide-out-back{
+//     0%{
+//         transform: translateX(-30%)
+//     }
+//     100%{
+//         transform: translateX(0);
+//     }
+// }
 
 
