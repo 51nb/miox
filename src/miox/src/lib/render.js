@@ -21,7 +21,12 @@ export default async (app, engine, webview, data) => {
         existsWebView: existsWebViewConfigs
             ? existsWebViewConfigs.basic.dic.get(existsWebViewConfigs.mark)
             : null,
-        activeWebView: null
+        activeWebView: null,
+        events: {
+            Active: null,
+            Enter: null,
+            Leave: null
+        }
     };
 
     if (action === 'replace' && !webViews.existsWebView) {
@@ -44,7 +49,7 @@ export default async (app, engine, webview, data) => {
     let oldCacheWebView, pushWebViewExtras, remindExtra, newCacheWebView = webview.dic.get(mark);
 
     if (!newCacheWebView) {
-        newCacheWebView = await createNewCachedWebView(app, engine, webview, data, mark);
+        newCacheWebView = await createNewCachedWebView(app, engine, webview, data, mark, webViews);
     }
 
     if (oldCacheWebViewConstructor) {
@@ -64,7 +69,7 @@ export default async (app, engine, webview, data) => {
                 oldCacheChangeStatus && pushWebViewExtras.push(oldCacheWebView);
                 destroyWebViews(app, pushWebViewExtras);
                 if (pushWebViewExtras.indexOf(newCacheWebView) > -1) {
-                    newCacheWebView = await createNewCachedWebView(app, engine, webview, data, mark);
+                    newCacheWebView = await createNewCachedWebView(app, engine, webview, data, mark, webViews);
                 }
                 app.history.stacks.push(newCacheWebView);
                 app.tick = -1;
@@ -130,11 +135,11 @@ export default async (app, engine, webview, data) => {
     // SSR的client端渲染的时候，在没有mounted情况下，取不到节点；
     // 那么直接返回，不做任何动画。
     if (!webViews.activeWebViewElement) {
+        await resolveEventEmitter(webViews.events);
         return webViews.activeWebView;
     }
 
-
-    // 动画渲染两个页面的家在过程。
+    // 动画渲染两个页面的加载过程。
     await renderWebViewWithAnimate(
         app,
         webViews.existsWebViewElement,
@@ -154,9 +159,29 @@ export default async (app, engine, webview, data) => {
         destroyWebViews(app, remindExtra);
     }
 
+    webViews.events.Leave = webViews.existsWebView;
+    webViews.events.Enter = webViews.activeWebView;
+
+    if (!webViews.events.Enter && newCacheWebView && app.history.stacks.indexOf(newCacheWebView) > -1) {
+        webViews.events.Active = newCacheWebView;
+    }
+
     if (app.tick) delete app.tick;
+    await resolveEventEmitter(webViews.events);
 
     return webViews.activeWebView;
+}
+
+async function resolveEventEmitter(events) {
+    const array = ['Enter', 'Leave', 'Active'];
+    for (let i = 0; i < array.length; i++) {
+        const sourceName = array[i];
+        const targetName = `MioxInject${sourceName}`;
+        if (events[sourceName] && typeof events[sourceName][targetName] === 'function') {
+            await events[sourceName][targetName]();
+            events[sourceName] = null;
+        }
+    }
 }
 
 function defineWebViewElementGetter(webViews, name) {
@@ -192,11 +217,12 @@ function insertStacks(app, i, ...args) {
     app.history.stacks = left.concat(args).concat(right);
 }
 
-async function createNewCachedWebView(app, engine, webview, data, mark) {
+async function createNewCachedWebView(app, engine, webview, data, mark, webViews) {
     const newCacheWebView = await engine.create(webview, data);
     newCacheWebView.__MioxMark__ = mark;
     webview.dic.set(mark, newCacheWebView);
     defineWebViewHistoryIndex(app, newCacheWebView);
+    webViews.events.Enter = newCacheWebView;
     return newCacheWebView;
 }
 
