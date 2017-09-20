@@ -49,6 +49,7 @@ export default async (app, engine, webview, data) => {
     let oldCacheWebView, pushWebViewExtras, remindExtra, newCacheWebView = webview.dic.get(mark);
 
     if (!newCacheWebView) {
+        await app.emit('webview:beforeEnter', { webview, mark });
         newCacheWebView = await createNewCachedWebView(app, engine, webview, data, mark, webViews);
     }
 
@@ -65,14 +66,17 @@ export default async (app, engine, webview, data) => {
     } else {
         switch (action) {
             case 'push':
+                app.tick = -1;
                 pushWebViewExtras = app.history.stacks.slice(webViews.existWebViewIndex + 1);
                 oldCacheChangeStatus && pushWebViewExtras.push(oldCacheWebView);
-                destroyWebViews(app, pushWebViewExtras);
-                if (pushWebViewExtras.indexOf(newCacheWebView) > -1) {
-                    newCacheWebView = await createNewCachedWebView(app, engine, webview, data, mark, webViews);
+                const newCacheWebViewIndex = pushWebViewExtras.indexOf(newCacheWebView);
+                if (newCacheWebViewIndex > -1) {
+                    pushWebViewExtras.splice(newCacheWebViewIndex, 1);
+                    destroyWebViews(app, pushWebViewExtras);
+                } else {
+                    destroyWebViews(app, pushWebViewExtras);
+                    app.history.stacks.push(newCacheWebView);
                 }
-                app.history.stacks.push(newCacheWebView);
-                app.tick = -1;
                 break;
             case 'replace':
                 if (oldCacheChangeStatus) destroyWebViews(app, oldCacheWebView);
@@ -135,7 +139,7 @@ export default async (app, engine, webview, data) => {
     // SSR的client端渲染的时候，在没有mounted情况下，取不到节点；
     // 那么直接返回，不做任何动画。
     if (!webViews.activeWebViewElement) {
-        await resolveEventEmitter(webViews.events);
+        await resolveEventEmitter(app, webViews.events);
         return webViews.activeWebView;
     }
 
@@ -167,17 +171,19 @@ export default async (app, engine, webview, data) => {
     }
 
     if (app.tick) delete app.tick;
-    await resolveEventEmitter(webViews.events);
+    await resolveEventEmitter(app, webViews.events);
 
     return webViews.activeWebView;
 }
 
-async function resolveEventEmitter(events) {
+async function resolveEventEmitter(app, events) {
     const array = ['Enter', 'Leave', 'Active'];
     for (let i = 0; i < array.length; i++) {
         const sourceName = array[i];
         const targetName = `MioxInject${sourceName}`;
+        const mioxName = `webview:${sourceName}`;
         if (events[sourceName] && typeof events[sourceName][targetName] === 'function') {
+            await app.emit(mioxName, events[sourceName]);
             await events[sourceName][targetName]();
             events[sourceName] = null;
         }

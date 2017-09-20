@@ -200,7 +200,6 @@ describe('Miox全场景测试:', () => {
             expect(getPool(app)).toEqual('A.B.C');
             app.history.stacks = [app.webView];
             clearWebViewCaches(C, app.webView);
-            console.log('start')
             app.go(-1);
             await delay(1000);
             expect(app.webView.text).toEqual('B');

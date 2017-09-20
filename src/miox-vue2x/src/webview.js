@@ -3,8 +3,19 @@
  */
 
 export default {
+    beforeCreate() {
+        this.$miox.emit('webview:beforeCreate', this);
+    },
+
     created() {
-        this.$nextTick(() => this.$emit('webview:created'));
+        this.$nextTick(() => {
+            this.$emit('webview:created');
+            this.$miox.emit('webview:created', this);
+        });
+    },
+
+    beforeMount() {
+        this.$miox.emit('webview:beforeMount', this);
     },
 
     mounted() {
@@ -13,6 +24,26 @@ export default {
             this.$emit('webview:mounted');
             this.$miox.emit('webview:mounted', this);
         });
+    },
+
+    beforeUpdate() {
+        this.$miox.emit('webview:beforeUpdate', this);
+    },
+
+    updated() {
+        this.$miox.emit('webview:updated', this);
+    },
+
+    activated() {
+        this.$miox.emit('webview:activated', this);
+    },
+
+    deactivated() {
+        this.$miox.emit('webview:deactivated', this);
+    },
+
+    beforeDestroy() {
+        this.$miox.emit('webview:beforeDestroy', this);
     },
 
     destroyed() {
@@ -24,23 +55,10 @@ export default {
 
     methods: {
         MioxInjectDestroy(){ this.$destroy(); },
-
-        MioxInjectWebviewActive() {
-            this.$emit('webview:active');
-            this.$miox.emit('webview:active', this);
-        },
-
-        MioxInjectWebviewUnActive() {
-            this.$emit('webview:unActive');
-            this.$miox.emit('webview:unActive', this);
-        },
-
-        async MioxInjectWebviewSearchChange(prev, next) {
-            this.$emit('webview:searchchange', prev, next);
-        },
-
-        async MioxInjectWebviewHashChange(prev, next) {
-            this.$emit('webview:hashchange', prev, next);
-        },
+        async MioxInjectActive() { this.$emit('webview:active'); },
+        async MioxInjectEnter() { this.$emit('webview:enter'); },
+        async MioxInjectLeave() { this.$emit('webview:leave'); },
+        async MioxInjectWebviewSearchChange(prev, next) { this.$emit('webview:searchchange', prev, next); },
+        async MioxInjectWebviewHashChange(prev, next) { this.$emit('webview:hashchange', prev, next); }
     }
 }

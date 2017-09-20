@@ -20,39 +20,28 @@ export default class Animate {
 
     async leave(node) {
         if (!node) return;
+        await this.app.emit('animate:leave:before', node);
         const animationName = this.animateName;
         const direction = directionMap[this.app.history.direction];
-
-        const cls = `page-${animationName}-out-${direction}`
+        const cls = `page-${animationName}-out-${direction}`;
         node.classList.add(cls);
-        // console.time('leave')
         await this.animated(node, cls);
-        // console.timeEnd('leave')
-        console.log(cls)
+        await this.app.emit('animate:leave:after', node);
     }
 
     async enter(node) {
         if (!node) return;
+        await this.app.emit('animate:enter:before', node);
         const animationName = this.animateName;
         const direction = directionMap[this.app.history.direction];
-
-        const cls = `page-${animationName}-in-${direction}`
+        const cls = `page-${animationName}-in-${direction}`;
         node.classList.add(cls);
-        // console.time('start')
-
         await this.animated(node, cls);
-        // console.timeEnd('start');
-        console.log(cls)
+        await this.app.emit('animate:enter:after', node);
     }
 
     async animated(node, cls) {
-        console.time('start1')
         await onTransitionEnd(node, this.time, 'animate');
-        console.timeEnd('start1')
-        this.clearAnimationClass(node, cls);
-    }
-
-    clearAnimationClass(node, cls) {
         node.classList.remove(cls);
     }
 }

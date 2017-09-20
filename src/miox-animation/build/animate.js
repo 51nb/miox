@@ -29,9 +29,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var animationNames = ['slide', 'push'];
 var directionMap = {
-    '0': 'direction-none',
-    '-1': 'direction-backward',
-    '1': 'direction-forward'
+    '0': 'none',
+    '-1': 'backward',
+    '1': 'forward'
 };
 var times = {
     'push': 300,
@@ -43,7 +43,7 @@ var Animate = function () {
         (0, _classCallCheck3.default)(this, Animate);
 
         this.app = app;
-        this.animateName = name || 'push';
+        this.animateName = name || 'slide';
         this.time = times[this.animateName] || 300;
     }
 
@@ -51,7 +51,7 @@ var Animate = function () {
         key: 'leave',
         value: function () {
             var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(node) {
-                var animationName, direction;
+                var animationName, direction, cls;
                 return _regenerator2.default.wrap(function _callee$(_context) {
                     while (1) {
                         switch (_context.prev = _context.next) {
@@ -64,16 +64,23 @@ var Animate = function () {
                                 return _context.abrupt('return');
 
                             case 2:
+                                _context.next = 4;
+                                return this.app.emit('animate:leave:before', node);
+
+                            case 4:
                                 animationName = this.animateName;
                                 direction = directionMap[this.app.history.direction];
+                                cls = 'page-' + animationName + '-out-' + direction;
 
+                                node.classList.add(cls);
+                                _context.next = 10;
+                                return this.animated(node, cls);
 
-                                node.classList.add('page-' + animationName + '-out');
-                                node.classList.add(direction);
-                                _context.next = 8;
-                                return this.animated(node);
+                            case 10:
+                                _context.next = 12;
+                                return this.app.emit('animate:leave:after', node);
 
-                            case 8:
+                            case 12:
                             case 'end':
                                 return _context.stop();
                         }
@@ -91,7 +98,7 @@ var Animate = function () {
         key: 'enter',
         value: function () {
             var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(node) {
-                var animationName, direction;
+                var animationName, direction, cls;
                 return _regenerator2.default.wrap(function _callee2$(_context2) {
                     while (1) {
                         switch (_context2.prev = _context2.next) {
@@ -104,16 +111,23 @@ var Animate = function () {
                                 return _context2.abrupt('return');
 
                             case 2:
+                                _context2.next = 4;
+                                return this.app.emit('animate:enter:before', node);
+
+                            case 4:
                                 animationName = this.animateName;
                                 direction = directionMap[this.app.history.direction];
+                                cls = 'page-' + animationName + '-in-' + direction;
 
+                                node.classList.add(cls);
+                                _context2.next = 10;
+                                return this.animated(node, cls);
 
-                                node.classList.add('page-' + animationName + '-in');
-                                node.classList.add(direction);
-                                _context2.next = 8;
-                                return this.animated(node);
+                            case 10:
+                                _context2.next = 12;
+                                return this.app.emit('animate:enter:after', node);
 
-                            case 8:
+                            case 12:
                             case 'end':
                                 return _context2.stop();
                         }
@@ -130,7 +144,7 @@ var Animate = function () {
     }, {
         key: 'animated',
         value: function () {
-            var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3(node) {
+            var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3(node, cls) {
                 return _regenerator2.default.wrap(function _callee3$(_context3) {
                     while (1) {
                         switch (_context3.prev = _context3.next) {
@@ -139,7 +153,7 @@ var Animate = function () {
                                 return (0, _transition2.default)(node, this.time, 'animate');
 
                             case 2:
-                                this.clearAnimationClass(node);
+                                node.classList.remove(cls);
 
                             case 3:
                             case 'end':
@@ -149,24 +163,12 @@ var Animate = function () {
                 }, _callee3, this);
             }));
 
-            function animated(_x3) {
+            function animated(_x3, _x4) {
                 return _ref3.apply(this, arguments);
             }
 
             return animated;
         }()
-    }, {
-        key: 'clearAnimationClass',
-        value: function clearAnimationClass(node) {
-            var dirs = Object.keys(directionMap);
-            dirs.forEach(function (key) {
-                node.classList.remove(directionMap[key]);
-            });
-            animationNames.forEach(function (ani) {
-                node.classList.remove('page-' + ani + '-in');
-                node.classList.remove('page-' + ani + '-out');
-            });
-        }
     }]);
     return Animate;
 }();

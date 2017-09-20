@@ -26,15 +26,6 @@ exports.default = function () {
                     case 0:
                         animate = app.plugin.get('animate');
 
-                        if (!(animate && app.installed && app.history.session)) {
-                            _context.next = 4;
-                            break;
-                        }
-
-                        _context.next = 4;
-                        return Promise.all([animate.leave(prevNode), animate.enter(nextNode)]);
-
-                    case 4:
 
                         if (prevNode) {
                             prevNode.classList.remove('active');
@@ -42,6 +33,14 @@ exports.default = function () {
                         if (nextNode) {
                             nextNode.classList.add('active');
                         }
+
+                        if (!(animate && app.installed && app.history.session)) {
+                            _context.next = 6;
+                            break;
+                        }
+
+                        _context.next = 6;
+                        return Promise.all([animate.leave(prevNode), animate.enter(nextNode)]);
 
                     case 6:
                     case 'end':

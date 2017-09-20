@@ -19,14 +19,13 @@ function Animater(name) {
     };
 }
 
-Animater.hashChange = function hashChange() {
-    return function (app) {
-        app.set('hashchange', function (webview) {
-            var node = webview.__MioxInjectElement__;
-            var hash = app.history.uri.hash;
-            var hashElement = node.querySelector(hash);
-            node.scrollTop = hashElement.offsetTop;
-        });
-    };
-};
+// Animater.hashChange = app => {
+//     app.on('hashchange', webview => {
+//         const node = webview.__MioxInjectElement__;
+//         const hash = app.history.uri.hash;
+//         const hashElement = node.querySelector(hash);
+//         node.scrollTop = hashElement.offsetTop;
+//     });
+// }
+
 module.exports = exports['default'];
