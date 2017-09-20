@@ -20,7 +20,7 @@ export default function Animater(name) {
 
 ## Usage
 
-`Animation` 目前只提供了2种翻页方式： `slide` （默认）和 `push`, `slide` 方式是从右测滑动进入， `push`则是从下往上滑动进入。你可以按照你自己的需求来自由选择翻页方式。`Animation`的使用方法也很简单，如下代码所示：
+**Animation** 目前只提供了2种翻页方式： `slide` （默认）和 `push`, `slide` 方式是从右测滑动进入， `push`则是从下往上滑动进入。你可以按照你自己的需求来自由选择翻页方式。**Animation**的使用方法也很简单，如下代码所示：
 
 ```javascript
 import Animate from 'miox-animation';
