@@ -284,32 +284,41 @@ exports.default = function () {
                         return _context.abrupt('return', webViews.activeWebView);
 
                     case 45:
-                        _context.next = 47;
+                        if (!webViews.existsWebViewElement) {
+                            _context.next = 48;
+                            break;
+                        }
+
+                        _context.next = 48;
+                        return app.emit('webview:beforeLeave', webViews.existsWebView);
+
+                    case 48:
+                        _context.next = 50;
                         return (0, _animate2.default)(app, webViews.existsWebViewElement, webViews.activeWebViewElement);
 
-                    case 47:
+                    case 50:
                         if (!(app.history.stacks.length > app.options.max)) {
-                            _context.next = 56;
+                            _context.next = 59;
                             break;
                         }
 
                         _context.t1 = app.tick;
-                        _context.next = _context.t1 === 1 ? 51 : _context.t1 === -1 ? 53 : 55;
+                        _context.next = _context.t1 === 1 ? 54 : _context.t1 === -1 ? 56 : 58;
                         break;
 
-                    case 51:
+                    case 54:
                         remindExtra = app.history.stacks[app.history.stacks.length - 1];
-                        return _context.abrupt('break', 55);
+                        return _context.abrupt('break', 58);
 
-                    case 53:
+                    case 56:
                         remindExtra = app.history.stacks[0];
-                        return _context.abrupt('break', 55);
+                        return _context.abrupt('break', 58);
 
-                    case 55:
+                    case 58:
 
                         destroyWebViews(app, remindExtra);
 
-                    case 56:
+                    case 59:
 
                         webViews.events.Leave = webViews.existsWebView;
                         webViews.events.Enter = webViews.activeWebView;
@@ -319,13 +328,13 @@ exports.default = function () {
                         }
 
                         if (app.tick) delete app.tick;
-                        _context.next = 62;
+                        _context.next = 65;
                         return resolveEventEmitter(app, webViews.events);
 
-                    case 62:
+                    case 65:
                         return _context.abrupt('return', webViews.activeWebView);
 
-                    case 63:
+                    case 66:
                     case 'end':
                         return _context.stop();
                 }

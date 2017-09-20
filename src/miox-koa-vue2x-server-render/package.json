@@ -1,6 +1,6 @@
 {
   "name": "miox-koa-vue2x-server-render",
-  "version": "5.0.14",
+  "version": "5.0.15",
   "main": "build/index.js",
   "files": [
     "build",

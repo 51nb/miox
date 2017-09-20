@@ -143,6 +143,10 @@ export default async (app, engine, webview, data) => {
         return webViews.activeWebView;
     }
 
+    if (webViews.existsWebViewElement) {
+        await app.emit('webview:beforeLeave', webViews.existsWebView);
+    }
+
     // 动画渲染两个页面的加载过程。
     await renderWebViewWithAnimate(
         app,
