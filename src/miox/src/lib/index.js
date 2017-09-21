@@ -122,7 +122,11 @@ export default class Miox extends MiddleWare {
     async error(value) {
         if (value instanceof Error || Object.prototype.toString.call(value) === '[object Error]') {
             this.err = value;
-            await this.emit(String(value.code), value);
+            if (this.err.code === 302) {
+                return async () => await this.push(this.err.url);
+            } else {
+              await this.emit(String(value.code), value);
+            }
         } else {
             this.err = null;
             await this.emit('200', this.webView);
@@ -173,9 +177,15 @@ export default class Miox extends MiddleWare {
             }
         }
 
-        await this.error(error);
-        await this.notify(index);
-        await this.emit('process:end');
+        const callback = await this.error(error);
+
+        if (callback) {
+          await this.emit('process:end');
+          await callback();
+        } else {
+          await this.notify(index);
+          await this.emit('process:end');
+        }
     }
 
     async render(views, data) {

@@ -121,15 +121,19 @@ export default class History extends EventEmitter {
     }
 
     async redirect(url) {
-        if (this.app.env === 'server') {
-            const err = new Error('302 Redirect');
-            err.code = 302;
-            err.url = url;
-            throw err;
-        } else {
-            this.cache = false;
-            await this.push(url);
-        }
+        const err = new Error('302 Redirect');
+        err.code = 302;
+        err.url = url;
+        throw err;
+        // if (this.app.env === 'server') {
+        //     const err = new Error('302 Redirect');
+        //     err.code = 302;
+        //     err.url = url;
+        //     throw err;
+        // } else {
+        //     this.cache = false;
+        //     await this.push(url);
+        // }
     }
 
     /**
