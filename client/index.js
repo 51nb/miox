@@ -28,7 +28,7 @@ router.patch('/b', async ctx => {
 });
 
 router.patch('/c', async ctx => {
-    await ctx.render(C);
+    await ctx.redirect('/d');
 });
 
 router.patch('/d', async ctx => {

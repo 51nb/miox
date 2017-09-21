@@ -297,7 +297,7 @@ var Miox = function (_MiddleWare) {
     }, {
         key: 'notify',
         value: function () {
-            var _ref5 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee5(index) {
+            var _ref5 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee5(index, redirecting) {
                 var webview;
                 return _regenerator2.default.wrap(function _callee5$(_context5) {
                     while (1) {
@@ -305,7 +305,7 @@ var Miox = function (_MiddleWare) {
                             case 0:
                                 webview = this.webView;
 
-                                if (!(this.env !== 'server')) {
+                                if (!(this.env !== 'server' && !redirecting)) {
                                     _context5.next = 7;
                                     break;
                                 }
@@ -324,7 +324,7 @@ var Miox = function (_MiddleWare) {
 
                             case 7:
 
-                                if (webview) {
+                                if (webview && !redirecting) {
                                     this.installed = true;
                                     this.exchange();
                                 }
@@ -338,7 +338,7 @@ var Miox = function (_MiddleWare) {
                 }, _callee5, this);
             }));
 
-            function notify(_x2) {
+            function notify(_x2, _x3) {
                 return _ref5.apply(this, arguments);
             }
 
@@ -347,38 +347,66 @@ var Miox = function (_MiddleWare) {
     }, {
         key: 'error',
         value: function () {
-            var _ref6 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee6(value) {
-                return _regenerator2.default.wrap(function _callee6$(_context6) {
+            var _ref6 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee7(value) {
+                var _this3 = this;
+
+                return _regenerator2.default.wrap(function _callee7$(_context7) {
                     while (1) {
-                        switch (_context6.prev = _context6.next) {
+                        switch (_context7.prev = _context7.next) {
                             case 0:
                                 if (!(value instanceof Error || Object.prototype.toString.call(value) === '[object Error]')) {
-                                    _context6.next = 6;
+                                    _context7.next = 10;
                                     break;
                                 }
 
                                 this.err = value;
-                                _context6.next = 4;
-                                return this.emit(String(value.code), value);
 
-                            case 4:
-                                _context6.next = 9;
-                                break;
+                                if (!(this.err.code === 302)) {
+                                    _context7.next = 6;
+                                    break;
+                                }
+
+                                return _context7.abrupt('return', (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee6() {
+                                    return _regenerator2.default.wrap(function _callee6$(_context6) {
+                                        while (1) {
+                                            switch (_context6.prev = _context6.next) {
+                                                case 0:
+                                                    _context6.next = 2;
+                                                    return _this3.go(_this3.err.url);
+
+                                                case 2:
+                                                    return _context6.abrupt('return', _context6.sent);
+
+                                                case 3:
+                                                case 'end':
+                                                    return _context6.stop();
+                                            }
+                                        }
+                                    }, _callee6, _this3);
+                                })));
 
                             case 6:
+                                _context7.next = 8;
+                                return this.emit(String(value.code), value);
+
+                            case 8:
+                                _context7.next = 13;
+                                break;
+
+                            case 10:
                                 this.err = null;
-                                _context6.next = 9;
+                                _context7.next = 13;
                                 return this.emit('200', this.webView);
 
-                            case 9:
+                            case 13:
                             case 'end':
-                                return _context6.stop();
+                                return _context7.stop();
                         }
                     }
-                }, _callee6, this);
+                }, _callee7, this);
             }));
 
-            function error(_x3) {
+            function error(_x4) {
                 return _ref6.apply(this, arguments);
             }
 
@@ -394,18 +422,18 @@ var Miox = function (_MiddleWare) {
     }, {
         key: 'createServerProgress',
         value: function () {
-            var _ref7 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee7(uri) {
-                var error, index, value, basic, mark, webview;
-                return _regenerator2.default.wrap(function _callee7$(_context7) {
+            var _ref8 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee8(uri) {
+                var error, index, value, basic, mark, webview, callback;
+                return _regenerator2.default.wrap(function _callee8$(_context8) {
                     while (1) {
-                        switch (_context7.prev = _context7.next) {
+                        switch (_context8.prev = _context8.next) {
                             case 0:
                                 if (!this.doing) {
-                                    _context7.next = 2;
+                                    _context8.next = 2;
                                     break;
                                 }
 
-                                return _context7.abrupt('return');
+                                return _context8.abrupt('return');
 
                             case 2:
                                 this.doing = true;
@@ -419,23 +447,23 @@ var Miox = function (_MiddleWare) {
                                     index = this.history.processDirection(this.request);
                                 }
 
-                                _context7.next = 10;
+                                _context8.next = 10;
                                 return this.emit('process:start');
 
                             case 10:
                                 this.index = index;
-                                _context7.prev = 11;
-                                _context7.next = 14;
+                                _context8.prev = 11;
+                                _context8.next = 14;
                                 return this.execute(this);
 
                             case 14:
-                                _context7.next = 19;
+                                _context8.next = 19;
                                 break;
 
                             case 16:
-                                _context7.prev = 16;
-                                _context7.t0 = _context7['catch'](11);
-                                error = _context7.t0;
+                                _context8.prev = 16;
+                                _context8.t0 = _context8['catch'](11);
+                                error = _context8.t0;
 
                             case 19:
                                 delete this.index;
@@ -461,28 +489,39 @@ var Miox = function (_MiddleWare) {
                                         error.code = 404;
                                     }
                                 }
-
-                                _context7.next = 23;
+                                _context8.next = 23;
                                 return this.error(error);
 
                             case 23:
-                                _context7.next = 25;
-                                return this.notify(index);
+                                callback = _context8.sent;
+                                _context8.next = 26;
+                                return this.notify(index, !!callback);
 
-                            case 25:
-                                _context7.next = 27;
+                            case 26:
+                                _context8.next = 28;
                                 return this.emit('process:end');
 
-                            case 27:
+                            case 28:
+                                _context8.t1 = callback;
+
+                                if (!_context8.t1) {
+                                    _context8.next = 32;
+                                    break;
+                                }
+
+                                _context8.next = 32;
+                                return callback();
+
+                            case 32:
                             case 'end':
-                                return _context7.stop();
+                                return _context8.stop();
                         }
                     }
-                }, _callee7, this, [[11, 16]]);
+                }, _callee8, this, [[11, 16]]);
             }));
 
-            function createServerProgress(_x4) {
-                return _ref7.apply(this, arguments);
+            function createServerProgress(_x5) {
+                return _ref8.apply(this, arguments);
             }
 
             return createServerProgress;
@@ -490,27 +529,27 @@ var Miox = function (_MiddleWare) {
     }, {
         key: 'render',
         value: function () {
-            var _ref8 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee8(views, data) {
-                return _regenerator2.default.wrap(function _callee8$(_context8) {
+            var _ref9 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee9(views, data) {
+                return _regenerator2.default.wrap(function _callee9$(_context9) {
                     while (1) {
-                        switch (_context8.prev = _context8.next) {
+                        switch (_context9.prev = _context9.next) {
                             case 0:
-                                _context8.next = 2;
+                                _context9.next = 2;
                                 return this.response.render(this.plugin.get('engine'), views, data);
 
                             case 2:
-                                return _context8.abrupt('return', _context8.sent);
+                                return _context9.abrupt('return', _context9.sent);
 
                             case 3:
                             case 'end':
-                                return _context8.stop();
+                                return _context9.stop();
                         }
                     }
-                }, _callee8, this);
+                }, _callee9, this);
             }));
 
-            function render(_x5, _x6) {
-                return _ref8.apply(this, arguments);
+            function render(_x6, _x7) {
+                return _ref9.apply(this, arguments);
             }
 
             return render;
@@ -518,105 +557,35 @@ var Miox = function (_MiddleWare) {
     }, {
         key: 'pathChange',
         value: function pathChange() {
-            var _this3 = this;
-
-            this.history.on('pathchange', function () {
-                var _ref9 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee9(next) {
-                    return _regenerator2.default.wrap(function _callee9$(_context9) {
-                        while (1) {
-                            switch (_context9.prev = _context9.next) {
-                                case 0:
-                                    _context9.next = 2;
-                                    return _this3.createServerProgress(next);
-
-                                case 2:
-                                    if (!_this3.err) {
-                                        _context9.next = 7;
-                                        break;
-                                    }
-
-                                    _context9.next = 5;
-                                    return _this3.emit(String(_this3.err.code), _this3.err);
-
-                                case 5:
-                                    _context9.next = 9;
-                                    break;
-
-                                case 7:
-                                    _context9.next = 9;
-                                    return _this3.emit('200', _this3.webView);
-
-                                case 9:
-                                case 'end':
-                                    return _context9.stop();
-                            }
-                        }
-                    }, _callee9, _this3);
-                }));
-
-                return function (_x7) {
-                    return _ref9.apply(this, arguments);
-                };
-            }());
-        }
-    }, {
-        key: 'searchChange',
-        value: function searchChange() {
             var _this4 = this;
 
-            this.history.on('searchchange', function () {
-                var _ref10 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee10(next, prev) {
+            this.history.on('pathchange', function () {
+                var _ref10 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee10(next) {
                     return _regenerator2.default.wrap(function _callee10$(_context10) {
                         while (1) {
                             switch (_context10.prev = _context10.next) {
                                 case 0:
-                                    if (!_this4.options.strict) {
-                                        _context10.next = 12;
-                                        break;
-                                    }
-
-                                    _context10.next = 3;
+                                    _context10.next = 2;
                                     return _this4.createServerProgress(next);
 
-                                case 3:
+                                case 2:
                                     if (!_this4.err) {
-                                        _context10.next = 8;
+                                        _context10.next = 7;
                                         break;
                                     }
 
-                                    _context10.next = 6;
+                                    _context10.next = 5;
                                     return _this4.emit(String(_this4.err.code), _this4.err);
 
-                                case 6:
-                                    _context10.next = 10;
+                                case 5:
+                                    _context10.next = 9;
                                     break;
 
-                                case 8:
-                                    _context10.next = 10;
+                                case 7:
+                                    _context10.next = 9;
                                     return _this4.emit('200', _this4.webView);
 
-                                case 10:
-                                    _context10.next = 19;
-                                    break;
-
-                                case 12:
-                                    if (!(_this4.webView && typeof _this4.webView.MioxInjectWebviewSearchChange === 'function')) {
-                                        _context10.next = 17;
-                                        break;
-                                    }
-
-                                    _context10.next = 15;
-                                    return _this4.webView.MioxInjectWebviewSearchChange(prev, next);
-
-                                case 15:
-                                    _context10.next = 19;
-                                    break;
-
-                                case 17:
-                                    _context10.next = 19;
-                                    return _this4.emit('searchchange', prev, next);
-
-                                case 19:
+                                case 9:
                                 case 'end':
                                     return _context10.stop();
                             }
@@ -624,42 +593,69 @@ var Miox = function (_MiddleWare) {
                     }, _callee10, _this4);
                 }));
 
-                return function (_x8, _x9) {
+                return function (_x8) {
                     return _ref10.apply(this, arguments);
                 };
             }());
         }
     }, {
-        key: 'hashChange',
-        value: function hashChange() {
+        key: 'searchChange',
+        value: function searchChange() {
             var _this5 = this;
 
-            this.history.on('hashchange', function () {
+            this.history.on('searchchange', function () {
                 var _ref11 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee11(next, prev) {
                     return _regenerator2.default.wrap(function _callee11$(_context11) {
                         while (1) {
                             switch (_context11.prev = _context11.next) {
                                 case 0:
-                                    _this5.set('request', next instanceof _request2.default ? next : new _request2.default(next));
-                                    _this5.set('response', new _response2.default());
-
-                                    if (!(_this5.webView && typeof _this5.webView.MioxInjectWebviewHashChange === 'function')) {
-                                        _context11.next = 7;
+                                    if (!_this5.options.strict) {
+                                        _context11.next = 12;
                                         break;
                                     }
 
-                                    _context11.next = 5;
-                                    return _this5.webView.MioxInjectWebviewHashChange(prev, next);
+                                    _context11.next = 3;
+                                    return _this5.createServerProgress(next);
 
-                                case 5:
-                                    _context11.next = 9;
+                                case 3:
+                                    if (!_this5.err) {
+                                        _context11.next = 8;
+                                        break;
+                                    }
+
+                                    _context11.next = 6;
+                                    return _this5.emit(String(_this5.err.code), _this5.err);
+
+                                case 6:
+                                    _context11.next = 10;
                                     break;
 
-                                case 7:
-                                    _context11.next = 9;
-                                    return _this5.emit('hashchange', prev, next);
+                                case 8:
+                                    _context11.next = 10;
+                                    return _this5.emit('200', _this5.webView);
 
-                                case 9:
+                                case 10:
+                                    _context11.next = 19;
+                                    break;
+
+                                case 12:
+                                    if (!(_this5.webView && typeof _this5.webView.MioxInjectWebviewSearchChange === 'function')) {
+                                        _context11.next = 17;
+                                        break;
+                                    }
+
+                                    _context11.next = 15;
+                                    return _this5.webView.MioxInjectWebviewSearchChange(prev, next);
+
+                                case 15:
+                                    _context11.next = 19;
+                                    break;
+
+                                case 17:
+                                    _context11.next = 19;
+                                    return _this5.emit('searchchange', prev, next);
+
+                                case 19:
                                 case 'end':
                                     return _context11.stop();
                             }
@@ -667,15 +663,58 @@ var Miox = function (_MiddleWare) {
                     }, _callee11, _this5);
                 }));
 
-                return function (_x10, _x11) {
+                return function (_x9, _x10) {
                     return _ref11.apply(this, arguments);
+                };
+            }());
+        }
+    }, {
+        key: 'hashChange',
+        value: function hashChange() {
+            var _this6 = this;
+
+            this.history.on('hashchange', function () {
+                var _ref12 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee12(next, prev) {
+                    return _regenerator2.default.wrap(function _callee12$(_context12) {
+                        while (1) {
+                            switch (_context12.prev = _context12.next) {
+                                case 0:
+                                    _this6.set('request', next instanceof _request2.default ? next : new _request2.default(next));
+                                    _this6.set('response', new _response2.default());
+
+                                    if (!(_this6.webView && typeof _this6.webView.MioxInjectWebviewHashChange === 'function')) {
+                                        _context12.next = 7;
+                                        break;
+                                    }
+
+                                    _context12.next = 5;
+                                    return _this6.webView.MioxInjectWebviewHashChange(prev, next);
+
+                                case 5:
+                                    _context12.next = 9;
+                                    break;
+
+                                case 7:
+                                    _context12.next = 9;
+                                    return _this6.emit('hashchange', prev, next);
+
+                                case 9:
+                                case 'end':
+                                    return _context12.stop();
+                            }
+                        }
+                    }, _callee12, _this6);
+                }));
+
+                return function (_x11, _x12) {
+                    return _ref12.apply(this, arguments);
                 };
             }());
         }
     }, {
         key: 'listen',
         value: function listen() {
-            var _this6 = this;
+            var _this7 = this;
 
             if (!this.plugin.get('engine')) {
                 throw new Error('You have not set webview rendering engine, ' + 'you must set it first.');
@@ -686,67 +725,67 @@ var Miox = function (_MiddleWare) {
             if (this.env === 'server') {
                 this.emit('app:start');
                 return function () {
-                    var _ref12 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee12(options) {
+                    var _ref13 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee13(options) {
                         var url, app, ctx;
-                        return _regenerator2.default.wrap(function _callee12$(_context12) {
+                        return _regenerator2.default.wrap(function _callee13$(_context13) {
                             while (1) {
-                                switch (_context12.prev = _context12.next) {
+                                switch (_context13.prev = _context13.next) {
                                     case 0:
                                         url = options.url, app = options.app, ctx = options.ctx;
 
-                                        _this6.$application = app;
-                                        _this6.$context = ctx;
-                                        _context12.next = 5;
-                                        return _this6.createServerProgress(url);
+                                        _this7.$application = app;
+                                        _this7.$context = ctx;
+                                        _context13.next = 5;
+                                        return _this7.createServerProgress(url);
 
                                     case 5:
-                                        _context12.next = 7;
-                                        return _this6.emit('app:end');
+                                        _context13.next = 7;
+                                        return _this7.emit('app:end');
 
                                     case 7:
-                                        if (!_this6.err) {
-                                            _context12.next = 11;
+                                        if (!_this7.err) {
+                                            _context13.next = 11;
                                             break;
                                         }
 
-                                        throw _this6.err;
+                                        throw _this7.err;
 
                                     case 11:
-                                        _context12.next = 13;
-                                        return _this6.emit('server:render:polyfill', options);
+                                        _context13.next = 13;
+                                        return _this7.emit('server:render:polyfill', options);
 
                                     case 13:
-                                        return _context12.abrupt('return', _this6.webView);
+                                        return _context13.abrupt('return', _this7.webView);
 
                                     case 14:
                                     case 'end':
-                                        return _context12.stop();
+                                        return _context13.stop();
                                 }
                             }
-                        }, _callee12, _this6);
+                        }, _callee13, _this7);
                     }));
 
-                    return function (_x12) {
-                        return _ref12.apply(this, arguments);
+                    return function (_x13) {
+                        return _ref13.apply(this, arguments);
                     };
                 }();
             }
 
             var clientResolveCallback = function clientResolveCallback() {
-                _this6.emit('client:render:polyfill');
-                _this6.history.action = 'push';
-                _this6.createServerProgress(_this6.history.location()).then(function () {
-                    _this6.history.clear();
-                    _this6.clientMounted = true;
-                    return _this6.emit('app:end');
+                _this7.emit('client:render:polyfill');
+                _this7.history.action = 'push';
+                _this7.createServerProgress(_this7.history.location()).then(function () {
+                    _this7.history.clear();
+                    _this7.clientMounted = true;
+                    return _this7.emit('app:end');
                 });
             };
 
             var webResolveCallback = function webResolveCallback() {
-                _this6.history.action = 'push';
-                _this6.createServerProgress(_this6.history.location()).then(function () {
-                    _this6.history.clear();
-                    return _this6.emit('app:end');
+                _this7.history.action = 'push';
+                _this7.createServerProgress(_this7.history.location()).then(function () {
+                    _this7.history.clear();
+                    return _this7.emit('app:end');
                 });
             };
 
@@ -757,8 +796,8 @@ var Miox = function (_MiddleWare) {
             this.hashChange();
 
             this.emit('app:start').then(function () {
-                (0, _webtree2.default)(_this6);
-                if (_this6.env === 'client') {
+                (0, _webtree2.default)(_this7);
+                if (_this7.env === 'client') {
                     clientResolveCallback();
                 } else {
                     webResolveCallback();
@@ -770,12 +809,12 @@ var Miox = function (_MiddleWare) {
     }, {
         key: 'fetch',
         value: function () {
-            var _ref13 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee13() {
+            var _ref14 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee14() {
                 var callback = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
                 var client, server;
-                return _regenerator2.default.wrap(function _callee13$(_context13) {
+                return _regenerator2.default.wrap(function _callee14$(_context14) {
                     while (1) {
-                        switch (_context13.prev = _context13.next) {
+                        switch (_context14.prev = _context14.next) {
                             case 0:
                                 client = void 0, server = void 0;
 
@@ -788,15 +827,15 @@ var Miox = function (_MiddleWare) {
                                 }
 
                                 if (!(!this.clientMounted && this.env === 'client' || this.env === 'server' && this.clientMounted)) {
-                                    _context13.next = 4;
+                                    _context14.next = 4;
                                     break;
                                 }
 
-                                return _context13.abrupt('return');
+                                return _context14.abrupt('return');
 
                             case 4:
                                 if (!(!client || !server)) {
-                                    _context13.next = 6;
+                                    _context14.next = 6;
                                     break;
                                 }
 
@@ -804,45 +843,45 @@ var Miox = function (_MiddleWare) {
 
                             case 6:
                                 if (!(this.env === 'client' && this.clientMounted)) {
-                                    _context13.next = 10;
+                                    _context14.next = 10;
                                     break;
                                 }
 
-                                _context13.next = 9;
+                                _context14.next = 9;
                                 return client(this.reference);
 
                             case 9:
-                                return _context13.abrupt('return', _context13.sent);
+                                return _context14.abrupt('return', _context14.sent);
 
                             case 10:
                                 if (!(this.env === 'server' && !this.clientMounted)) {
-                                    _context13.next = 14;
+                                    _context14.next = 14;
                                     break;
                                 }
 
-                                _context13.next = 13;
+                                _context14.next = 13;
                                 return server(this.reference);
 
                             case 13:
-                                return _context13.abrupt('return', _context13.sent);
+                                return _context14.abrupt('return', _context14.sent);
 
                             case 14:
-                                _context13.next = 16;
+                                _context14.next = 16;
                                 return client(this.reference);
 
                             case 16:
-                                return _context13.abrupt('return', _context13.sent);
+                                return _context14.abrupt('return', _context14.sent);
 
                             case 17:
                             case 'end':
-                                return _context13.stop();
+                                return _context14.stop();
                         }
                     }
-                }, _callee13, this);
+                }, _callee14, this);
             }));
 
             function fetch() {
-                return _ref13.apply(this, arguments);
+                return _ref14.apply(this, arguments);
             }
 
             return fetch;

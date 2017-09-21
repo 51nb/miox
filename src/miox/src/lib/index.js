@@ -102,17 +102,17 @@ export default class Miox extends MiddleWare {
         }
     }
 
-    async notify(index) {
+    async notify(index, redirecting) {
         const webview = this.webView;
 
-        if (this.env !== 'server') {
+        if (this.env !== 'server' && !redirecting) {
             if (this.env === 'client' && !this.installed) {
                 await this.emit('client:render:mount', webview);
             }
             await this.history.notify(index, webview);
         }
 
-        if (webview) {
+        if (webview && !redirecting) {
             this.installed = true;
             this.exchange();
         }
@@ -139,10 +139,8 @@ export default class Miox extends MiddleWare {
      * @returns {Promise.<*>}
      */
     async createServerProgress(uri) {
-
         if (this.doing) return;
         this.doing = true;
-
 
         let error, index;
         this.set('request', uri instanceof Request ? uri : new Request(uri));
@@ -176,16 +174,10 @@ export default class Miox extends MiddleWare {
                 error.code = 404;
             }
         }
-
         const callback = await this.error(error);
-
-        if (callback) {
-          await this.emit('process:end');
-          await callback();
-        } else {
-          await this.notify(index);
-          await this.emit('process:end');
-        }
+        await this.notify(index, !!callback);
+        await this.emit('process:end');
+        callback && await callback();
     }
 
     async render(views, data) {

@@ -324,23 +324,13 @@ var History = function (_EventEmitter) {
                     while (1) {
                         switch (_context5.prev = _context5.next) {
                             case 0:
-                                if (!(this.app.env === 'server')) {
-                                    _context5.next = 7;
-                                    break;
-                                }
-
                                 err = new Error('302 Redirect');
 
                                 err.code = 302;
                                 err.url = url;
                                 throw err;
 
-                            case 7:
-                                this.cache = false;
-                                _context5.next = 10;
-                                return this.push(url);
-
-                            case 10:
+                            case 4:
                             case 'end':
                                 return _context5.stop();
                         }
