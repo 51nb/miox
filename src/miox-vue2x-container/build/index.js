@@ -27,7 +27,9 @@ exports.default = function (webView) {
     webView = checkWebViewObject(webView);
     return function (app) {
         if (app.env !== 'web') return;
-        var element = app.get('container') || global.document.body;
+        var body = global.document.body;
+        var element = global.document.createElement('div');
+        body.appendChild(element);
         app.once('app:start', (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
             var el;
             return _regenerator2.default.wrap(function _callee$(_context) {

@@ -6,7 +6,9 @@ export default webView => {
     webView = checkWebViewObject(webView);
     return app => {
         if (app.env !== 'web') return;
-        const element = app.get('container') || global.document.body;
+        const body = global.document.body;
+        const element = global.document.createElement('div');
+        body.appendChild(element);
         app.once('app:start', async () => {
             const el = await new Promise((resolve, reject) => {
                 const vm = new webView();
