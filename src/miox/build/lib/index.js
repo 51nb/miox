@@ -681,97 +681,91 @@ var Miox = function (_MiddleWare) {
                 throw new Error('You have not set webview rendering engine, ' + 'you must set it first.');
             }
 
-            var historyListener = void 0;
-
-            this.emit('app:start');
-            (0, _webtree2.default)(this);
             this.__defineProcessHandle__();
 
-            if (this.env !== 'server') {
-                this.history = new _history6.default(this);
-                historyListener = this.history.listen();
-                this.pathChange();
-                this.searchChange();
-                this.hashChange();
-            }
+            if (this.env === 'server') {
+                this.emit('app:start');
+                return function () {
+                    var _ref12 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee12(options) {
+                        var url, app, ctx;
+                        return _regenerator2.default.wrap(function _callee12$(_context12) {
+                            while (1) {
+                                switch (_context12.prev = _context12.next) {
+                                    case 0:
+                                        url = options.url, app = options.app, ctx = options.ctx;
 
-            switch (this.env) {
-                case 'server':
-                    return function () {
-                        var _ref12 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee12(options) {
-                            var url, app, ctx;
-                            return _regenerator2.default.wrap(function _callee12$(_context12) {
-                                while (1) {
-                                    switch (_context12.prev = _context12.next) {
-                                        case 0:
-                                            url = options.url, app = options.app, ctx = options.ctx;
+                                        _this6.$application = app;
+                                        _this6.$context = ctx;
+                                        _context12.next = 5;
+                                        return _this6.createServerProgress(url);
 
-                                            _this6.$application = app;
-                                            _this6.$context = ctx;
-                                            _context12.next = 5;
-                                            return _this6.createServerProgress(url);
+                                    case 5:
+                                        _context12.next = 7;
+                                        return _this6.emit('app:end');
 
-                                        case 5:
-                                            _context12.next = 7;
-                                            return _this6.emit('app:end');
+                                    case 7:
+                                        if (!_this6.err) {
+                                            _context12.next = 11;
+                                            break;
+                                        }
 
-                                        case 7:
-                                            if (!_this6.err) {
-                                                _context12.next = 11;
-                                                break;
-                                            }
+                                        throw _this6.err;
 
-                                            throw _this6.err;
+                                    case 11:
+                                        _context12.next = 13;
+                                        return _this6.emit('server:render:polyfill', options);
 
-                                        case 11:
-                                            _context12.next = 13;
-                                            return _this6.emit('server:render:polyfill', options);
+                                    case 13:
+                                        return _context12.abrupt('return', _this6.webView);
 
-                                        case 13:
-                                            return _context12.abrupt('return', _this6.webView);
-
-                                        case 14:
-                                        case 'end':
-                                            return _context12.stop();
-                                    }
+                                    case 14:
+                                    case 'end':
+                                        return _context12.stop();
                                 }
-                            }, _callee12, _this6);
-                        }));
+                            }
+                        }, _callee12, _this6);
+                    }));
 
-                        return function (_x12) {
-                            return _ref12.apply(this, arguments);
-                        };
-                    }();
-                case 'client':
-                    this.emit('client:render:polyfill');
-                    this.history.action = 'push';
-                    this.createServerProgress(this.history.location()).then(function () {
-                        _this6.history.clear();
-                        _this6.clientMounted = true;
-                        return _this6.emit('app:end');
-                    });
-                    return historyListener;
-                case 'web':
-                    this.history.action = 'push';
-                    this.createServerProgress(this.history.location()).then(function () {
-                        _this6.history.clear();
-                        return _this6.emit('app:end');
-                    });
-                    return historyListener;
-            }
-        }
-    }, {
-        key: 'mock',
-        value: function mock() {
-            var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-            if (toString.call(args) !== '[object Object]') {
-                throw new Error('`args` must be an object which type of json.');
+                    return function (_x12) {
+                        return _ref12.apply(this, arguments);
+                    };
+                }();
             }
 
-            args.fetch = this.fetch.bind(this);
+            var clientResolveCallback = function clientResolveCallback() {
+                _this6.emit('client:render:polyfill');
+                _this6.history.action = 'push';
+                _this6.createServerProgress(_this6.history.location()).then(function () {
+                    _this6.history.clear();
+                    _this6.clientMounted = true;
+                    return _this6.emit('app:end');
+                });
+            };
 
-            return args;
+            var webResolveCallback = function webResolveCallback() {
+                _this6.history.action = 'push';
+                _this6.createServerProgress(_this6.history.location()).then(function () {
+                    _this6.history.clear();
+                    return _this6.emit('app:end');
+                });
+            };
+
+            this.history = new _history6.default(this);
+            var historyListener = this.history.listen();
+            this.pathChange();
+            this.searchChange();
+            this.hashChange();
+
+            this.emit('app:start').then(function () {
+                (0, _webtree2.default)(_this6);
+                if (_this6.env === 'client') {
+                    clientResolveCallback();
+                } else {
+                    webResolveCallback();
+                }
+            });
+
+            return historyListener;
         }
     }, {
         key: 'fetch',

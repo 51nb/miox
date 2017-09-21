@@ -26,8 +26,9 @@ exports.default = function (webView) {
     if (!webView) return;
     webView = checkWebViewObject(webView);
     return function (app) {
+        if (app.env !== 'web') return;
         var element = app.get('container') || global.document.body;
-        app.on('app:start', (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
+        app.once('app:start', (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
             var el;
             return _regenerator2.default.wrap(function _callee$(_context) {
                 while (1) {
@@ -37,12 +38,12 @@ exports.default = function (webView) {
                             return new Promise(function (resolve, reject) {
                                 var vm = new webView();
                                 if (typeof vm.MioxInjectDestroy !== 'function') {
-                                    return reject(new Error('wrong webView container'));
+                                    return reject(new Error('Wrong webView container'));
                                 }
-                                vm.$mount(element);
                                 vm.$on('webview:mounted', function () {
                                     return resolve(vm.mioxContainerElement);
                                 });
+                                vm.$mount(element);
                             });
 
                         case 2:

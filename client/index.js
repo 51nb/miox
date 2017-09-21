@@ -39,9 +39,9 @@ router.patch('/e', async ctx => {
     await ctx.render(E);
 });
 
-const app = global.miox = new Miox({ session: true, max: 3 });
+const app = global.miox = new Miox({ session: false, max: 3 });
 app.set('engine', Engine);
 app.set('animate', Animate('slide'));
-app.use(router.routes());
 // app.install(VueContainer(Container));
+app.use(router.routes());
 export default app.listen();

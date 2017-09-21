@@ -233,62 +233,59 @@ export default class Miox extends MiddleWare {
             );
         }
 
-        let historyListener;
-
-        this.emit('app:start');
-        WebTree(this);
         this.__defineProcessHandle__();
 
-        if (this.env !== 'server') {
-            this.history = new History(this);
-            historyListener = this.history.listen();
-            this.pathChange();
-            this.searchChange();
-            this.hashChange();
+        if (this.env === 'server') {
+            this.emit('app:start');
+            return async options => {
+                const { url, app, ctx } = options;
+                this.$application = app;
+                this.$context = ctx;
+                await this.createServerProgress(url);
+                await this.emit('app:end');
+                if (this.err) {
+                    throw this.err;
+                } else {
+                    await this.emit('server:render:polyfill', options);
+                    return this.webView;
+                }
+            }
         }
 
-        switch (this.env) {
-            case 'server':
-                return async options => {
-                    const { url, app, ctx } = options;
-                    this.$application = app;
-                    this.$context = ctx;
-                    await this.createServerProgress(url);
-                    await this.emit('app:end');
-                    if (this.err) {
-                        throw this.err;
-                    } else {
-                        await this.emit('server:render:polyfill', options);
-                        return this.webView;
-                    }
-                };
-            case 'client':
-                this.emit('client:render:polyfill');
-                this.history.action = 'push';
-                this.createServerProgress(this.history.location()).then(() => {
-                    this.history.clear();
-                    this.clientMounted = true;
-                    return this.emit('app:end');
-                });
-                return historyListener;
-            case 'web':
-                this.history.action = 'push';
-                this.createServerProgress(this.history.location()).then(() => {
-                    this.history.clear();
-                    return this.emit('app:end');
-                });
-                return historyListener;
-        }
-    }
+        const clientResolveCallback = () => {
+            this.emit('client:render:polyfill');
+            this.history.action = 'push';
+            this.createServerProgress(this.history.location()).then(() => {
+                this.history.clear();
+                this.clientMounted = true;
+                return this.emit('app:end');
+            });
+        };
 
-    mock(args = {}) {
-        if (toString.call(args) !== '[object Object]') {
-            throw new Error('`args` must be an object which type of json.');
-        }
+        const webResolveCallback = () => {
+            this.history.action = 'push';
+            this.createServerProgress(this.history.location()).then(() => {
+                this.history.clear();
+                return this.emit('app:end');
+            });
+        };
 
-        args.fetch = this.fetch.bind(this);
+        this.history = new History(this);
+        const historyListener = this.history.listen();
+        this.pathChange();
+        this.searchChange();
+        this.hashChange();
 
-        return args;
+        this.emit('app:start').then(() => {
+            WebTree(this);
+            if (this.env === 'client') {
+                clientResolveCallback();
+            } else {
+                webResolveCallback();
+            }
+        });
+
+        return historyListener;
     }
 
     async fetch(callback = {}) {
