@@ -123,7 +123,7 @@ export default class Miox extends MiddleWare {
         if (value instanceof Error || Object.prototype.toString.call(value) === '[object Error]') {
             this.err = value;
             if (this.err.code === 302) {
-                return async () => await this.push(this.err.url);
+                return async () => await this.go(this.err.url);
             } else {
               await this.emit(String(value.code), value);
             }
