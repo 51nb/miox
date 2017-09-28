@@ -64,14 +64,14 @@ function lessBlock() {
     return isProd ? ExtractTextPlugin.extract({
         use: [cssLoader(), postCssLoader(), lessLoader()],
         fallback: styleLoader()
-    }) : [styleLoader(), cssLoader(), lessLoader()];
+    }) : [styleLoader(), cssLoader(), postCssLoader(), lessLoader()];
 }
 
 function sassBlock() {
     return isProd ? ExtractTextPlugin.extract({
         use: [cssLoader(), postCssLoader(), sassLoader()],
         fallback: styleLoader()
-    }) : [styleLoader(), cssLoader(), sassLoader()];
+    }) : [styleLoader(), cssLoader(), postCssLoader(), sassLoader()];
 }
 
 function vue(includeCompiler) {

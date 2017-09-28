@@ -87,6 +87,7 @@ function lessBlock() {
         : [
             styleLoader(),
             cssLoader(),
+            postCssLoader(),
             lessLoader()
         ]
 }
@@ -104,6 +105,7 @@ function sassBlock() {
         : [
             styleLoader(),
             cssLoader(),
+            postCssLoader(),
             sassLoader()
         ]
 }
