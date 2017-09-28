@@ -1,6 +1,6 @@
 {
   "name": "miox-vue2x-webpack-config",
-  "version": "5.0.22",
+  "version": "5.0.23",
   "main": "build/index.js",
   "files": [
     "build",
