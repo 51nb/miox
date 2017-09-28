@@ -13,5 +13,16 @@ function resolvePackageDir(packages) {
 }
 
 function publishPackages(packages) {
-    return Promise.all(packages.map(pkg => compile('npm publish', pkg)));
+    return new Promise(resolve => publishSingle(packages, resolve));
+}
+
+function publishSingle(packages, callback) {
+    if (packages[0]) {
+      compile('npm publish', packages[0]).then(() => {
+        packages.splice(0, 1);
+        publishSingle(packages, callback);
+      })
+    } else {
+      callback();
+    }
 }

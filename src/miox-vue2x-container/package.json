@@ -1,6 +1,6 @@
 {
   "name": "miox-vue2x-container",
-  "version": "5.0.20",
+  "version": "5.0.21",
   "main": "build/index.js",
   "files": [
     "build",
