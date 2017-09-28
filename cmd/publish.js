@@ -26,7 +26,7 @@ function publishSingle(packages, i, total, callback) {
       compile('npm publish', packages[0]).then(() => {
         packages.splice(0, 1);
         i++;
-        console.log('!', percent(total, i) + '%');
+        console.log('!', percent(total, i) + '%', '[', i + '/' + total, ']');
         setTimeout(() => publishSingle(packages, i, total, callback), time);
       }).catch(e => {
         console.log(e);
