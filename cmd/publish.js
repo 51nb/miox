@@ -3,7 +3,7 @@ const { modules, compile } = require('../config/util');
 const widgets = resolvePackageDir(Object.keys(modules));
 
 publishPackages(widgets).then(() => {
-    console.log('All packages published!');
+    console.log('All packages published!\n\n');
     process.exit(0);
 });
 
@@ -18,10 +18,15 @@ function publishPackages(packages) {
 
 function publishSingle(packages, callback) {
     if (packages[0]) {
+      console.log('\n------------------------');
+      console.log('^%', packages[0]);
       compile('npm publish', packages[0]).then(() => {
         packages.splice(0, 1);
         publishSingle(packages, callback);
-      })
+      }).catch(e => {
+        console.log(e);
+        process.exit(1);
+      });
     } else {
       callback();
     }
