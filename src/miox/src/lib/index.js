@@ -65,6 +65,7 @@ export default class Miox extends MiddleWare {
     exists(...args) { return this.vars.exists(...args); }
     filter(...args) { return this.vars.filter(...args); }
 
+    link(...args) { return this.history.link(...args); }
     async push(...args) { return await this.history.push(...args); }
     async replace(...args) { return await this.history.replace(...args); }
     async go(...args) { return await this.history.go(...args); }

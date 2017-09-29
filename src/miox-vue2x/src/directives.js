@@ -2,7 +2,7 @@
  * Created by evio on 2017/3/22.
  */
 import Vue from 'vue';
-const keys = ['push', 'go', 'replace', 'redirect'];
+const keys = ['push', 'go', 'replace', 'redirect', 'link'];
 
 export default function(ctx) {
     keys.forEach(key => {

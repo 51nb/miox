@@ -344,6 +344,21 @@ var History = function (_EventEmitter) {
 
             return redirect;
         }()
+    }, {
+        key: 'link',
+        value: function link(url) {
+            if (this.app.doing) return;
+            if (this.session) {
+                var max = Math.max.apply(Math, Object.keys(this.session.variables).map(function (i) {
+                    return Number(i);
+                }));
+                if (this.session.current < max) {
+                    this.session.autoRemove(this.session.current);
+                }
+                this.session.setSession(this.session.current + 1, url, '');
+            }
+            global.location.href = url;
+        }
 
         /**
          * 是否使用sessionStorage来判断方向
