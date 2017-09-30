@@ -31,6 +31,7 @@ export default class History extends EventEmitter {
         }
     }
 
+    // 更新模拟的 session history
     async notify(index) {
         if (!this.session) return;
         if (!this.app.installed) {
@@ -58,12 +59,15 @@ export default class History extends EventEmitter {
         this.direction = 0;
     }
 
+    // 返回 index， 同时更新 direction，输入是下一个 route URL
     processDirection(req) {
         if (!this.session) return;
         switch (this.action) {
+            // 1 --> forward
             case 'push':
                 this.direction = 1;
                 break;
+            // reload/replace
             case 'replace': break;
             default:
                 const index = this.session.findSession(req.pathname, req.sortQuery);
@@ -126,6 +130,7 @@ export default class History extends EventEmitter {
         }
     }
 
+    // 使用错误机制来控制程序流程? 这个是挺好的思路，比 return 强大多了
     async redirect(url) {
         const err = new Error('302 Redirect');
         err.code = 302;
@@ -133,6 +138,8 @@ export default class History extends EventEmitter {
         throw err;
     }
 
+    // 跳转到另一 document，
+    // 维护 sessionStorage 中的 sessionHistory 队列
     link(url) {
         if (this.app.doing) return;
         this.app.doing = true;
@@ -157,11 +164,12 @@ export default class History extends EventEmitter {
         return this.app.options.session;
     }
 
-    // 关注于 request 的生命周期
+    // 关注 request 的生命周期
     get request() {
         return this.app.request;
     }
 
+    // 获取当前 session history entry 所对应的一个状态字符串
     location() {
         return getLocalURI(global.location, this.popState);
     }
@@ -181,7 +189,7 @@ export default class History extends EventEmitter {
         const callback = () => this.change(this.request, new Request(this.location()));
         global.addEventListener(this.popState ? 'popstate' : 'hashchange', callback);
 
-        // remove listen
+        // return the removingListenerFunction
         return () => {
             global.removeEventListener(this.popState ? 'popstate' : 'hashchange', callback);
         }

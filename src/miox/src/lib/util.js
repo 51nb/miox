@@ -9,12 +9,14 @@ export function sessionIndexName(index) {
     return `@MIOX:HISTORY:INDEX:${index}`;
 }
 
+// 什么奇怪的命名，不好吧
 export function sortURI(obj) {
     const result = [];
     for (const i in obj) result.push(`${i}=${obj[i]}`);
     return result.sort().join('&');
 }
 
+// a merged pathname + search
 export function getLocalURI(locate, popState) {
     if (popState) {
         return locate.pathname + locate.search + locate.hash;

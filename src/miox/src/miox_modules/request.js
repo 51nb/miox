@@ -17,6 +17,7 @@ export default class Request {
 
     __defineMixinRequest__() {
         for (const req in this.options) {
+            // todo ，这个是什么逻辑分支
             if (typeof this.options[req] === 'function') {
                 this[req] = this.options[req].bind(this.options);
             } else {
@@ -26,6 +27,7 @@ export default class Request {
 
         const sortSearch = sortURI(this.query || {});
         this.sortQuery = sortSearch;
+        // mark 这个命名是什么鬼
         this.mark = this.pathname + (sortSearch ? `:${sortSearch}` : '');
     }
 }

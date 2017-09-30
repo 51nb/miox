@@ -125,13 +125,14 @@ export default class Miox extends MiddleWare {
         this.doing = false;
     }
 
+    // 302 处理机制， maybe return a async function
     async error(value) {
         if (value instanceof Error || Object.prototype.toString.call(value) === '[object Error]') {
             this.err = value;
             if (this.err.code === 302) {
                 return async () => await this.go(this.err.url);
             } else {
-              await this.emit(String(value.code), value);
+                await this.emit(String(value.code), value);
             }
         } else {
             this.err = null;
