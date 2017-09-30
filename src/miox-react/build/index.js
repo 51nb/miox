@@ -39,16 +39,26 @@ var ReactEngine = function () {
   }
 
   (0, _createClass3.default)(ReactEngine, [{
+    key: 'element',
+    value: function element(target) {
+      return target.__MioxInjectElement__;
+    }
+  }, {
     key: 'create',
     value: function () {
       var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(webView, options) {
+        var element, webview;
         return _regenerator2.default.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _reactDom2.default.render(_react2.default.createElement(webView, options), this.createWebViewRoot());
+                element = this.createWebViewRoot();
+                webview = _reactDom2.default.render(_react2.default.createElement(webView, options), element);
 
-              case 1:
+                webview.__MioxInjectElement__ = element;
+                return _context.abrupt('return', webview);
+
+              case 4:
               case 'end':
                 return _context.stop();
             }
@@ -62,6 +72,189 @@ var ReactEngine = function () {
 
       return create;
     }()
+  }, {
+    key: 'destroy',
+    value: function () {
+      var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(target) {
+        var element;
+        return _regenerator2.default.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                element = this.element(target);
+
+                _reactDom2.default.unmountComponentAtNode(element);
+                element.parentNode.removeChild(element);
+
+              case 3:
+              case 'end':
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function destroy(_x3) {
+        return _ref2.apply(this, arguments);
+      }
+
+      return destroy;
+    }()
+  }, {
+    key: 'active',
+    value: function () {
+      var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3(target) {
+        return _regenerator2.default.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                if (!target.webViewDidActive) {
+                  _context3.next = 3;
+                  break;
+                }
+
+                _context3.next = 3;
+                return target.webViewDidActive();
+
+              case 3:
+              case 'end':
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this);
+      }));
+
+      function active(_x4) {
+        return _ref3.apply(this, arguments);
+      }
+
+      return active;
+    }()
+  }, {
+    key: 'enter',
+    value: function () {
+      var _ref4 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4(target) {
+        return _regenerator2.default.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                if (!target.webViewDidEnter) {
+                  _context4.next = 3;
+                  break;
+                }
+
+                _context4.next = 3;
+                return target.webViewDidEnter();
+
+              case 3:
+              case 'end':
+                return _context4.stop();
+            }
+          }
+        }, _callee4, this);
+      }));
+
+      function enter(_x5) {
+        return _ref4.apply(this, arguments);
+      }
+
+      return enter;
+    }()
+  }, {
+    key: 'leave',
+    value: function () {
+      var _ref5 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee5(target) {
+        return _regenerator2.default.wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                if (!target.webViewDidLeave) {
+                  _context5.next = 3;
+                  break;
+                }
+
+                _context5.next = 3;
+                return target.webViewDidLeave();
+
+              case 3:
+              case 'end':
+                return _context5.stop();
+            }
+          }
+        }, _callee5, this);
+      }));
+
+      function leave(_x6) {
+        return _ref5.apply(this, arguments);
+      }
+
+      return leave;
+    }()
+  }, {
+    key: 'searchchange',
+    value: function () {
+      var _ref6 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee6(target, prev, next) {
+        return _regenerator2.default.wrap(function _callee6$(_context6) {
+          while (1) {
+            switch (_context6.prev = _context6.next) {
+              case 0:
+                if (!target.webViewSearchChange) {
+                  _context6.next = 3;
+                  break;
+                }
+
+                _context6.next = 3;
+                return target.webViewSearchChange(prev, next);
+
+              case 3:
+              case 'end':
+                return _context6.stop();
+            }
+          }
+        }, _callee6, this);
+      }));
+
+      function searchchange(_x7, _x8, _x9) {
+        return _ref6.apply(this, arguments);
+      }
+
+      return searchchange;
+    }()
+  }, {
+    key: 'hashchange',
+    value: function () {
+      var _ref7 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee7(target, prev, next) {
+        return _regenerator2.default.wrap(function _callee7$(_context7) {
+          while (1) {
+            switch (_context7.prev = _context7.next) {
+              case 0:
+                if (target.webViewHashChange) {
+                  target.webViewHashChange(prev, next);
+                }
+
+              case 1:
+              case 'end':
+                return _context7.stop();
+            }
+          }
+        }, _callee7, this);
+      }));
+
+      function hashchange(_x10, _x11, _x12) {
+        return _ref7.apply(this, arguments);
+      }
+
+      return hashchange;
+    }()
+  }, {
+    key: 'install',
+    value: function install() {
+      _react2.default.Component.prototype.$push = this.ctx.push.bind(this.ctx);
+      _react2.default.Component.prototype.$go = this.ctx.go.bind(this.ctx);
+      _react2.default.Component.prototype.$replace = this.ctx.replace.bind(this.ctx);
+      _react2.default.Component.prototype.$redirect = this.ctx.redirect.bind(this.ctx);
+      _react2.default.Component.prototype.$link = this.ctx.link.bind(this.ctx);
+    }
   }, {
     key: 'createWebViewRoot',
     value: function createWebViewRoot() {
