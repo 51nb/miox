@@ -282,6 +282,7 @@ export default class Miox extends MiddleWare {
         this.searchChange();
         this.hashChange();
 
+        // 注意时序
         this.emit('app:start').then(() => {
             WebTree(this);
             if (this.env === 'client') {

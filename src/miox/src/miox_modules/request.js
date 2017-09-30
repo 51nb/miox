@@ -27,7 +27,7 @@ export default class Request {
 
         const sortSearch = sortURI(this.query || {});
         this.sortQuery = sortSearch;
-        // mark 这个命名是什么鬼
+        // mark.....  a specail summary or feature
         this.mark = this.pathname + (sortSearch ? `:${sortSearch}` : '');
     }
 }
