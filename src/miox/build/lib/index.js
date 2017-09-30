@@ -610,6 +610,7 @@ var Miox = function (_MiddleWare) {
         value: function searchChange() {
             var _this5 = this;
 
+            var engine = this.plugin.get('engine');
             this.history.on('searchchange', function () {
                 var _ref11 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee11(next, prev) {
                     return _regenerator2.default.wrap(function _callee11$(_context11) {
@@ -642,27 +643,18 @@ var Miox = function (_MiddleWare) {
                                     return _this5.emit('200', _this5.webView);
 
                                 case 10:
-                                    _context11.next = 19;
+                                    _context11.next = 16;
                                     break;
 
                                 case 12:
-                                    if (!(_this5.webView && typeof _this5.webView.MioxInjectWebviewSearchChange === 'function')) {
-                                        _context11.next = 17;
-                                        break;
-                                    }
+                                    _context11.next = 14;
+                                    return engine.searchchange(_this5.webView, prev, next);
 
-                                    _context11.next = 15;
-                                    return _this5.webView.MioxInjectWebviewSearchChange(prev, next);
-
-                                case 15:
-                                    _context11.next = 19;
-                                    break;
-
-                                case 17:
-                                    _context11.next = 19;
+                                case 14:
+                                    _context11.next = 16;
                                     return _this5.emit('searchchange', prev, next);
 
-                                case 19:
+                                case 16:
                                 case 'end':
                                     return _context11.stop();
                             }
@@ -688,24 +680,14 @@ var Miox = function (_MiddleWare) {
                                 case 0:
                                     _this6.set('request', next instanceof _request2.default ? next : new _request2.default(next));
                                     _this6.set('response', new _response2.default());
+                                    _context12.next = 4;
+                                    return engine.hashchange(_this6.webView, prev, next);
 
-                                    if (!(_this6.webView && typeof _this6.webView.MioxInjectWebviewHashChange === 'function')) {
-                                        _context12.next = 7;
-                                        break;
-                                    }
-
-                                    _context12.next = 5;
-                                    return _this6.webView.MioxInjectWebviewHashChange(prev, next);
-
-                                case 5:
-                                    _context12.next = 9;
-                                    break;
-
-                                case 7:
-                                    _context12.next = 9;
+                                case 4:
+                                    _context12.next = 6;
                                     return _this6.emit('hashchange', prev, next);
 
-                                case 9:
+                                case 6:
                                 case 'end':
                                     return _context12.stop();
                             }

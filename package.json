@@ -25,7 +25,8 @@
     "web:build": "NODE_ENV=production node_modules/.bin/webpack --config config/webpack.web.pro.config.js -p --progress --hide-modules",
     "test:start": "node_modules/karma/bin/karma start",
     "test:end": "node_modules/karma/bin/karma run",
-    "all:build": "npm run del && npm run web:build && npm run ssr:build"
+    "all:build": "npm run del && npm run web:build && npm run ssr:build",
+    "react:dev": "NODE_ENV=dev node_modules/.bin/webpack-dev-server --config config/webpack.react.dev.config.js --hot --progress"    
   },
   "dependencies": {
     "async-events-listener": "0.0.4",
@@ -52,6 +53,8 @@
     "path-to-regexp": "^2.0.0",
     "postcss-loader": "^2.0.6",
     "querystring": "^0.2.0",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.18.2",
     "url": "^0.11.0",
@@ -78,6 +81,7 @@
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-plugin-transform-vue-jsx": "^3.5.0",
     "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
     "jasmine-core": "^2.8.0",
     "karma": "^1.7.1",

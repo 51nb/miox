@@ -79,6 +79,34 @@ export default class Engine {
         });
     }
 
+    async destroy(target) {
+        target.$destroy();
+    }
+
+    async active(target) {
+        target.$emit('webview:active');
+    }
+
+    async enter(target) {
+        target.$emit('webview:enter');
+    }
+
+    async leave(target) {
+        target.$emit('webview:leave');
+    }
+
+    async searchchange(target, prev, next) {
+        target.$emit('webview:searchchange', prev, next);
+    }
+
+    async hashchange(target, prev, next) {
+        target.$emit('webview:hashchange', prev, next);
+    }
+
+    element(target) {
+        return target.__MioxInjectElement__;
+    }
+
     install() {
         Vue.prototype.$miox = this.ctx;
         directives(this.ctx);

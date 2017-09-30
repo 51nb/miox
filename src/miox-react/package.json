@@ -1,0 +1,13 @@
+{
+  "name": "miox-react",
+  "version": "5.0.26",
+  "main": "build/index.js",
+  "files": [
+    "build",
+    "package.json"
+  ],
+  "dependencies": {
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0"
+  }
+}

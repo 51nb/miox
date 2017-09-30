@@ -206,6 +206,7 @@ export default class Miox extends MiddleWare {
     }
 
     searchChange() {
+        const engine = this.plugin.get('engine');
         this.history.on('searchchange', async (next, prev) => {
             if (this.options.strict) {
                 await this.createServerProgress(next);
@@ -214,9 +215,8 @@ export default class Miox extends MiddleWare {
                 } else {
                     await this.emit('200', this.webView);
                 }
-            } else if (this.webView && typeof this.webView.MioxInjectWebviewSearchChange === 'function') {
-                await this.webView.MioxInjectWebviewSearchChange(prev, next);
             } else {
+                await engine.searchchange(this.webView, prev, next);
                 await this.emit('searchchange', prev, next);
             }
         });
@@ -226,11 +226,8 @@ export default class Miox extends MiddleWare {
         this.history.on('hashchange', async (next, prev) => {
             this.set('request', next instanceof Request ? next : new Request(next));
             this.set('response', new Response());
-            if (this.webView && typeof this.webView.MioxInjectWebviewHashChange === 'function') {
-                await this.webView.MioxInjectWebviewHashChange(prev, next);
-            } else {
-                await this.emit('hashchange', prev, next);
-            }
+            await engine.hashchange(this.webView, prev, next);
+            await this.emit('hashchange', prev, next);
         });
     }
 

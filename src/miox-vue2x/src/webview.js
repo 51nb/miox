@@ -51,14 +51,5 @@ export default {
             this.__MioxInjectElement__.parentNode.removeChild(this.__MioxInjectElement__);
         }
         this.$miox.emit('webview:destroyed', this);
-    },
-
-    methods: {
-        MioxInjectDestroy(){ this.$destroy(); },
-        async MioxInjectActive() { this.$emit('webview:active'); },
-        async MioxInjectEnter() { this.$emit('webview:enter'); },
-        async MioxInjectLeave() { this.$emit('webview:leave'); },
-        async MioxInjectWebviewSearchChange(prev, next) { this.$emit('webview:searchchange', prev, next); },
-        async MioxInjectWebviewHashChange(prev, next) { this.$emit('webview:hashchange', prev, next); }
     }
 }
