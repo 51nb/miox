@@ -204,7 +204,7 @@ var ReactEngine = function () {
                 }
 
                 _context6.next = 3;
-                return target.webViewSearchChange(prev, next);
+                return target.webViewDidSearchChange(prev, next);
 
               case 3:
               case 'end':
@@ -229,7 +229,7 @@ var ReactEngine = function () {
             switch (_context7.prev = _context7.next) {
               case 0:
                 if (target.webViewHashChange) {
-                  target.webViewHashChange(prev, next);
+                  target.webViewDidHashChange(prev, next);
                 }
 
               case 1:

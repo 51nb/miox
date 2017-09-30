@@ -46,13 +46,13 @@ export default class ReactEngine {
 
   async searchchange(target, prev, next) {
     if (target.webViewSearchChange) {
-      await target.webViewSearchChange(prev, next);
+      await target.webViewDidSearchChange(prev, next);
     }
   }
 
   async hashchange(target, prev, next) {
     if (target.webViewHashChange) {
-      target.webViewHashChange(prev, next);
+      target.webViewDidHashChange(prev, next);
     }
   }
 
