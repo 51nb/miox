@@ -9,11 +9,17 @@ import { getLocalURI, replaceHash } from './util';
 export default class History extends EventEmitter {
     constructor(app) {
         super();
-        this.app = app;
-        this.stacks = [];
+        this.app = app;     // as top level browsering context
+        this.stacks = [];   // without iframe embedded, called session history
+
         this.action = null;
         this.direction = 0;
+
+        // current entry
+        // active document of the browsing context
+        // current active document
         this.title = global.document.title;
+
         this.popState = app.options.popState || (
             app.env === 'client' &&
             global.history &&
@@ -147,6 +153,7 @@ export default class History extends EventEmitter {
         return this.app.options.session;
     }
 
+    // 关注于 request 的生命周期
     get request() {
         return this.app.request;
     }
@@ -155,6 +162,7 @@ export default class History extends EventEmitter {
         return getLocalURI(global.location, this.popState);
     }
 
+    // 完全是异步的逻辑啊
     async compare(prev, next) {
         if (prev.pathname !== next.pathname) return await this.emit('pathchange', next, prev);
         if (prev.mark !== next.mark) return await this.emit('searchchange', next, prev);
@@ -168,6 +176,8 @@ export default class History extends EventEmitter {
     listen() {
         const callback = () => this.change(this.request, new Request(this.location()));
         global.addEventListener(this.popState ? 'popstate' : 'hashchange', callback);
+
+        // remove listen
         return () => {
             global.removeEventListener(this.popState ? 'popstate' : 'hashchange', callback);
         }

@@ -12,6 +12,7 @@ import D from './webviews/3.vue';
 import E from './webviews/4.vue';
 import Container from './webviews/container.vue';
 
+
 const router = new Router();
 
 router.patch('/', async ctx => {
@@ -24,7 +25,6 @@ router.patch('/b', async ctx => {
     } else {
         await ctx.render(B);
     }
-
 });
 
 router.patch('/c', async ctx => {
@@ -32,6 +32,7 @@ router.patch('/c', async ctx => {
 });
 
 router.patch('/d', async ctx => {
+    debugger;
     await ctx.render(D);
 });
 

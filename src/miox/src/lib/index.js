@@ -24,6 +24,7 @@ export default class Miox extends MiddleWare {
     constructor(options = {}) {
         super();
 
+        // mix with default options
         this.options = extend(options, {
             max: 1,
             popState: false,
@@ -67,6 +68,7 @@ export default class Miox extends MiddleWare {
 
     async push(...args) { return await this.history.push(...args); }
     async replace(...args) { return await this.history.replace(...args); }
+    // go 这个函数的作用，有点厉害了。
     async go(...args) { return await this.history.go(...args); }
     async redirect(...args) { return await this.history.redirect(...args); }
 
@@ -78,6 +80,9 @@ export default class Miox extends MiddleWare {
     get pathname() { return this.req.pathname || '/'; }
     get url() { return this.req.href || '/'; }
 
+    // sub document, why not using document fragment, maybe worthing
+    // how about lazyloading
+    // `mark` means what?
     get webView() {
         const existsWebView = this.get('exists-webview');
         if (existsWebView) {

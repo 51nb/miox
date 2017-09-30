@@ -30,6 +30,7 @@ export default class MiddleWares extends EventEmitter {
                 );
             }
 
+            // runtime convert generator function to ...
             if (isGeneratorFunction(cb)) {
                 cb = convert(cb);
             }
