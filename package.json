@@ -1,6 +1,6 @@
 {
   "name": "miox",
-  "version": "5.0.25",
+  "version": "5.0.26",
   "description": "[Modern infrastructure of complex SPA] Miox 可以自动帮你处理路由切换、webview 生命周期管理等各种单页应用会面临的问题，让你专注于 webview 内的业务开发。Miox 实现了生命周期和路由管理的最佳实践，避免了不统一的开发方式可能造成的性能下降和错误，并且可以平滑接入",
   "author": "沈赟杰",
   "license": "MIT",

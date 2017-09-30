@@ -129,6 +129,7 @@ export default class History extends EventEmitter {
 
     link(url) {
         if (this.app.doing) return;
+        this.app.doing = true;
         if (this.session) {
             const max = Math.max.apply(Math, Object.keys(this.session.variables).map(i => Number(i)));
             if (this.session.current < max) {

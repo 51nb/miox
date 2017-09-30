@@ -348,6 +348,7 @@ var History = function (_EventEmitter) {
         key: 'link',
         value: function link(url) {
             if (this.app.doing) return;
+            this.app.doing = true;
             if (this.session) {
                 var max = Math.max.apply(Math, Object.keys(this.session.variables).map(function (i) {
                     return Number(i);
