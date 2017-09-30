@@ -360,6 +360,7 @@ describe('Miox全场景测试:', () => {
 
     it('go方法测试:不带session', cb => {
         progress({ max: 2 }, cb, async app => {
+            console.log('start');
             expect(app.webView.text).toEqual('A');
             expect(getPool(app)).toEqual('A');
             app.go('/b');

@@ -25,9 +25,9 @@ var _vue2 = _interopRequireDefault(_vue);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var keys = ['push', 'go', 'replace', 'redirect']; /**
-                                                   * Created by evio on 2017/3/22.
-                                                   */
+var keys = ['push', 'go', 'replace', 'redirect', 'link']; /**
+                                                           * Created by evio on 2017/3/22.
+                                                           */
 
 
 function historyRedirect(ctx, key) {

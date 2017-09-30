@@ -45,9 +45,9 @@ var _response = require('../miox_modules/response');
 
 var _response2 = _interopRequireDefault(_response);
 
-var _history5 = require('./history');
+var _history6 = require('./history');
 
-var _history6 = _interopRequireDefault(_history5);
+var _history7 = _interopRequireDefault(_history6);
 
 var _plugin = require('./plugin');
 
@@ -162,10 +162,17 @@ var Miox = function (_MiddleWare) {
             return (_vars5 = this.vars).filter.apply(_vars5, arguments);
         }
     }, {
+        key: 'link',
+        value: function link() {
+            var _history;
+
+            return (_history = this.history).link.apply(_history, arguments);
+        }
+    }, {
         key: 'push',
         value: function () {
             var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
-                var _history;
+                var _history2;
 
                 var _args = arguments;
                 return _regenerator2.default.wrap(function _callee$(_context) {
@@ -173,7 +180,7 @@ var Miox = function (_MiddleWare) {
                         switch (_context.prev = _context.next) {
                             case 0:
                                 _context.next = 2;
-                                return (_history = this.history).push.apply(_history, _args);
+                                return (_history2 = this.history).push.apply(_history2, _args);
 
                             case 2:
                                 return _context.abrupt('return', _context.sent);
@@ -196,7 +203,7 @@ var Miox = function (_MiddleWare) {
         key: 'replace',
         value: function () {
             var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2() {
-                var _history2;
+                var _history3;
 
                 var _args2 = arguments;
                 return _regenerator2.default.wrap(function _callee2$(_context2) {
@@ -204,7 +211,7 @@ var Miox = function (_MiddleWare) {
                         switch (_context2.prev = _context2.next) {
                             case 0:
                                 _context2.next = 2;
-                                return (_history2 = this.history).replace.apply(_history2, _args2);
+                                return (_history3 = this.history).replace.apply(_history3, _args2);
 
                             case 2:
                                 return _context2.abrupt('return', _context2.sent);
@@ -227,7 +234,7 @@ var Miox = function (_MiddleWare) {
         key: 'go',
         value: function () {
             var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3() {
-                var _history3;
+                var _history4;
 
                 var _args3 = arguments;
                 return _regenerator2.default.wrap(function _callee3$(_context3) {
@@ -235,7 +242,7 @@ var Miox = function (_MiddleWare) {
                         switch (_context3.prev = _context3.next) {
                             case 0:
                                 _context3.next = 2;
-                                return (_history3 = this.history).go.apply(_history3, _args3);
+                                return (_history4 = this.history).go.apply(_history4, _args3);
 
                             case 2:
                                 return _context3.abrupt('return', _context3.sent);
@@ -258,7 +265,7 @@ var Miox = function (_MiddleWare) {
         key: 'redirect',
         value: function () {
             var _ref4 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4() {
-                var _history4;
+                var _history5;
 
                 var _args4 = arguments;
                 return _regenerator2.default.wrap(function _callee4$(_context4) {
@@ -266,7 +273,7 @@ var Miox = function (_MiddleWare) {
                         switch (_context4.prev = _context4.next) {
                             case 0:
                                 _context4.next = 2;
-                                return (_history4 = this.history).redirect.apply(_history4, _args4);
+                                return (_history5 = this.history).redirect.apply(_history5, _args4);
 
                             case 2:
                                 return _context4.abrupt('return', _context4.sent);
@@ -789,7 +796,7 @@ var Miox = function (_MiddleWare) {
                 });
             };
 
-            this.history = new _history6.default(this);
+            this.history = new _history7.default(this);
             var historyListener = this.history.listen();
             this.pathChange();
             this.searchChange();

@@ -1,7 +1,9 @@
 <template>
-    <div class="A">
-        <p style="color:#000;" @click="go">A Page</p>
-    </div>
+    <ul>
+        <li v-go="b">B</li>
+        <li v-go="c">C</li>
+        <li><a href="javascript:void(0);" v-link="d">Baidu</a></li>
+    </ul>
 </template>
 <script>
     import { Component } from 'miox-vue2x-classify';
@@ -10,8 +12,8 @@
         name: 'A'
     })
     export default class Home {
-        go() {
-            this.$miox.push('/b');
-        }
+        b = '/b';
+        c = '/c';
+        d = 'http://baidu.com'
     }
 </script>

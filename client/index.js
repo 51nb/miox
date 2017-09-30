@@ -20,15 +20,11 @@ router.patch('/', async ctx => {
 });
 
 router.patch('/b', async ctx => {
-    if (global.p) {
-        await ctx.render(E);
-    } else {
-        await ctx.render(B);
-    }
+    await ctx.render(B);
 });
 
 router.patch('/c', async ctx => {
-    await ctx.redirect('/d');
+    await ctx.render(C);
 });
 
 router.patch('/d', async ctx => {
@@ -40,9 +36,9 @@ router.patch('/e', async ctx => {
     await ctx.render(E);
 });
 
-const app = global.miox = new Miox({ session: false, max: 3 });
+const app = global.miox = new Miox({ session: true, max: 3 });
 app.set('engine', Engine);
 app.set('animate', Animate('slide'));
-app.install(VueContainer(Container));
+// app.install(VueContainer(Container));
 app.use(router.routes());
 export default app.listen();

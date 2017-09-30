@@ -131,15 +131,19 @@ export default class History extends EventEmitter {
         err.code = 302;
         err.url = url;
         throw err;
-        // if (this.app.env === 'server') {
-        //     const err = new Error('302 Redirect');
-        //     err.code = 302;
-        //     err.url = url;
-        //     throw err;
-        // } else {
-        //     this.cache = false;
-        //     await this.push(url);
-        // }
+    }
+
+    link(url) {
+        if (this.app.doing) return;
+        this.app.doing = true;
+        if (this.session) {
+            const max = Math.max.apply(Math, Object.keys(this.session.variables).map(i => Number(i)));
+            if (this.session.current < max) {
+                this.session.autoRemove(this.session.current);
+            }
+            this.session.setSession(this.session.current + 1, url, '');
+        }
+        global.location.href = url
     }
 
     /**

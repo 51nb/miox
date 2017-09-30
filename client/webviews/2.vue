@@ -1,6 +1,6 @@
 <template>
     <div class="C">
-        <p style="color:#000;" @click="go">C Page</p>
+        <p style="color:#000;" v-go="-1">C Page</p>
     </div>
 </template>
 <script>
