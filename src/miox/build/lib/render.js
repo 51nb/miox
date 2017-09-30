@@ -12,91 +12,6 @@ var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
 
 var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
 
-var resolveEventEmitter = function () {
-    var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(app, events) {
-        var array, i, sourceName, targetName, mioxName;
-        return _regenerator2.default.wrap(function _callee2$(_context2) {
-            while (1) {
-                switch (_context2.prev = _context2.next) {
-                    case 0:
-                        array = ['Enter', 'Leave', 'Active'];
-                        i = 0;
-
-                    case 2:
-                        if (!(i < array.length)) {
-                            _context2.next = 15;
-                            break;
-                        }
-
-                        sourceName = array[i];
-                        targetName = 'MioxInject' + sourceName;
-                        mioxName = 'webview:' + sourceName;
-
-                        if (!(events[sourceName] && typeof events[sourceName][targetName] === 'function')) {
-                            _context2.next = 12;
-                            break;
-                        }
-
-                        _context2.next = 9;
-                        return app.emit(mioxName, events[sourceName]);
-
-                    case 9:
-                        _context2.next = 11;
-                        return events[sourceName][targetName]();
-
-                    case 11:
-                        events[sourceName] = null;
-
-                    case 12:
-                        i++;
-                        _context2.next = 2;
-                        break;
-
-                    case 15:
-                    case 'end':
-                        return _context2.stop();
-                }
-            }
-        }, _callee2, this);
-    }));
-
-    return function resolveEventEmitter(_x5, _x6) {
-        return _ref2.apply(this, arguments);
-    };
-}();
-
-var createNewCachedWebView = function () {
-    var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3(app, engine, webview, data, mark, webViews) {
-        var newCacheWebView;
-        return _regenerator2.default.wrap(function _callee3$(_context3) {
-            while (1) {
-                switch (_context3.prev = _context3.next) {
-                    case 0:
-                        _context3.next = 2;
-                        return engine.create(webview, data);
-
-                    case 2:
-                        newCacheWebView = _context3.sent;
-
-                        newCacheWebView.__MioxMark__ = mark;
-                        webview.dic.set(mark, newCacheWebView);
-                        defineWebViewHistoryIndex(app, newCacheWebView);
-                        webViews.events.Enter = newCacheWebView;
-                        return _context3.abrupt('return', newCacheWebView);
-
-                    case 8:
-                    case 'end':
-                        return _context3.stop();
-                }
-            }
-        }, _callee3, this);
-    }));
-
-    return function createNewCachedWebView(_x7, _x8, _x9, _x10, _x11, _x12) {
-        return _ref3.apply(this, arguments);
-    };
-}();
-
 var _animate = require('./animate');
 
 var _animate2 = _interopRequireDefault(_animate);
@@ -112,12 +27,183 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @returns {Promise.<null>}
  */
 exports.default = function () {
-    var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(app, engine, webview, data) {
-        var pathname, action, mark, existsWebViewConfigs, webViews, oldCacheWebViewConstructor, oldCacheWebView, pushWebViewExtras, remindExtra, newCacheWebView, oldCacheChangeStatus, newCacheWebViewIndex, reduce, index, targetWebView, sourceIndex, targetIndex;
-        return _regenerator2.default.wrap(function _callee$(_context) {
+    var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4(app, engine, webview, data) {
+        var resolveEventEmitter = function () {
+            var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(events) {
+                var array, i, eventName, _webview, simpleName;
+
+                return _regenerator2.default.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                array = ['Enter', 'Leave', 'Active'];
+                                i = 0;
+
+                            case 2:
+                                if (!(i < array.length)) {
+                                    _context.next = 13;
+                                    break;
+                                }
+
+                                eventName = array[i];
+                                _webview = events[eventName];
+                                simpleName = eventName.toLowerCase();
+
+                                if (!(_webview && engine[simpleName])) {
+                                    _context.next = 10;
+                                    break;
+                                }
+
+                                _context.next = 9;
+                                return engine[simpleName](_webview);
+
+                            case 9:
+                                events[eventName] = null;
+
+                            case 10:
+                                i++;
+                                _context.next = 2;
+                                break;
+
+                            case 13:
+                            case 'end':
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            return function resolveEventEmitter(_x5) {
+                return _ref2.apply(this, arguments);
+            };
+        }();
+
+        var destroyWebViews = function () {
+            var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(webviews) {
+                for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+                    args[_key - 1] = arguments[_key];
+                }
+
+                var i, _webview2, _index, _app$history$stacks;
+
+                return _regenerator2.default.wrap(function _callee2$(_context2) {
+                    while (1) {
+                        switch (_context2.prev = _context2.next) {
+                            case 0:
+                                if (!Array.isArray(webviews)) webviews = [webviews];
+                                i = webviews.length;
+
+                            case 2:
+                                if (!i--) {
+                                    _context2.next = 12;
+                                    break;
+                                }
+
+                                _webview2 = webviews[i];
+                                _index = app.history.stacks.indexOf(_webview2);
+
+                                if (!(_index > -1)) {
+                                    _context2.next = 10;
+                                    break;
+                                }
+
+                                (_app$history$stacks = app.history.stacks).splice.apply(_app$history$stacks, [_index, 1].concat(args));
+                                _webview2.constructor.dic.del(_webview2.__MioxMark__);
+                                _context2.next = 10;
+                                return engine.destroy(_webview2);
+
+                            case 10:
+                                _context2.next = 2;
+                                break;
+
+                            case 12:
+                            case 'end':
+                                return _context2.stop();
+                        }
+                    }
+                }, _callee2, this);
+            }));
+
+            return function destroyWebViews(_x6) {
+                return _ref3.apply(this, arguments);
+            };
+        }();
+
+        var createNewCachedWebView = function () {
+            var _ref4 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3() {
+                var newCacheWebView;
+                return _regenerator2.default.wrap(function _callee3$(_context3) {
+                    while (1) {
+                        switch (_context3.prev = _context3.next) {
+                            case 0:
+                                _context3.next = 2;
+                                return engine.create(webview, data);
+
+                            case 2:
+                                newCacheWebView = _context3.sent;
+
+                                newCacheWebView.__MioxMark__ = mark;
+                                webview.dic.set(mark, newCacheWebView);
+                                defineWebViewHistoryIndex(newCacheWebView);
+                                webViews.events.Enter = newCacheWebView;
+                                return _context3.abrupt('return', newCacheWebView);
+
+                            case 8:
+                            case 'end':
+                                return _context3.stop();
+                        }
+                    }
+                }, _callee3, this);
+            }));
+
+            return function createNewCachedWebView() {
+                return _ref4.apply(this, arguments);
+            };
+        }();
+
+        var pathname, action, mark, existsWebViewConfigs, webViews, oldCacheWebViewConstructor, oldCacheWebView, pushWebViewExtras, remindExtra, newCacheWebView, oldCacheChangeStatus, newCacheWebViewIndex, reduce, index, targetWebView, sourceIndex, targetIndex, defineWebViewElementGetter, insertStacks, defineWebViewHistoryIndex;
+        return _regenerator2.default.wrap(function _callee4$(_context4) {
             while (1) {
-                switch (_context.prev = _context.next) {
+                switch (_context4.prev = _context4.next) {
                     case 0:
+                        defineWebViewHistoryIndex = function defineWebViewHistoryIndex(object) {
+                            Object.defineProperty(object, 'historyIndex', {
+                                get: function get() {
+                                    if (!app.history.session) return 0;
+                                    var vars = app.history.session.variables;
+                                    var strict = app.options.strict;
+                                    for (var i in vars) {
+                                        var _mark = strict && vars[i].search ? vars[i].pathname + ':' + vars[i].search : vars[i].pathname;
+                                        if (_mark === object.__MioxMark__) {
+                                            return Number(i);
+                                        }
+                                    }
+                                }
+                            });
+                        };
+
+                        insertStacks = function insertStacks(i) {
+                            var stacks = app.history.stacks;
+                            var left = stacks.slice(0, i);
+                            var right = stacks.slice(i);
+
+                            for (var _len2 = arguments.length, args = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+                                args[_key2 - 1] = arguments[_key2];
+                            }
+
+                            app.history.stacks = left.concat(args).concat(right);
+                        };
+
+                        defineWebViewElementGetter = function defineWebViewElementGetter(webViews, name) {
+                            Object.defineProperty(webViews, name + 'Element', {
+                                get: function get() {
+                                    if (this[name]) {
+                                        return engine.element(this[name]);
+                                    }
+                                }
+                            });
+                        };
+
                         // 当前URL的路径
                         pathname = app.req.pathname;
                         // 当前行为方式
@@ -149,13 +235,13 @@ exports.default = function () {
                         // 我们应该抛出错误 `replace method need a existing webview`
 
                         if (!(action === 'replace' && !webViews.existsWebView)) {
-                            _context.next = 7;
+                            _context4.next = 10;
                             break;
                         }
 
                         throw new Error('replace method need a existing webview');
 
-                    case 7:
+                    case 10:
 
                         // 设置构造体对应的节点获取对象
                         defineWebViewElementGetter(webViews, 'existsWebView');
@@ -183,21 +269,21 @@ exports.default = function () {
                         // 我们重新创建并且标记新的激活页面实例
 
                         if (newCacheWebView) {
-                            _context.next = 18;
+                            _context4.next = 21;
                             break;
                         }
 
-                        _context.next = 15;
+                        _context4.next = 18;
                         return app.emit('webview:beforeEnter');
 
-                    case 15:
-                        _context.next = 17;
-                        return createNewCachedWebView(app, engine, webview, data, mark, webViews);
-
-                    case 17:
-                        newCacheWebView = _context.sent;
-
                     case 18:
+                        _context4.next = 20;
+                        return createNewCachedWebView();
+
+                    case 20:
+                        newCacheWebView = _context4.sent;
+
+                    case 21:
 
                         // 如果有老的构造体
                         // 尝试从老的构造体中拿到当前路径对应的实例
@@ -233,21 +319,21 @@ exports.default = function () {
                         // 那么直接添加即可，无需其他处理
 
                         if (!(app.history.stacks.length === 0)) {
-                            _context.next = 26;
+                            _context4.next = 29;
                             break;
                         }
 
                         app.history.stacks.push(newCacheWebView);
                         app.tick = -1;
-                        _context.next = 39;
-                        break;
-
-                    case 26:
-                        _context.t0 = action;
-                        _context.next = _context.t0 === 'push' ? 29 : _context.t0 === 'replace' ? 35 : 38;
+                        _context4.next = 86;
                         break;
 
                     case 29:
+                        _context4.t0 = action;
+                        _context4.next = _context4.t0 === 'push' ? 32 : _context4.t0 === 'replace' ? 46 : 52;
+                        break;
+
+                    case 32:
                         app.tick = -1;
 
                         /**
@@ -272,91 +358,144 @@ exports.default = function () {
                         // 判断新的实例：
                         newCacheWebViewIndex = pushWebViewExtras.indexOf(newCacheWebView);
 
-                        if (newCacheWebViewIndex > -1) {
-                            pushWebViewExtras.splice(newCacheWebViewIndex, 1);
-                            destroyWebViews(app, pushWebViewExtras);
+                        if (!(newCacheWebViewIndex > -1)) {
+                            _context4.next = 42;
+                            break;
+                        }
+
+                        pushWebViewExtras.splice(newCacheWebViewIndex, 1);
+                        _context4.next = 40;
+                        return destroyWebViews(pushWebViewExtras);
+
+                    case 40:
+                        _context4.next = 45;
+                        break;
+
+                    case 42:
+                        _context4.next = 44;
+                        return destroyWebViews(pushWebViewExtras);
+
+                    case 44:
+                        app.history.stacks.push(newCacheWebView);
+
+                    case 45:
+                        return _context4.abrupt('break', 86);
+
+                    case 46:
+                        if (!oldCacheChangeStatus) {
+                            _context4.next = 49;
+                            break;
+                        }
+
+                        _context4.next = 49;
+                        return destroyWebViews(oldCacheWebView);
+
+                    case 49:
+                        _context4.next = 51;
+                        return destroyWebViews(webViews.existsWebView, newCacheWebView);
+
+                    case 51:
+                        return _context4.abrupt('break', 86);
+
+                    case 52:
+                        if (!oldCacheChangeStatus) {
+                            _context4.next = 57;
+                            break;
+                        }
+
+                        _context4.next = 55;
+                        return destroyWebViews(oldCacheWebView, newCacheWebView);
+
+                    case 55:
+                        _context4.next = 86;
+                        break;
+
+                    case 57:
+                        if (!(app.history.stacks.indexOf(newCacheWebView) === -1)) {
+                            _context4.next = 86;
+                            break;
+                        }
+
+                        if (!(app.history.direction === 0)) {
+                            _context4.next = 63;
+                            break;
+                        }
+
+                        app.history.stacks.push(newCacheWebView);
+                        app.tick = -1;
+                        _context4.next = 86;
+                        break;
+
+                    case 63:
+                        // reduce: 从session的当前索引移步到现在需要达到的索引的时候需要的步数
+                        reduce = app.history.session ? app.history.session.current - (app.index || 0) : 0;
+
+                        // 得到移动步数后同步到当前内存中一致步数所得到值为最终的移动索引
+
+                        index = webViews.existWebViewIndex - reduce;
+
+                        // 越界处理
+
+                        if (index < 0) index = 0;
+                        if (index >= app.options.max) index = app.options.max - 1;
+
+                        // 移动到最终到达点的所以对应的页面实例
+                        targetWebView = app.history.stacks[index];
+                        sourceIndex = app.webView.historyIndex;
+
+                        if (!targetWebView) {
+                            _context4.next = 85;
+                            break;
+                        }
+
+                        // 获取对应页面所在的历史记录索引
+                        targetIndex = targetWebView.historyIndex;
+                        // 如果当前所在索引 - 步数 < 对应所在索引
+                        // 那么可以认定将插入到index之前
+                        // 否则插入到index之后
+                        // 无论方向与否，都是一直的表现
+
+                        if (!(sourceIndex - reduce < targetIndex)) {
+                            _context4.next = 76;
+                            break;
+                        }
+
+                        app.tick = 1;
+                        insertStacks(index, newCacheWebView);
+                        _context4.next = 83;
+                        break;
+
+                    case 76:
+                        if (!(sourceIndex - reduce > targetIndex)) {
+                            _context4.next = 81;
+                            break;
+                        }
+
+                        app.tick = -1;
+                        insertStacks(index + 1, newCacheWebView);
+                        _context4.next = 83;
+                        break;
+
+                    case 81:
+                        _context4.next = 83;
+                        return destroyWebViews(targetWebView, newCacheWebView);
+
+                    case 83:
+                        _context4.next = 86;
+                        break;
+
+                    case 85:
+                        // 当对应的页面实例不存在
+                        // 说明是一种刷新页面行为
+                        if (app.history.direction < 0) {
+                            app.tick = 1;
+                            insertStacks(index, newCacheWebView);
                         } else {
-                            destroyWebViews(app, pushWebViewExtras);
-                            app.history.stacks.push(newCacheWebView);
-                        }
-                        return _context.abrupt('break', 39);
-
-                    case 35:
-                        /**
-                         * 替换操作：
-                         * 如果oldCacheChangeStatus为真，那么直接删除掉
-                         * 然后在原位置添加新的实例
-                         */
-                        if (oldCacheChangeStatus) destroyWebViews(app, oldCacheWebView);
-                        destroyWebViews(app, webViews.existsWebView, newCacheWebView);
-                        return _context.abrupt('break', 39);
-
-                    case 38:
-                        /**
-                         * 这里描述的是浏览器行为的前进与后退
-                         * 如果单纯是这种行为，那么不需要对内存操作
-                         * 但是，如果用户进行来刷新操作
-                         * 那么，内存堆栈被清空，我们需要从新定义整个内存队列
-                         * 这个是本算法的难点
-                         * 我们优先通过对sessionStorage数据的分析来还原内存队列
-                         * 如果没有开启session开关，那么我们就默认是`PUSH`行为
-                         */
-                        if (oldCacheChangeStatus) {
-                            destroyWebViews(app, oldCacheWebView, newCacheWebView);
-                        } else if (app.history.stacks.indexOf(newCacheWebView) === -1) {
-                            if (app.history.direction === 0) {
-                                app.history.stacks.push(newCacheWebView);
-                                app.tick = -1;
-                            } else {
-                                // reduce: 从session的当前索引移步到现在需要达到的索引的时候需要的步数
-                                reduce = app.history.session ? app.history.session.current - (app.index || 0) : 0;
-
-                                // 得到移动步数后同步到当前内存中一致步数所得到值为最终的移动索引
-
-                                index = webViews.existWebViewIndex - reduce;
-
-                                // 越界处理
-
-                                if (index < 0) index = 0;
-                                if (index >= app.options.max) index = app.options.max - 1;
-
-                                // 移动到最终到达点的所以对应的页面实例
-                                targetWebView = app.history.stacks[index];
-                                sourceIndex = app.webView.historyIndex;
-
-
-                                if (targetWebView) {
-                                    // 获取对应页面所在的历史记录索引
-                                    targetIndex = targetWebView.historyIndex;
-                                    // 如果当前所在索引 - 步数 < 对应所在索引
-                                    // 那么可以认定将插入到index之前
-                                    // 否则插入到index之后
-                                    // 无论方向与否，都是一直的表现
-
-                                    if (sourceIndex - reduce < targetIndex) {
-                                        app.tick = 1;
-                                        insertStacks(app, index, newCacheWebView);
-                                    } else if (sourceIndex - reduce > targetIndex) {
-                                        app.tick = -1;
-                                        insertStacks(app, index + 1, newCacheWebView);
-                                    } else {
-                                        destroyWebViews(app, targetWebView, newCacheWebView);
-                                    }
-                                } else {
-                                    // 当对应的页面实例不存在
-                                    // 说明是一种刷新页面行为
-                                    if (app.history.direction < 0) {
-                                        app.tick = 1;
-                                        insertStacks(app, index, newCacheWebView);
-                                    } else {
-                                        app.tick = -1;
-                                        insertStacks(app, index + 1, newCacheWebView);
-                                    }
-                                }
-                            }
+                            app.tick = -1;
+                            insertStacks(index + 1, newCacheWebView);
                         }
 
-                    case 39:
+                    case 86:
 
                         webViews.activeWebView = newCacheWebView;
 
@@ -370,52 +509,52 @@ exports.default = function () {
                         // 那么直接返回，不做任何动画。
 
                         if (webViews.activeWebViewElement) {
-                            _context.next = 45;
+                            _context4.next = 92;
                             break;
                         }
 
-                        _context.next = 44;
+                        _context4.next = 91;
                         return resolveEventEmitter(app, webViews.events);
 
-                    case 44:
-                        return _context.abrupt('return', webViews.activeWebView);
+                    case 91:
+                        return _context4.abrupt('return', webViews.activeWebView);
 
-                    case 45:
+                    case 92:
                         if (!webViews.existsWebViewElement) {
-                            _context.next = 48;
+                            _context4.next = 95;
                             break;
                         }
 
-                        _context.next = 48;
+                        _context4.next = 95;
                         return app.emit('webview:beforeLeave', webViews.existsWebView);
 
-                    case 48:
-                        _context.next = 50;
+                    case 95:
+                        _context4.next = 97;
                         return (0, _animate2.default)(app, webViews.existsWebViewElement, webViews.activeWebViewElement);
 
-                    case 50:
+                    case 97:
                         if (!(app.history.stacks.length > app.options.max)) {
-                            _context.next = 59;
+                            _context4.next = 107;
                             break;
                         }
 
-                        _context.t1 = app.tick;
-                        _context.next = _context.t1 === 1 ? 54 : _context.t1 === -1 ? 56 : 58;
+                        _context4.t1 = app.tick;
+                        _context4.next = _context4.t1 === 1 ? 101 : _context4.t1 === -1 ? 103 : 105;
                         break;
 
-                    case 54:
+                    case 101:
                         remindExtra = app.history.stacks[app.history.stacks.length - 1];
-                        return _context.abrupt('break', 58);
+                        return _context4.abrupt('break', 105);
 
-                    case 56:
+                    case 103:
                         remindExtra = app.history.stacks[0];
-                        return _context.abrupt('break', 58);
+                        return _context4.abrupt('break', 105);
 
-                    case 58:
+                    case 105:
+                        _context4.next = 107;
+                        return destroyWebViews(remindExtra);
 
-                        destroyWebViews(app, remindExtra);
-
-                    case 59:
+                    case 107:
 
                         /**
                          * 此时我们可以完全认定，
@@ -436,18 +575,18 @@ exports.default = function () {
 
                         if (app.tick) delete app.tick;
                         // 触发额外事件
-                        _context.next = 65;
-                        return resolveEventEmitter(app, webViews.events);
+                        _context4.next = 113;
+                        return resolveEventEmitter(webViews.events);
 
-                    case 65:
-                        return _context.abrupt('return', webViews.activeWebView);
+                    case 113:
+                        return _context4.abrupt('return', webViews.activeWebView);
 
-                    case 66:
+                    case 114:
                     case 'end':
-                        return _context.stop();
+                        return _context4.stop();
                 }
             }
-        }, _callee, undefined);
+        }, _callee4, undefined);
     }));
 
     return function (_x, _x2, _x3, _x4) {
@@ -459,64 +598,4 @@ exports.default = function () {
       */
 
 
-function defineWebViewElementGetter(webViews, name) {
-    Object.defineProperty(webViews, name + 'Element', {
-        get: function get() {
-            if (this[name]) {
-                return this[name].__MioxInjectElement__;
-            }
-        }
-    });
-}
-
-function destroyWebViews(app, webviews) {
-    if (!Array.isArray(webviews)) {
-        webviews = [webviews];
-    }
-    var i = webviews.length;
-
-    for (var _len = arguments.length, args = Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
-        args[_key - 2] = arguments[_key];
-    }
-
-    while (i--) {
-        var webview = webviews[i];
-        var index = app.history.stacks.indexOf(webview);
-        if (index > -1) {
-            var _app$history$stacks;
-
-            (_app$history$stacks = app.history.stacks).splice.apply(_app$history$stacks, [index, 1].concat(args));
-            webview.constructor.dic.del(webview.__MioxMark__);
-            webview.MioxInjectDestroy();
-        }
-    }
-}
-
-function insertStacks(app, i) {
-    var stacks = app.history.stacks;
-    var left = stacks.slice(0, i);
-    var right = stacks.slice(i);
-
-    for (var _len2 = arguments.length, args = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
-        args[_key2 - 2] = arguments[_key2];
-    }
-
-    app.history.stacks = left.concat(args).concat(right);
-}
-
-function defineWebViewHistoryIndex(app, object) {
-    Object.defineProperty(object, 'historyIndex', {
-        get: function get() {
-            if (!app.history.session) return 0;
-            var vars = app.history.session.variables;
-            var strict = app.options.strict;
-            for (var i in vars) {
-                var mark = strict && vars[i].search ? vars[i].pathname + ':' + vars[i].search : vars[i].pathname;
-                if (mark === object.__MioxMark__) {
-                    return Number(i);
-                }
-            }
-        }
-    });
-}
 module.exports = exports['default'];

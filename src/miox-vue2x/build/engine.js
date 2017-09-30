@@ -144,6 +144,155 @@ var Engine = function () {
             return create;
         }()
     }, {
+        key: 'destroy',
+        value: function () {
+            var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(target) {
+                return _regenerator2.default.wrap(function _callee2$(_context2) {
+                    while (1) {
+                        switch (_context2.prev = _context2.next) {
+                            case 0:
+                                target.$destroy();
+
+                            case 1:
+                            case 'end':
+                                return _context2.stop();
+                        }
+                    }
+                }, _callee2, this);
+            }));
+
+            function destroy(_x3) {
+                return _ref2.apply(this, arguments);
+            }
+
+            return destroy;
+        }()
+    }, {
+        key: 'active',
+        value: function () {
+            var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3(target) {
+                return _regenerator2.default.wrap(function _callee3$(_context3) {
+                    while (1) {
+                        switch (_context3.prev = _context3.next) {
+                            case 0:
+                                target.$emit('webview:active');
+
+                            case 1:
+                            case 'end':
+                                return _context3.stop();
+                        }
+                    }
+                }, _callee3, this);
+            }));
+
+            function active(_x4) {
+                return _ref3.apply(this, arguments);
+            }
+
+            return active;
+        }()
+    }, {
+        key: 'enter',
+        value: function () {
+            var _ref4 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4(target) {
+                return _regenerator2.default.wrap(function _callee4$(_context4) {
+                    while (1) {
+                        switch (_context4.prev = _context4.next) {
+                            case 0:
+                                target.$emit('webview:enter');
+
+                            case 1:
+                            case 'end':
+                                return _context4.stop();
+                        }
+                    }
+                }, _callee4, this);
+            }));
+
+            function enter(_x5) {
+                return _ref4.apply(this, arguments);
+            }
+
+            return enter;
+        }()
+    }, {
+        key: 'leave',
+        value: function () {
+            var _ref5 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee5(target) {
+                return _regenerator2.default.wrap(function _callee5$(_context5) {
+                    while (1) {
+                        switch (_context5.prev = _context5.next) {
+                            case 0:
+                                target.$emit('webview:leave');
+
+                            case 1:
+                            case 'end':
+                                return _context5.stop();
+                        }
+                    }
+                }, _callee5, this);
+            }));
+
+            function leave(_x6) {
+                return _ref5.apply(this, arguments);
+            }
+
+            return leave;
+        }()
+    }, {
+        key: 'searchchange',
+        value: function () {
+            var _ref6 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee6(target, prev, next) {
+                return _regenerator2.default.wrap(function _callee6$(_context6) {
+                    while (1) {
+                        switch (_context6.prev = _context6.next) {
+                            case 0:
+                                target.$emit('webview:searchchange', prev, next);
+
+                            case 1:
+                            case 'end':
+                                return _context6.stop();
+                        }
+                    }
+                }, _callee6, this);
+            }));
+
+            function searchchange(_x7, _x8, _x9) {
+                return _ref6.apply(this, arguments);
+            }
+
+            return searchchange;
+        }()
+    }, {
+        key: 'hashchange',
+        value: function () {
+            var _ref7 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee7(target, prev, next) {
+                return _regenerator2.default.wrap(function _callee7$(_context7) {
+                    while (1) {
+                        switch (_context7.prev = _context7.next) {
+                            case 0:
+                                target.$emit('webview:hashchange', prev, next);
+
+                            case 1:
+                            case 'end':
+                                return _context7.stop();
+                        }
+                    }
+                }, _callee7, this);
+            }));
+
+            function hashchange(_x10, _x11, _x12) {
+                return _ref7.apply(this, arguments);
+            }
+
+            return hashchange;
+        }()
+    }, {
+        key: 'element',
+        value: function element(target) {
+            return target.__MioxInjectElement__;
+        }
+    }, {
         key: 'install',
         value: function install() {
             _vue2.default.prototype.$miox = this.ctx;
