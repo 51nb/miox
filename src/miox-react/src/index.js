@@ -12,12 +12,19 @@ export default class ReactEngine {
 
   async create(webView, options) {
     const element = this.createWebViewRoot();
-    const webview = ReactDom.render(
-      React.createElement(webView, options),
-      element
-    );
-    webview.__MioxInjectElement__ = element;
-    return webview;
+    const dom = React.createElement(webView, options);
+    const view = ReactDom.render(dom, element);
+    Object.defineProperty(view, '__MioxInjectElement__', {
+      get() {
+        return element;
+      }
+    });
+    Object.defineProperty(view, 'element', {
+      get() {
+        return dom;
+      }
+    });
+    return view;
   }
 
   async destroy(target) {

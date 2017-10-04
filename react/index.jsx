@@ -35,6 +35,18 @@ route.patch('/b', async ctx => {
   await ctx.render(B);
 });
 
+app.on('200', web => {
+  console.log(web)
+});
+
+app.on('process:start', web => {
+  console.log(11)
+});
+app.on('process:end', web => {
+  console.log(22)
+});
+
+
 app.set('engine', Engine);
 app.use(route.routes());
 

@@ -189,14 +189,10 @@ export default class Miox extends MiddleWare {
     }
 
     pathChange() {
-        this.history.on('pathchange', async next => {
-            await this.createServerProgress(next);
-            if (this.err) {
-                await this.emit(String(this.err.code), this.err);
-            } else {
-                await this.emit('200', this.webView);
-            }
-        });
+        this.history.on(
+            'pathchange', 
+            async next => await this.createServerProgress(next)
+        );
     }
 
     searchChange() {
@@ -204,11 +200,6 @@ export default class Miox extends MiddleWare {
         this.history.on('searchchange', async (next, prev) => {
             if (this.options.strict) {
                 await this.createServerProgress(next);
-                if (this.err) {
-                    await this.emit(String(this.err.code), this.err);
-                } else {
-                    await this.emit('200', this.webView);
-                }
             } else {
                 await engine.searchchange(this.webView, prev, next);
                 await this.emit('searchchange', prev, next);
