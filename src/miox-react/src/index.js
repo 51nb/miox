@@ -52,13 +52,13 @@ export default class ReactEngine {
   }
 
   async searchchange(target, prev, next) {
-    if (target.webViewSearchChange) {
+    if (target.webViewDidSearchChange) {
       await target.webViewDidSearchChange(prev, next);
     }
   }
 
   async hashchange(target, prev, next) {
-    if (target.webViewHashChange) {
+    if (target.webViewDidHashChange) {
       target.webViewDidHashChange(prev, next);
     }
   }
@@ -79,5 +79,9 @@ export default class ReactEngine {
     element.classList.add('mx-webview');
 
     return element;
+  }
+
+  ssr() {
+    
   }
 }

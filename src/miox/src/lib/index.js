@@ -217,7 +217,9 @@ export default class Miox extends MiddleWare {
     }
 
     listen() {
-        if (!this.plugin.get('engine')) {
+        const engine = this.plugin.get('engine');
+        
+        if (!engine) {
             throw new Error(
                 'You have not set webview rendering engine, ' +
                 'you must set it first.'
@@ -227,20 +229,10 @@ export default class Miox extends MiddleWare {
         this.__defineProcessHandle__();
 
         if (this.env === 'server') {
-            this.emit('app:start');
-            return async options => {
-                const { url, app, ctx } = options;
-                this.$application = app;
-                this.$context = ctx;
-                await this.createServerProgress(url);
-                await this.emit('app:end');
-                if (this.err) {
-                    throw this.err;
-                } else {
-                    await this.emit('server:render:polyfill', options);
-                    return this.webView;
-                }
+            if (typeof engine.ssr !== 'function') {
+                throw new Error(`SSR must be a function to render`);
             }
+            return engine.ssr();
         }
 
         const clientResolveCallback = () => {
