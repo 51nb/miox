@@ -1,6 +1,6 @@
 {
   "name": "miox-router",
-  "version": "5.0.28",
+  "version": "5.0.29",
   "main": "build/index.js",
   "files": [
     "build",

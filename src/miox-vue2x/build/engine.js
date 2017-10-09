@@ -311,6 +311,58 @@ var Engine = function () {
 
             return wrapElement;
         }
+    }, {
+        key: 'ssr',
+        value: function ssr() {
+            var _this2 = this;
+
+            this.ctx.emit('app:start');
+            return function () {
+                var _ref8 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee8(options) {
+                    var url, app, ctx;
+                    return _regenerator2.default.wrap(function _callee8$(_context8) {
+                        while (1) {
+                            switch (_context8.prev = _context8.next) {
+                                case 0:
+                                    url = options.url, app = options.app, ctx = options.ctx;
+
+                                    _this2.ctx.$application = app;
+                                    _this2.ctx.$context = ctx;
+                                    _context8.next = 5;
+                                    return _this2.ctx.createServerProgress(url);
+
+                                case 5:
+                                    _context8.next = 7;
+                                    return _this2.ctx.emit('app:end');
+
+                                case 7:
+                                    if (!_this2.ctx.err) {
+                                        _context8.next = 11;
+                                        break;
+                                    }
+
+                                    throw _this2.ctx.err;
+
+                                case 11:
+                                    _context8.next = 13;
+                                    return _this2.ctx.emit('server:render:polyfill', options);
+
+                                case 13:
+                                    return _context8.abrupt('return', _this2.ctx.webView);
+
+                                case 14:
+                                case 'end':
+                                    return _context8.stop();
+                            }
+                        }
+                    }, _callee8, _this2);
+                }));
+
+                return function (_x13) {
+                    return _ref8.apply(this, arguments);
+                };
+            }();
+        }
     }]);
     return Engine;
 }();

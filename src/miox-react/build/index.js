@@ -47,18 +47,28 @@ var ReactEngine = function () {
     key: 'create',
     value: function () {
       var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(webView, options) {
-        var element, webview;
+        var element, dom, view;
         return _regenerator2.default.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
                 element = this.createWebViewRoot();
-                webview = _reactDom2.default.render(_react2.default.createElement(webView, options), element);
+                dom = _react2.default.createElement(webView, options);
+                view = _reactDom2.default.render(dom, element);
 
-                webview.__MioxInjectElement__ = element;
-                return _context.abrupt('return', webview);
+                Object.defineProperty(view, '__MioxInjectElement__', {
+                  get: function get() {
+                    return element;
+                  }
+                });
+                Object.defineProperty(view, 'element', {
+                  get: function get() {
+                    return dom;
+                  }
+                });
+                return _context.abrupt('return', view);
 
-              case 4:
+              case 6:
               case 'end':
                 return _context.stop();
             }
@@ -198,7 +208,7 @@ var ReactEngine = function () {
           while (1) {
             switch (_context6.prev = _context6.next) {
               case 0:
-                if (!target.webViewSearchChange) {
+                if (!target.webViewDidSearchChange) {
                   _context6.next = 3;
                   break;
                 }
@@ -228,7 +238,7 @@ var ReactEngine = function () {
           while (1) {
             switch (_context7.prev = _context7.next) {
               case 0:
-                if (target.webViewHashChange) {
+                if (target.webViewDidHashChange) {
                   target.webViewDidHashChange(prev, next);
                 }
 
@@ -265,6 +275,54 @@ var ReactEngine = function () {
       element.classList.add('mx-webview');
 
       return element;
+    }
+  }, {
+    key: 'ssr',
+    value: function ssr() {
+      var _this = this;
+
+      this.ctx.emit('app:start');
+      return function () {
+        var _ref8 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee8(options) {
+          var url, app, ctx;
+          return _regenerator2.default.wrap(function _callee8$(_context8) {
+            while (1) {
+              switch (_context8.prev = _context8.next) {
+                case 0:
+                  url = options.url, app = options.app, ctx = options.ctx;
+
+                  _this.ctx.$application = app;
+                  _this.ctx.$context = ctx;
+                  _context8.next = 5;
+                  return _this.ctx.createServerProgress(url);
+
+                case 5:
+                  _context8.next = 7;
+                  return _this.ctx.emit('app:end');
+
+                case 7:
+                  if (!_this.ctx.err) {
+                    _context8.next = 11;
+                    break;
+                  }
+
+                  throw _this.ctx.err;
+
+                case 11:
+                  return _context8.abrupt('return', _this.ctx.webView.element);
+
+                case 12:
+                case 'end':
+                  return _context8.stop();
+              }
+            }
+          }, _callee8, _this);
+        }));
+
+        return function (_x13) {
+          return _ref8.apply(this, arguments);
+        };
+      }();
     }
   }]);
   return ReactEngine;

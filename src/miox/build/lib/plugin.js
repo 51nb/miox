@@ -1,7 +1,7 @@
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 exports.default = undefined;
 
@@ -35,37 +35,37 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * Created by evio on 2017/8/29.
  */
 var Plugin = function (_Dictionary) {
-    (0, _inherits3.default)(Plugin, _Dictionary);
+  (0, _inherits3.default)(Plugin, _Dictionary);
 
-    function Plugin(context) {
-        (0, _classCallCheck3.default)(this, Plugin);
+  function Plugin(context) {
+    (0, _classCallCheck3.default)(this, Plugin);
 
-        var _this = (0, _possibleConstructorReturn3.default)(this, (Plugin.__proto__ || Object.getPrototypeOf(Plugin)).call(this));
+    var _this = (0, _possibleConstructorReturn3.default)(this, (Plugin.__proto__ || Object.getPrototypeOf(Plugin)).call(this));
 
-        _this.context = context;
-        return _this;
+    _this.context = context;
+    return _this;
+  }
+
+  (0, _createClass3.default)(Plugin, [{
+    key: 'Engine',
+    value: function Engine(value) {
+      if (typeof value !== 'function' && !(0, _isClass2.default)(value)) {
+        throw new Error('Engine must be a function or a class');
+      }
+      var engine = new value(this.context);
+      if (typeof engine.install === 'function') {
+        engine.install();
+      }
+      this.set('engine', engine);
     }
-
-    (0, _createClass3.default)(Plugin, [{
-        key: 'Engine',
-        value: function Engine(value) {
-            if (typeof value !== 'function' && !(0, _isClass2.default)(value)) {
-                throw new Error('Engine must be a function or a class');
-            }
-            var engine = new value(this.context);
-            if (typeof engine.install === 'function') {
-                engine.install();
-            }
-            this.set('engine', engine);
-        }
-    }, {
-        key: 'Animate',
-        value: function Animate(value) {
-            var animate = value(this.context);
-            this.set('animate', animate);
-        }
-    }]);
-    return Plugin;
+  }, {
+    key: 'Animate',
+    value: function Animate(value) {
+      var animate = value(this.context);
+      this.set('animate', animate);
+    }
+  }]);
+  return Plugin;
 }(_dictionary2.default);
 
 exports.default = Plugin;

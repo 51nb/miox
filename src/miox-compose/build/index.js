@@ -20,10 +20,14 @@ module.exports = compose;
  */
 
 function compose(middleware) {
-    if (!Array.isArray(middleware)) throw new TypeError('Middleware stack must be an array!');
+    if (!Array.isArray(middleware)) {
+        throw new TypeError('Middleware stack must be an array!');
+    }
     for (var item in middleware) {
         var fn = middleware[item];
-        if (typeof fn !== 'function') throw new TypeError('Middleware must be composed of functions!');
+        if (typeof fn !== 'function') {
+            throw new TypeError('Middleware must be composed of functions!');
+        }
     }
 
     /**
@@ -36,11 +40,19 @@ function compose(middleware) {
         // last called middleware #
         var index = -1;
         return dispatch(0);
+
         function dispatch(i) {
-            if (i <= index) return Promise.reject(new Error('next() called multiple times'));
+            if (i <= index) {
+                return Promise.reject(new Error('next() called multiple times'));
+            }
+
             index = i;
-            var fn = middleware[i] || next;
-            if (!fn) return Promise.resolve();
+            var fn = middleware[i];
+            if (i === middleware.length) fn = next;
+            if (!fn) {
+                return Promise.resolve();
+            }
+
             try {
                 return Promise.resolve(fn(context, function next() {
                     return dispatch(i + 1);

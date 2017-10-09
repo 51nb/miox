@@ -1,7 +1,7 @@
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _regenerator = require('babel-runtime/regenerator');
@@ -18,43 +18,43 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * Created by evio on 2017/8/30.
  */
 exports.default = function () {
-    var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(app, prevNode, nextNode) {
-        var animate;
-        return _regenerator2.default.wrap(function _callee$(_context) {
-            while (1) {
-                switch (_context.prev = _context.next) {
-                    case 0:
-                        animate = app.plugin.get('animate');
+  var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(app, prevNode, nextNode) {
+    var animate;
+    return _regenerator2.default.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            animate = app.plugin.get('animate');
 
 
-                        if (prevNode) {
-                            prevNode.classList.remove('active');
-                        }
-                        if (nextNode) {
-                            nextNode.classList.add('active');
-                        }
-
-                        if (!(animate && app.installed && app.history.session)) {
-                            _context.next = 6;
-                            break;
-                        }
-
-                        _context.next = 6;
-                        return Promise.all([animate.leave(prevNode), animate.enter(nextNode)]);
-
-                    case 6:
-                    case 'end':
-                        return _context.stop();
-                }
+            if (prevNode) {
+              prevNode.classList.remove('active');
             }
-        }, _callee, this);
-    }));
+            if (nextNode) {
+              nextNode.classList.add('active');
+            }
 
-    function renderWebViewWithAnimate(_x, _x2, _x3) {
-        return _ref.apply(this, arguments);
-    }
+            if (!(animate && app.installed && app.history.session)) {
+              _context.next = 6;
+              break;
+            }
 
-    return renderWebViewWithAnimate;
+            _context.next = 6;
+            return Promise.all([animate.leave(prevNode), animate.enter(nextNode)]);
+
+          case 6:
+          case 'end':
+            return _context.stop();
+        }
+      }
+    }, _callee, this);
+  }));
+
+  function renderWebViewWithAnimate(_x, _x2, _x3) {
+    return _ref.apply(this, arguments);
+  }
+
+  return renderWebViewWithAnimate;
 }();
 
 module.exports = exports['default'];

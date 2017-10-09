@@ -41,9 +41,6 @@ var Router = function () {
         var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
         (0, _classCallCheck3.default)(this, Router);
 
-        if (!(this instanceof Router)) {
-            return new Router(opts);
-        }
         this.opts = opts;
         this.methods = this.opts.methods || methods.map(function (m) {
             return m.toUpperCase();
@@ -65,9 +62,7 @@ var Router = function () {
                 name = null;
             }
 
-            this.register(path, ['patch'], middleware, {
-                name: name
-            });
+            this.register(path, methods, middleware, { name: name });
 
             return this;
         }
@@ -91,24 +86,33 @@ var Router = function () {
                 path = middleware.shift();
             }
 
-            middleware.forEach(function (m) {
-                if (m.router) {
-                    m.router.stack.forEach(function (nestedLayer) {
-                        if (path) nestedLayer.setPrefix(path);
-                        if (router.opts.prefix) nestedLayer.setPrefix(router.opts.prefix);
-                        router.stack.push(nestedLayer);
+            // filter out nested routers from filter
+            middleware = middleware.filter(function (fn) {
+                if (fn.router) {
+                    fn.router.stack.forEach(function (layer) {
+                        if (path) layer.setPrefix(path);
+                        if (router.opts.prefix) layer.setPrefix(router.opts.prefix);
+                        router.stack.push(layer);
                     });
 
                     if (router.params) {
                         Object.keys(router.params).forEach(function (key) {
-                            m.router.param(key, router.params[key]);
+                            fn.router.param(key, router.params[key]);
                         });
                     }
-                } else {
-                    router.register(path, [], m, { end: false });
+
+                    return false;
                 }
+
+                return true;
             });
 
+            if (middleware.length) {
+                router.register(path || '(.*)', [], middleware, {
+                    end: false,
+                    ignoreCaptures: !path
+                });
+            }
             return this;
         }
     }, {
@@ -156,25 +160,6 @@ var Router = function () {
             dispatch.router = this;
 
             return dispatch;
-        }
-    }, {
-        key: 'all',
-        value: function all(name, path, middleware) {
-            var middleware;
-
-            if (typeof path === 'string') {
-                middleware = Array.prototype.slice.call(arguments, 2);
-            } else {
-                middleware = Array.prototype.slice.call(arguments, 1);
-                path = name;
-                name = null;
-            }
-
-            this.register(path, methods, middleware, {
-                name: name
-            });
-
-            return this;
         }
     }, {
         key: 'register',
