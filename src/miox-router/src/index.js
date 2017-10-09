@@ -11,9 +11,6 @@ const methods = ['patch'];
 
 export default class Router {
     constructor(opts = {}){
-        if (!(this instanceof Router)) {
-            return new Router(opts);
-        }
         this.opts = opts;
         this.methods = this.opts.methods || methods.map(m => m.toUpperCase());
         this.params = {};
@@ -31,9 +28,7 @@ export default class Router {
             name = null;
         }
 
-        this.register(path, ['patch'], middleware, {
-            name: name
-        });
+        this.register(path, methods, middleware, { name: name });
 
         return this;
     }
@@ -56,24 +51,33 @@ export default class Router {
             path = middleware.shift();
         }
 
-        middleware.forEach(function (m) {
-            if (m.router) {
-                m.router.stack.forEach(function (nestedLayer) {
-                    if (path) nestedLayer.setPrefix(path);
-                    if (router.opts.prefix) nestedLayer.setPrefix(router.opts.prefix);
-                    router.stack.push(nestedLayer);
+        // filter out nested routers from filter
+        middleware = middleware.filter(function (fn) {
+            if (fn.router) {
+                fn.router.stack.forEach(function (layer) {
+                    if (path) layer.setPrefix(path);
+                    if (router.opts.prefix) layer.setPrefix(router.opts.prefix);
+                    router.stack.push(layer);
                 });
 
                 if (router.params) {
                     Object.keys(router.params).forEach(function (key) {
-                        m.router.param(key, router.params[key]);
+                        fn.router.param(key, router.params[key]);
                     });
                 }
-            } else {
-                router.register(path, [], m, { end: false });
+
+                return false;
             }
+
+            return true;
         });
 
+        if (middleware.length) {
+            router.register(path || '(.*)', [], middleware, {
+                end: false,
+                ignoreCaptures: !path
+            });
+        }
         return this;
     }
 
@@ -91,7 +95,7 @@ export default class Router {
 
     routes(){
         let router = this;
-        let dispatch = function (ctx, next) {
+        let dispatch = function dispatch(ctx, next) {
             let path = router.opts.routerPath || ctx.routerPath || ctx.req.pathname;
             let matched = router.match(path, ctx.method);
             let layerChain;
@@ -119,24 +123,6 @@ export default class Router {
         dispatch.router = this;
 
         return dispatch;
-    }
-
-    all(name, path, middleware){
-        var middleware;
-
-        if (typeof path === 'string') {
-            middleware = Array.prototype.slice.call(arguments, 2);
-        } else {
-            middleware = Array.prototype.slice.call(arguments, 1);
-            path = name;
-            name = null;
-        }
-
-        this.register(path, methods, middleware, {
-            name: name
-        });
-
-        return this;
     }
 
     register(path, methods, middleware, opts){

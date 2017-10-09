@@ -26,10 +26,7 @@ export default class Layer {
         this.stack = Array.isArray(middleware) ? middleware : [middleware];
 
         methods.forEach(function(method) {
-            var l = this.methods.push(method.toUpperCase());
-            if (this.methods[l-1] === 'GET') {
-                this.methods.unshift('HEAD');
-            }
+            this.methods.push(method.toUpperCase());
         }, this);
 
         this.stack.forEach(function(fn) {

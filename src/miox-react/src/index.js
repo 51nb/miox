@@ -82,6 +82,18 @@ export default class ReactEngine {
   }
 
   ssr() {
-    
+    this.ctx.emit('app:start');
+    return async options => {
+        const { url, app, ctx } = options;
+        this.ctx.$application = app;
+        this.ctx.$context = ctx;
+        await this.ctx.createServerProgress(url);
+        await this.ctx.emit('app:end');
+        if (this.ctx.err) {
+            throw this.ctx.err;
+        } else {
+            return this.ctx.webView.element;
+        }
+    }
   }
 }
