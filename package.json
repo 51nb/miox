@@ -26,7 +26,7 @@
     "test:start": "node_modules/karma/bin/karma start",
     "test:end": "node_modules/karma/bin/karma run",
     "all:build": "npm run del && npm run web:build && npm run ssr:build",
-    "react:dev": "NODE_ENV=dev node_modules/.bin/webpack-dev-server --config config/webpack.react.dev.config.js --hot --progress"    
+    "react:dev": "NODE_ENV=dev node_modules/.bin/webpack-dev-server --config config/webpack.react.dev.config.js --hot --progress"
   },
   "dependencies": {
     "async-events-listener": "0.0.4",
@@ -48,6 +48,7 @@
     "lru-cache": "^4.1.1",
     "memory-fs": "^0.4.1",
     "mime-types": "^2.1.17",
+    "miox-router": "^5.0.29",
     "mz": "^2.7.0",
     "node-sass": "^4.5.3",
     "path-to-regexp": "^2.0.0",
