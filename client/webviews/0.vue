@@ -12,7 +12,7 @@
         name: 'A'
     })
     export default class Home {
-        b = '/b';
+        b = '/b?a=1';
         c = '/c';
         d = 'http://baidu.com'
     }
