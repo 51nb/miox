@@ -1,3 +1,4 @@
+import 'es6-promise/auto';
 import Session from 'miox/lib/session';
 import Request from 'miox/miox_modules/request';
 import { sessionIndexName } from 'miox/lib/util';

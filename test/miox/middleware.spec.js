@@ -1,3 +1,4 @@
+import 'es6-promise/auto';
 import MDW from 'miox/miox_modules/middleware';
 
 describe('Miox module [middleware] test:', () => {

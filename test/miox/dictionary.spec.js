@@ -1,3 +1,4 @@
+import 'es6-promise/auto';
 import Dic from 'miox/miox_modules/dictionary';
 
 describe('Miox module [dictionary] test:', () => {

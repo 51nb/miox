@@ -1,3 +1,4 @@
+import 'es6-promise/auto';
 import Request from 'miox/miox_modules/request';
 
 describe('Miox module [request] test:', () => {

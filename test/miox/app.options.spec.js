@@ -1,3 +1,4 @@
+import 'es6-promise/auto';
 import Miox from 'miox';
 import Animate from 'miox-animation';
 import Engine from 'miox-vue2x';

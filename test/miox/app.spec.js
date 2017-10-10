@@ -1,3 +1,4 @@
+import 'es6-promise/auto';
 import Miox from 'miox';
 import Engine from 'miox-vue2x';
 import Router from 'miox-router';
@@ -14,6 +15,131 @@ let switcher = false, listener;
 
 describe('Miox全场景测试:', () => {
     beforeEach(removeAll, 1000);
+
+  it('中途刷新场景:不带session:最大1个页面', cb => {
+    progress({ max: 1 }, cb, async app => {
+      expect(app.webView.text).toEqual('A');
+      expect(getPool(app)).toEqual('A');
+      app.push('/b');
+      await delay(1000);
+      expect(app.webView.text).toEqual('B');
+      expect(getPool(app)).toEqual('B');
+      app.push('/c');
+      await delay(1000);
+      expect(app.webView.text).toEqual('C');
+      expect(getPool(app)).toEqual('C');
+      app.history.stacks = [app.webView];
+      clearWebViewCaches(C, app.webView);
+      app.go(-1);
+      await delay(1000);
+      expect(app.webView.text).toEqual('B');
+      expect(getPool(app)).toEqual('B');
+      app.go(-1);
+      await delay(1000);
+      expect(app.webView.text).toEqual('A');
+      expect(getPool(app)).toEqual('A');
+    });
+  }, 10000);
+
+  it('中途刷新场景:带session:最大1个页面', cb => {
+    progress({ max: 1, session: true, animate: true }, cb, async app => {
+      expect(app.webView.text).toEqual('A');
+      expect(getPool(app)).toEqual('A');
+      app.push('/b');
+      await delay(1000);
+      expect(app.webView.text).toEqual('B');
+      expect(getPool(app)).toEqual('B');
+      app.push('/c');
+      await delay(1000);
+      expect(app.webView.text).toEqual('C');
+      expect(getPool(app)).toEqual('C');
+      app.history.stacks = [app.webView];
+      clearWebViewCaches(C, app.webView);
+      app.go(-1);
+      await delay(1000);
+      expect(app.webView.text).toEqual('B');
+      expect(getPool(app)).toEqual('B');
+      app.go(-1);
+      await delay(1000);
+      expect(app.webView.text).toEqual('A');
+      expect(getPool(app)).toEqual('A');
+    });
+  }, 10000);
+
+  it('中途刷新场景:不带session:最大3个页面', cb => {
+    progress({ max: 3 }, cb, async app => {
+      expect(app.webView.text).toEqual('A');
+      expect(getPool(app)).toEqual('A');
+      app.push('/b');
+      await delay(1000);
+      expect(app.webView.text).toEqual('B');
+      expect(getPool(app)).toEqual('A.B');
+      app.push('/c');
+      await delay(1000);
+      expect(app.webView.text).toEqual('C');
+      expect(getPool(app)).toEqual('A.B.C');
+      app.history.stacks = [app.webView];
+      clearWebViewCaches(C, app.webView);
+      app.go(-1);
+      await delay(1000);
+      expect(app.webView.text).toEqual('B');
+      expect(getPool(app)).toEqual('C.B');
+      app.go(-1);
+      await delay(1000);
+      expect(app.webView.text).toEqual('A');
+      expect(getPool(app)).toEqual('C.B.A');
+    });
+  }, 10000);
+
+  it('中途刷新场景:带session:最大3个页面', cb => {
+    progress({ max: 3, session: true, animate: true }, cb, async app => {
+      expect(app.webView.text).toEqual('A');
+      expect(getPool(app)).toEqual('A');
+      app.push('/b');
+      await delay(1000);
+      expect(app.webView.text).toEqual('B');
+      expect(getPool(app)).toEqual('A.B');
+      app.push('/c');
+      await delay(1000);
+      expect(app.webView.text).toEqual('C');
+      expect(getPool(app)).toEqual('A.B.C');
+      app.history.stacks = [app.webView];
+      clearWebViewCaches(C, app.webView);
+      app.go(-1);
+      await delay(1000);
+      expect(app.webView.text).toEqual('B');
+      expect(getPool(app)).toEqual('B.C');
+      app.go(-1);
+      await delay(1000);
+      expect(app.webView.text).toEqual('A');
+      expect(getPool(app)).toEqual('A.B.C');
+    });
+  }, 10000);
+
+  it('中途刷新场景:带session:最大2个页面', cb => {
+    progress({ max: 2, session: true, animate: true }, cb, async app => {
+      expect(app.webView.text).toEqual('A');
+      expect(getPool(app)).toEqual('A');
+      app.push('/b');
+      await delay(1000);
+      expect(app.webView.text).toEqual('B');
+      expect(getPool(app)).toEqual('A.B');
+      app.push('/c');
+      await delay(1000);
+      expect(app.webView.text).toEqual('C');
+      expect(getPool(app)).toEqual('B.C');
+      app.go(-2);
+      await delay(1000);
+      expect(app.webView.text).toEqual('A');
+      expect(getPool(app)).toEqual('A.B');
+      app.history.stacks = [app.webView];
+      clearWebViewCaches(A, app.webView);
+      app.go(1);
+      await delay(1000);
+      expect(app.webView.text).toEqual('B');
+      expect(getPool(app)).toEqual('A.B');
+    });
+  }, 10000);
 
     it('插入3个地址:带session:最大3个页面', cb => {
         progress({ max: 3, session: true, animate: true }, cb, async app => {
@@ -108,131 +234,6 @@ describe('Miox全场景测试:', () => {
             await delay(1000);
             expect(app.webView.text).toEqual('E');
             expect(getPool(app)).toEqual('A.E.C');
-        });
-    }, 10000);
-
-    it('中途刷新场景:不带session:最大1个页面', cb => {
-        progress({ max: 1 }, cb, async app => {
-            expect(app.webView.text).toEqual('A');
-            expect(getPool(app)).toEqual('A');
-            app.push('/b');
-            await delay(300);
-            expect(app.webView.text).toEqual('B');
-            expect(getPool(app)).toEqual('B');
-            app.push('/c');
-            await delay(300);
-            expect(app.webView.text).toEqual('C');
-            expect(getPool(app)).toEqual('C');
-            app.history.stacks = [app.webView];
-            clearWebViewCaches(C, app.webView);
-            app.go(-1);
-            await delay(300);
-            expect(app.webView.text).toEqual('B');
-            expect(getPool(app)).toEqual('B');
-            app.go(-1);
-            await delay(300);
-            expect(app.webView.text).toEqual('A');
-            expect(getPool(app)).toEqual('A');
-        });
-    }, 10000);
-
-    it('中途刷新场景:带session:最大1个页面', cb => {
-        progress({ max: 1, session: true, animate: true }, cb, async app => {
-            expect(app.webView.text).toEqual('A');
-            expect(getPool(app)).toEqual('A');
-            app.push('/b');
-            await delay(1000);
-            expect(app.webView.text).toEqual('B');
-            expect(getPool(app)).toEqual('B');
-            app.push('/c');
-            await delay(1000);
-            expect(app.webView.text).toEqual('C');
-            expect(getPool(app)).toEqual('C');
-            app.history.stacks = [app.webView];
-            clearWebViewCaches(C, app.webView);
-            app.go(-1);
-            await delay(1000);
-            expect(app.webView.text).toEqual('B');
-            expect(getPool(app)).toEqual('B');
-            app.go(-1);
-            await delay(1000);
-            expect(app.webView.text).toEqual('A');
-            expect(getPool(app)).toEqual('A');
-        });
-    }, 10000);
-
-    it('中途刷新场景:不带session:最大3个页面', cb => {
-        progress({ max: 3 }, cb, async app => {
-            expect(app.webView.text).toEqual('A');
-            expect(getPool(app)).toEqual('A');
-            app.push('/b');
-            await delay(300);
-            expect(app.webView.text).toEqual('B');
-            expect(getPool(app)).toEqual('A.B');
-            app.push('/c');
-            await delay(300);
-            expect(app.webView.text).toEqual('C');
-            expect(getPool(app)).toEqual('A.B.C');
-            app.history.stacks = [app.webView];
-            clearWebViewCaches(C, app.webView);
-            app.go(-1);
-            await delay(300);
-            expect(app.webView.text).toEqual('B');
-            expect(getPool(app)).toEqual('C.B');
-            app.go(-1);
-            await delay(300);
-            expect(app.webView.text).toEqual('A');
-            expect(getPool(app)).toEqual('C.B.A');
-        });
-    }, 10000);
-
-    it('中途刷新场景:带session:最大3个页面', cb => {
-        progress({ max: 3, session: true, animate: true }, cb, async app => {
-            expect(app.webView.text).toEqual('A');
-            expect(getPool(app)).toEqual('A');
-            app.push('/b');
-            await delay(1000);
-            expect(app.webView.text).toEqual('B');
-            expect(getPool(app)).toEqual('A.B');
-            app.push('/c');
-            await delay(1000);
-            expect(app.webView.text).toEqual('C');
-            expect(getPool(app)).toEqual('A.B.C');
-            app.history.stacks = [app.webView];
-            clearWebViewCaches(C, app.webView);
-            app.go(-1);
-            await delay(1000);
-            expect(app.webView.text).toEqual('B');
-            expect(getPool(app)).toEqual('B.C');
-            app.go(-1);
-            await delay(1000);
-            expect(app.webView.text).toEqual('A');
-            expect(getPool(app)).toEqual('A.B.C');
-        });
-    }, 10000);
-
-    it('中途刷新场景:带session:最大2个页面', cb => {
-        progress({ max: 2, session: true, animate: true }, cb, async app => {
-            expect(app.webView.text).toEqual('A');
-            expect(getPool(app)).toEqual('A');
-            app.push('/b');
-            await delay(600);
-            expect(app.webView.text).toEqual('B');
-            expect(getPool(app)).toEqual('A.B');
-            app.push('/c');
-            await delay(600);
-            expect(app.webView.text).toEqual('C');
-            expect(getPool(app)).toEqual('B.C');
-            app.go(-2);
-            await delay(600);
-            expect(app.webView.text).toEqual('A');
-            expect(getPool(app)).toEqual('A.B');
-            app.history.stacks = [app.webView];
-            clearWebViewCaches(A, app.webView);
-            app.go(1);
-            await delay(600);
-            expect(app.webView.text).toEqual('B');
-            expect(getPool(app)).toEqual('A.B');
         });
     }, 10000);
 
@@ -360,7 +361,6 @@ describe('Miox全场景测试:', () => {
 
     it('go方法测试:不带session', cb => {
         progress({ max: 2 }, cb, async app => {
-            console.log('start');
             expect(app.webView.text).toEqual('A');
             expect(getPool(app)).toEqual('A');
             app.go('/b');
@@ -509,7 +509,8 @@ describe('Miox全场景测试:', () => {
 });
 
 function removeAll() {
-    Array.prototype.slice.call(document.querySelectorAll('.mx-app'), 0).forEach(child => child.parentNode.removeChild(child));
+    const apps = Array.prototype.slice.call(document.querySelectorAll('.mx-app'));
+    apps.forEach(child => child.parentNode.removeChild(child));
 
     global.history.pushState(null, document.title, '/');
 
@@ -568,6 +569,7 @@ function progress(options, cb, fn) {
     if (options.animate) {
         app.set('animate', Animate('slide'));
     }
+
     app.use(route.routes());
     listener = app.listen();
 }
