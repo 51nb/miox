@@ -1,3 +1,8 @@
+[![Build Status](https://www.travis-ci.org/51nb/miox.svg?branch=master)](https://www.travis-ci.org/51nb/miox)
+[![NPM Version](http://img.shields.io/npm/v/miox.svg?style=flat)](https://www.npmjs.org/package/miox)
+[![NPM Downloads](https://img.shields.io/npm/dm/miox.svg?style=flat)](https://www.npmjs.org/package/miox)
+[![miox starter](https://img.shields.io/badge/miox-starter-brightgreen.svg)](https://www.npmjs.org/package/miox)
+
 # 定义
 
 > Miox 是一个兼容多种渲染引擎的，提供高度自动化 Webview 生命周期管理的一个中间件/框架，同时提供了开箱即用的若干自动化脚手架，快速生成项目。
