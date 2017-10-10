@@ -83,6 +83,7 @@ export default class History extends EventEmitter {
 
   async push(url) {
     this.action = 'push';
+    /* istanbul ignore if */
     if (this.popState) {
       global.history.pushState(null, this.title, url);
       await this.change(this.request, new Request(this.location()));
@@ -93,6 +94,7 @@ export default class History extends EventEmitter {
 
   async replace(url) {
     this.action = 'replace';
+    /* istanbul ignore if */
     if (this.popState) {
       global.history.replaceState(null, this.title, url);
       await this.change(this.request, new Request(this.location()));
@@ -129,6 +131,7 @@ export default class History extends EventEmitter {
     }
   }
 
+  /* istanbul ignore next */
   async redirect(url) {
     const err = new Error('302 Redirect');
     err.code = 302;
@@ -136,6 +139,7 @@ export default class History extends EventEmitter {
     throw err;
   }
 
+  /* istanbul ignore next */
   link(url) {
     if (this.app.doing) return;
     this.app.doing = true;

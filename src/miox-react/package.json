@@ -1,6 +1,6 @@
 {
   "name": "miox-react",
-  "version": "5.0.30",
+  "version": "5.0.31",
   "main": "build/index.js",
   "files": [
     "build",

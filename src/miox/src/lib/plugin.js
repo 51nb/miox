@@ -11,6 +11,7 @@ export default class Plugin extends Dictionary {
   }
 
   Engine(value) {
+    /* istanbul ignore if */
     if (typeof value !== 'function' && !isClass(value)) {
       throw new Error('Engine must be a function or a class');
     }

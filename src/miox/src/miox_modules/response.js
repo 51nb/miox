@@ -43,6 +43,7 @@ export default class Response {
          * 无需做过多的处理
          * 因为在服务端渲染时候，只是渲染当前的对象，跟之后的逻辑对象无关
          */
+        /* istanbul ignore if */
         if (app.env === 'server') {
             const mark = app.options.strict ? app.req.mark : app.req.pathname;
             const component = await engine.create(webview, data);

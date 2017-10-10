@@ -21,4 +21,16 @@ describe('Miox module [request] test:', () => {
         expect(req.sortQuery).toEqual('a=1&b=2&c=3');
     });
 
+    it('req.init.3', () => {
+        const req = new Request({
+          a: 1,
+          b: 2,
+          c() {
+            return 3;
+          }
+        });
+        expect(req.a).toEqual(1);
+        expect(req.b).toEqual(2);
+        expect(req.c()).toEqual(3);
+    });
 });

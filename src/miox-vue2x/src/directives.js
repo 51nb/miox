@@ -12,7 +12,7 @@ export default function(ctx) {
         }
     });
 }
-
+/* istanbul ignore next */
 function historyRedirect(ctx, key) {
     const options = {};
     options.bind = (el, binding) => {

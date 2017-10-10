@@ -13,11 +13,12 @@ export default class Engine {
     constructor(ctx) {
         this.ctx = ctx;
 
+        /* istanbul ignore next */
         ctx.on('app:end', () => {
             if (ctx.env === 'server') return;
             const scripts = ctx.element.querySelectorAll('script');
             let i = scripts.length;
-
+            
             while (i--) {
                 const script = scripts[i];
                 if (script && script.parentNode) {
@@ -25,6 +26,8 @@ export default class Engine {
                 }
             }
         });
+
+        /* istanbul ignore next */
         ctx.on('server:render:polyfill', context => {
             const store = ctx.get('vuex');
             if (store) {
@@ -32,6 +35,7 @@ export default class Engine {
             }
         });
 
+        /* istanbul ignore next */
         ctx.on('client:render:polyfill', () => {
             const store = ctx.get('vuex');
             if (global.__INITIAL_STATE__ && store) {
@@ -39,6 +43,7 @@ export default class Engine {
             }
         });
 
+        /* istanbul ignore next */
         ctx.on('client:render:mount', viewModule => {
             if (!ctx.element) throw new Error('miss ctx.element');
             if (!viewModule) throw new Error('miss view module');
@@ -61,6 +66,7 @@ export default class Engine {
                         Arguments.el = this.createWebViewRoot();
                         break;
                     case 'client':
+                        /* istanbul ignore next */                    
                         if (this.ctx.installed) {
                             Arguments.el = this.createWebViewRoot();
                         }
@@ -124,6 +130,7 @@ export default class Engine {
         return wrapElement;
     }
 
+    /* istanbul ignore next */
     ssr() {
         this.ctx.emit('app:start');
         return async options => {

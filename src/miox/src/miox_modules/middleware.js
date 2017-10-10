@@ -23,6 +23,8 @@ export default class MiddleWares extends EventEmitter {
         const result = [];
         for (let i = 0; i < args.length; i++) {
             let cb = args[i];
+            
+            /* istanbul ignore if */
             if (typeof cb !== 'function') {
                 throw new Error(
                     'middleware must be a function ' +
@@ -30,6 +32,7 @@ export default class MiddleWares extends EventEmitter {
                 );
             }
 
+            /* istanbul ignore if */
             if (isGeneratorFunction(cb)) {
                 cb = convert(cb);
             }

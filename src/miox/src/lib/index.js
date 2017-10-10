@@ -53,6 +53,7 @@ export default class Miox extends MiddleWare {
     this.vars.on('animate', this.plugin.Animate.bind(this.plugin));
   }
 
+  /* istanbul ignore next */
   install(...args) {
     args.forEach(arg => {
       if (typeof arg === 'function') {
@@ -67,16 +68,19 @@ export default class Miox extends MiddleWare {
   get(...args) {
     return this.vars.get(...args);
   }
+  /* istanbul ignore next */
   del(...args) {
     return this.vars.del(...args);
   }
+  /* istanbul ignore next */
   exists(...args) {
     return this.vars.exists(...args);
   }
+  /* istanbul ignore next */
   filter(...args) {
     return this.vars.filter(...args);
   }
-
+  /* istanbul ignore next */
   link(...args) {
     return this.history.link(...args);
   }
@@ -89,6 +93,7 @@ export default class Miox extends MiddleWare {
   async go(...args) {
     return await this.history.go(...args);
   }
+  /* istanbul ignore next */
   async redirect(...args) {
     return await this.history.redirect(...args);
   }
@@ -102,15 +107,19 @@ export default class Miox extends MiddleWare {
   get req() {
     return this.request;
   }
+  /* istanbul ignore next */
   get res() {
     return this.response;
   }
+  /* istanbul ignore next */
   get query() {
     return this.req.query || {};
   }
+  /* istanbul ignore next */
   get pathname() {
     return this.req.pathname || '/';
   }
+  /* istanbul ignore next */
   get url() {
     return this.req.href || '/';
   }
@@ -122,6 +131,7 @@ export default class Miox extends MiddleWare {
     }
   }
 
+  /* istanbul ignore next */
   get reference() {
     return {
       fetch: this.fetch.bind(this),
@@ -159,6 +169,7 @@ export default class Miox extends MiddleWare {
   async error(value) {
     if (value instanceof Error || Object.prototype.toString.call(value) === '[object Error]') {
       this.err = value;
+      /* istanbul ignore if */
       if (this.err.code === 302) {
         return async() => await this.go(this.err.url);
       } else {
@@ -262,6 +273,7 @@ export default class Miox extends MiddleWare {
   listen() {
     const engine = this.plugin.get('engine');
 
+    /* istanbul ignore if */
     if (!engine) {
       throw new Error(
         'You have not set webview rendering engine, ' +
@@ -271,6 +283,7 @@ export default class Miox extends MiddleWare {
 
     this.__defineProcessHandle__();
 
+    /* istanbul ignore if */
     if (this.env === 'server') {
       if (typeof engine.ssr !== 'function') {
         throw new Error(`SSR must be a function to render`);
@@ -278,6 +291,7 @@ export default class Miox extends MiddleWare {
       return engine.ssr();
     }
 
+    /* istanbul ignore next */
     const clientResolveCallback = () => {
       this.emit('client:render:polyfill');
       this.history.action = 'push';
@@ -304,6 +318,7 @@ export default class Miox extends MiddleWare {
 
     this.emit('app:start').then(() => {
       WebTree(this);
+      /* istanbul ignore if */
       if (this.env === 'client') {
         clientResolveCallback();
       } else {
@@ -314,6 +329,7 @@ export default class Miox extends MiddleWare {
     return historyListener;
   }
 
+  /* istanbul ignore next */
   async fetch(callback = {}) {
     let client, server;
 

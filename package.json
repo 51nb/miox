@@ -1,6 +1,6 @@
 {
   "name": "miox",
-  "version": "5.0.30",
+  "version": "5.0.31",
   "description": "[Modern infrastructure of complex SPA] Miox 可以自动帮你处理路由切换、webview 生命周期管理等各种单页应用会面临的问题，让你专注于 webview 内的业务开发。Miox 实现了生命周期和路由管理的最佳实践，避免了不统一的开发方式可能造成的性能下降和错误，并且可以平滑接入",
   "author": "沈赟杰",
   "license": "MIT",
@@ -23,8 +23,7 @@
     "ssr:server:build": "NODE_ENV=production webpack --config config/webpack.server.pro.config.js --progress --hide-modules",
     "web": "NODE_ENV=dev node_modules/.bin/webpack-dev-server --config config/webpack.web.dev.config.js --hot --progress",
     "web:build": "NODE_ENV=production node_modules/.bin/webpack --config config/webpack.web.pro.config.js -p --progress --hide-modules",
-    "test:start": "node_modules/karma/bin/karma start",
-    "test:end": "node_modules/karma/bin/karma run",
+    "test": "node_modules/karma/bin/karma start",
     "all:build": "npm run del && npm run web:build && npm run ssr:build",
     "react:dev": "NODE_ENV=dev node_modules/.bin/webpack-dev-server --config config/webpack.react.dev.config.js --hot --progress"
   },

@@ -40,6 +40,7 @@ export default async(app, engine, webview, data) => {
 
   // 当行为为`replace`，但是当前现实页面的构造体不存在
   // 我们应该抛出错误 `replace method need a existing webview`
+  /* istanbul ignore if */
   if (action === 'replace' && !webViews.existsWebView) {
     throw new Error('replace method need a existing webview');
   }
