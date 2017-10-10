@@ -69,7 +69,6 @@
     "webpack-node-externals": "^1.6.0"
   },
   "devDependencies": {
-    "@u51/miox-vant": "^1.2.28",
     "autoprefixer": "^7.1.4",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",

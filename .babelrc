@@ -10,10 +10,6 @@
 		"transform-decorators-legacy",
 		"transform-class-properties",
 		"istanbul",
-		["import", {
-			"libraryName": "@u51/miox-vant",
-			"libraryDirectory": "packages/"
-		}],
 		[
 			"transform-runtime",
 			{
