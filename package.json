@@ -24,6 +24,7 @@
     "web": "NODE_ENV=dev node_modules/.bin/webpack-dev-server --config config/webpack.web.dev.config.js --hot --progress",
     "web:build": "NODE_ENV=production node_modules/.bin/webpack --config config/webpack.web.pro.config.js -p --progress --hide-modules",
     "test": "node_modules/karma/bin/karma start",
+    "test:chrome": "node_modules/karma/bin/karma start --chrome",
     "all:build": "npm run del && npm run web:build && npm run ssr:build",
     "react:dev": "NODE_ENV=dev node_modules/.bin/webpack-dev-server --config config/webpack.react.dev.config.js --hot --progress"
   },
@@ -88,6 +89,7 @@
     "karma-chrome-launcher": "^2.2.0",
     "karma-coverage": "^1.1.1",
     "karma-jasmine": "^1.1.0",
+    "karma-phantomjs-launcher": "^1.0.4",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^2.0.4",
     "koa": "^2.3.0",

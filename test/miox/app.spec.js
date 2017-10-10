@@ -509,9 +509,7 @@ describe('Miox全场景测试:', () => {
 });
 
 function removeAll() {
-    document
-        .querySelectorAll('.mx-app')
-        .forEach(child => child.parentNode.removeChild(child));
+    Array.prototype.slice.call(document.querySelectorAll('.mx-app'), 0).forEach(child => child.parentNode.removeChild(child));
 
     global.history.pushState(null, document.title, '/');
 

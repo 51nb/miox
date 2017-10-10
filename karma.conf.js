@@ -2,6 +2,7 @@
 // Generated on Mon Sep 11 2017 18:10:10 GMT+0800 (CST)
 const webpack = require('webpack');
 const webpackHtml5Configs = require('./config/webpack.karma.config');
+const useChrome = !!~process.argv.indexOf('--chrome');
 
 module.exports = function(config) {
   config.set({
@@ -61,7 +62,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Chrome'],
+    browsers: [useChrome ? 'Chrome' : 'PhantomJS'],
 
 
     // Continuous Integration mode
@@ -78,7 +79,7 @@ module.exports = function(config) {
         'karma-jasmine',
         'karma-sourcemap-loader',
         'karma-webpack',
-        'karma-chrome-launcher',
+        useChrome ? 'karma-chrome-launcher' : 'karma-phantomjs-launcher',
         'karma-coverage'
     ]
   })
