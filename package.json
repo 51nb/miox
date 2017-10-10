@@ -23,7 +23,7 @@
     "ssr:server:build": "NODE_ENV=production webpack --config config/webpack.server.pro.config.js --progress --hide-modules",
     "web": "NODE_ENV=dev node_modules/.bin/webpack-dev-server --config config/webpack.web.dev.config.js --hot --progress",
     "web:build": "NODE_ENV=production node_modules/.bin/webpack --config config/webpack.web.pro.config.js -p --progress --hide-modules",
-    "test": "node_modules/karma/bin/karma start",
+    "test": "rm -rf coverage/ && node_modules/karma/bin/karma start && cat ./coverage/**/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
     "test:chrome": "node_modules/karma/bin/karma start --chrome",
     "all:build": "npm run del && npm run web:build && npm run ssr:build",
     "react:dev": "NODE_ENV=dev node_modules/.bin/webpack-dev-server --config config/webpack.react.dev.config.js --hot --progress"
@@ -84,6 +84,7 @@
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
+    "coveralls": "^3.0.0",
     "es6-promise": "^4.1.1",
     "jasmine-core": "^2.8.0",
     "karma": "^1.7.1",
