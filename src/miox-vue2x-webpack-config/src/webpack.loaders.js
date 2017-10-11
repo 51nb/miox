@@ -58,56 +58,55 @@ function sassLoader() {
     }
 }
 
-function cssBlock() {
+function cssBlock(isVue) {
+    const devArray = [cssLoader()];
+    const proArray = [styleLoader(), cssLoader()];
+
+    if (!isVue) {
+        devArray.push(postCssLoader());
+        proArray.push(postCssLoader());
+    }
+
     return isProd
         ? ExtractTextPlugin.extract({
-            use: [
-                cssLoader(),
-                postCssLoader()
-            ],
+            use: devArray,
             fallback: styleLoader()
         })
-        : [
-            styleLoader(),
-            cssLoader(),
-            postCssLoader()
-        ]
+        : proArray
 }
 
-function lessBlock() {
+function lessBlock(isVue) {
+    const devArray = [cssLoader(), lessLoader()];
+    const proArray = [styleLoader(), cssLoader(), lessLoader()];
+
+    if (!isVue) {
+        devArray.spilce(1, 1, postCssLoader(), devArray[1]);
+        proArray.splice(2, 1, postCssLoader(), proArray[2]);
+    }
+
     return isProd
         ? ExtractTextPlugin.extract({
-            use: [
-                cssLoader(),
-                postCssLoader(),
-                lessLoader()
-            ],
+            use: devArray,
             fallback: styleLoader()
         })
-        : [
-            styleLoader(),
-            cssLoader(),
-            postCssLoader(),
-            lessLoader()
-        ]
+        : proArray
 }
 
 function sassBlock() {
+    const devArray = [cssLoader(), sassLoader()];
+    const proArray = [styleLoader(), cssLoader(), sassLoader()];
+
+    if (!isVue) {
+        devArray.spilce(1, 1, postCssLoader(), devArray[1]);
+        proArray.splice(2, 1, postCssLoader(), proArray[2]);
+    }
+
     return isProd
         ? ExtractTextPlugin.extract({
-            use: [
-                cssLoader(),
-                postCssLoader(),
-                sassLoader()
-            ],
+            use: devArray,
             fallback: styleLoader()
         })
-        : [
-            styleLoader(),
-            cssLoader(),
-            postCssLoader(),
-            sassLoader()
-        ]
+        : proArray
 }
 
 function vue(includeCompiler) {
