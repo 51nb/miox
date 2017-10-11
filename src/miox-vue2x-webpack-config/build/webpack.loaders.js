@@ -2,7 +2,7 @@
 
 var cov_13dprqmopt = function () {
     var path = '/Users/shenyunjie/CodeBox/miox/src/miox-vue2x-webpack-config/src/webpack.loaders.js',
-        hash = '660e7678fc72268e8f0f30427a0252c3e499d5f5',
+        hash = '1bb89a907886d720be6029b4e7436c3b13740ccb',
         global = new Function('return this')(),
         gcv = '__coverage__',
         coverageData = {
@@ -547,7 +547,7 @@ var cov_13dprqmopt = function () {
                 loc: {
                     start: {
                         line: 95,
-                        column: 21
+                        column: 26
                     },
                     end: {
                         line: 110,
@@ -1095,7 +1095,7 @@ function lessBlock(isVue) {
     })) : (cov_13dprqmopt.b[3][1]++, proArray);
 }
 
-function sassBlock() {
+function sassBlock(isVue) {
     cov_13dprqmopt.f[8]++;
 
     var devArray = (cov_13dprqmopt.s[21]++, [cssLoader(), sassLoader()]);

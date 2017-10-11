@@ -92,7 +92,7 @@ function lessBlock(isVue) {
         : proArray
 }
 
-function sassBlock() {
+function sassBlock(isVue) {
     const devArray = [cssLoader(), sassLoader()];
     const proArray = [styleLoader(), cssLoader(), sassLoader()];
 
