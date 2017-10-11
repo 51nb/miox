@@ -80,7 +80,7 @@ function lessBlock(isVue) {
     const proArray = [styleLoader(), cssLoader(), lessLoader()];
 
     if (!isVue) {
-        devArray.spilce(1, 1, postCssLoader(), devArray[1]);
+        devArray.splice(1, 1, postCssLoader(), devArray[1]);
         proArray.splice(2, 1, postCssLoader(), proArray[2]);
     }
 
@@ -97,7 +97,7 @@ function sassBlock() {
     const proArray = [styleLoader(), cssLoader(), sassLoader()];
 
     if (!isVue) {
-        devArray.spilce(1, 1, postCssLoader(), devArray[1]);
+        devArray.splice(1, 1, postCssLoader(), devArray[1]);
         proArray.splice(2, 1, postCssLoader(), proArray[2]);
     }
 

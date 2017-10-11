@@ -1081,7 +1081,7 @@ function lessBlock(isVue) {
         cov_13dprqmopt.b[2][0]++;
         cov_13dprqmopt.s[18]++;
 
-        devArray.spilce(1, 1, postCssLoader(), devArray[1]);
+        devArray.splice(1, 1, postCssLoader(), devArray[1]);
         cov_13dprqmopt.s[19]++;
         proArray.splice(2, 1, postCssLoader(), proArray[2]);
     } else {
@@ -1106,7 +1106,7 @@ function sassBlock() {
         cov_13dprqmopt.b[4][0]++;
         cov_13dprqmopt.s[24]++;
 
-        devArray.spilce(1, 1, postCssLoader(), devArray[1]);
+        devArray.splice(1, 1, postCssLoader(), devArray[1]);
         cov_13dprqmopt.s[25]++;
         proArray.splice(2, 1, postCssLoader(), proArray[2]);
     } else {
