@@ -16,7 +16,7 @@ Miox 实现了生命周期和路由管理的最佳实践，避免了不统一的
 
 **注意：** 你所看到的miox的代码覆盖率仅仅是对所有模块的代码覆盖率，而miox核心的代码覆盖率达到了`93%`，你可以通过`npm run test:chrome`命令生成覆盖率报告查看。
 
-![Miox核心代码覆盖率报告截图](https://pic.51zhangdan.com/u51/storage/8c/8ecf8d7d-2eb2-0dc2-706f-487724f64d9c.png)
+![Miox核心代码覆盖率报告截图](http://pic.51zhangdan.com/u51/storage/8c/8ecf8d7d-2eb2-0dc2-706f-487724f64d9c.png)
 
 ## 源码
 
@@ -85,7 +85,7 @@ Miox开源将在下半年进行，到时候奉上相关文档。
 
 ## Example
 
-![Miox演示代码](https://pic.51zhangdan.com/u51/storage/95/914ba4fb-569c-2d59-b363-f50b361733f5.png)
+![Miox演示代码](http://pic.51zhangdan.com/u51/storage/95/914ba4fb-569c-2d59-b363-f50b361733f5.png)
 
 # License
 
