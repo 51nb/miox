@@ -321,38 +321,6 @@ var History = function (_EventEmitter) {
     /* istanbul ignore next */
 
   }, {
-    key: 'redirect',
-    value: function () {
-      var _ref6 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee5(url) {
-        var err;
-        return _regenerator2.default.wrap(function _callee5$(_context5) {
-          while (1) {
-            switch (_context5.prev = _context5.next) {
-              case 0:
-                err = new Error('302 Redirect');
-
-                err.code = 302;
-                err.url = url;
-                throw err;
-
-              case 4:
-              case 'end':
-                return _context5.stop();
-            }
-          }
-        }, _callee5, this);
-      }));
-
-      function redirect(_x5) {
-        return _ref6.apply(this, arguments);
-      }
-
-      return redirect;
-    }()
-
-    /* istanbul ignore next */
-
-  }, {
     key: 'link',
     value: function link(url) {
       if (this.app.doing) return;
@@ -384,56 +352,56 @@ var History = function (_EventEmitter) {
   }, {
     key: 'compare',
     value: function () {
-      var _ref7 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee6(prev, next) {
-        return _regenerator2.default.wrap(function _callee6$(_context6) {
+      var _ref6 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee5(prev, next) {
+        return _regenerator2.default.wrap(function _callee5$(_context5) {
           while (1) {
-            switch (_context6.prev = _context6.next) {
+            switch (_context5.prev = _context5.next) {
               case 0:
                 if (!(prev.pathname !== next.pathname)) {
-                  _context6.next = 4;
+                  _context5.next = 4;
                   break;
                 }
 
-                _context6.next = 3;
+                _context5.next = 3;
                 return this.emit('pathchange', next, prev);
 
               case 3:
-                return _context6.abrupt('return', _context6.sent);
+                return _context5.abrupt('return', _context5.sent);
 
               case 4:
                 if (!(prev.mark !== next.mark)) {
-                  _context6.next = 8;
+                  _context5.next = 8;
                   break;
                 }
 
-                _context6.next = 7;
+                _context5.next = 7;
                 return this.emit('searchchange', next, prev);
 
               case 7:
-                return _context6.abrupt('return', _context6.sent);
+                return _context5.abrupt('return', _context5.sent);
 
               case 8:
                 if (!(prev.hash !== next.hash)) {
-                  _context6.next = 12;
+                  _context5.next = 12;
                   break;
                 }
 
-                _context6.next = 11;
+                _context5.next = 11;
                 return this.emit('hashchange', next, prev);
 
               case 11:
-                return _context6.abrupt('return', _context6.sent);
+                return _context5.abrupt('return', _context5.sent);
 
               case 12:
               case 'end':
-                return _context6.stop();
+                return _context5.stop();
             }
           }
-        }, _callee6, this);
+        }, _callee5, this);
       }));
 
-      function compare(_x6, _x7) {
-        return _ref7.apply(this, arguments);
+      function compare(_x5, _x6) {
+        return _ref6.apply(this, arguments);
       }
 
       return compare;
@@ -441,28 +409,28 @@ var History = function (_EventEmitter) {
   }, {
     key: 'change',
     value: function () {
-      var _ref8 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee7(prev, next) {
+      var _ref7 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee6(prev, next) {
         var _this2 = this;
 
-        return _regenerator2.default.wrap(function _callee7$(_context7) {
+        return _regenerator2.default.wrap(function _callee6$(_context6) {
           while (1) {
-            switch (_context7.prev = _context7.next) {
+            switch (_context6.prev = _context6.next) {
               case 0:
-                _context7.next = 2;
+                _context6.next = 2;
                 return this.compare(prev, next).then(function () {
                   return _this2.clear();
                 });
 
               case 2:
               case 'end':
-                return _context7.stop();
+                return _context6.stop();
             }
           }
-        }, _callee7, this);
+        }, _callee6, this);
       }));
 
-      function change(_x8, _x9) {
-        return _ref8.apply(this, arguments);
+      function change(_x7, _x8) {
+        return _ref7.apply(this, arguments);
       }
 
       return change;

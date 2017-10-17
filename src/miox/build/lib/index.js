@@ -45,9 +45,9 @@ var _response = require('../miox_modules/response');
 
 var _response2 = _interopRequireDefault(_response);
 
-var _history6 = require('./history');
+var _history5 = require('./history');
 
-var _history7 = _interopRequireDefault(_history6);
+var _history6 = _interopRequireDefault(_history5);
 
 var _plugin = require('./plugin');
 
@@ -277,21 +277,19 @@ var Miox = function (_MiddleWare) {
   }, {
     key: 'redirect',
     value: function () {
-      var _ref4 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4() {
-        var _history5;
-
-        var _args4 = arguments;
+      var _ref4 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4(url) {
+        var err;
         return _regenerator2.default.wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
-                _context4.next = 2;
-                return (_history5 = this.history).redirect.apply(_history5, _args4);
+                err = new Error('302 Redirect');
 
-              case 2:
-                return _context4.abrupt('return', _context4.sent);
+                err.code = 302;
+                err.url = url;
+                throw err;
 
-              case 3:
+              case 4:
               case 'end':
                 return _context4.stop();
             }
@@ -299,7 +297,7 @@ var Miox = function (_MiddleWare) {
         }, _callee4, this);
       }));
 
-      function redirect() {
+      function redirect(_x2) {
         return _ref4.apply(this, arguments);
       }
 
@@ -358,7 +356,7 @@ var Miox = function (_MiddleWare) {
         }, _callee5, this);
       }));
 
-      function notify(_x2, _x3) {
+      function notify(_x3, _x4) {
         return _ref5.apply(this, arguments);
       }
 
@@ -375,7 +373,7 @@ var Miox = function (_MiddleWare) {
             switch (_context7.prev = _context7.next) {
               case 0:
                 if (!(value instanceof Error || Object.prototype.toString.call(value) === '[object Error]')) {
-                  _context7.next = 10;
+                  _context7.next = 22;
                   break;
                 }
 
@@ -383,10 +381,18 @@ var Miox = function (_MiddleWare) {
                 /* istanbul ignore if */
 
                 if (!(this.err.code === 302)) {
-                  _context7.next = 6;
+                  _context7.next = 10;
                   break;
                 }
 
+                if (!(this.env === 'server')) {
+                  _context7.next = 7;
+                  break;
+                }
+
+                throw value;
+
+              case 7:
                 return _context7.abrupt('return', (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee6() {
                   return _regenerator2.default.wrap(function _callee6$(_context6) {
                     while (1) {
@@ -406,28 +412,46 @@ var Miox = function (_MiddleWare) {
                   }, _callee6, _this3);
                 })));
 
-              case 6:
-                _context7.next = 8;
-                return this.emit(String(value.code), value);
-
               case 8:
-                _context7.next = 13;
+                _context7.next = 20;
                 break;
 
               case 10:
-                this.err = null;
+                _context7.prev = 10;
                 _context7.next = 13;
-                return this.emit('200', this.webView);
+                return this.emit(String(value.code), value);
 
               case 13:
+                _context7.next = 20;
+                break;
+
+              case 15:
+                _context7.prev = 15;
+                _context7.t0 = _context7['catch'](10);
+                _context7.next = 19;
+                return this.error(_context7.t0);
+
+              case 19:
+                return _context7.abrupt('return', _context7.sent);
+
+              case 20:
+                _context7.next = 25;
+                break;
+
+              case 22:
+                this.err = null;
+                _context7.next = 25;
+                return this.emit('200', this.webView);
+
+              case 25:
               case 'end':
                 return _context7.stop();
             }
           }
-        }, _callee7, this);
+        }, _callee7, this, [[10, 15]]);
       }));
 
-      function error(_x4) {
+      function error(_x5) {
         return _ref6.apply(this, arguments);
       }
 
@@ -511,6 +535,7 @@ var Miox = function (_MiddleWare) {
                     error.code = 404;
                   }
                 }
+
                 _context8.next = 23;
                 return this.error(error);
 
@@ -542,7 +567,7 @@ var Miox = function (_MiddleWare) {
         }, _callee8, this, [[11, 16]]);
       }));
 
-      function createServerProgress(_x5) {
+      function createServerProgress(_x6) {
         return _ref8.apply(this, arguments);
       }
 
@@ -570,7 +595,7 @@ var Miox = function (_MiddleWare) {
         }, _callee9, this);
       }));
 
-      function render(_x6, _x7) {
+      function render(_x7, _x8) {
         return _ref9.apply(this, arguments);
       }
 
@@ -601,7 +626,7 @@ var Miox = function (_MiddleWare) {
           }, _callee10, _this4);
         }));
 
-        return function (_x8) {
+        return function (_x9) {
           return _ref10.apply(this, arguments);
         };
       }());
@@ -646,7 +671,7 @@ var Miox = function (_MiddleWare) {
           }, _callee11, _this5);
         }));
 
-        return function (_x9, _x10) {
+        return function (_x10, _x11) {
           return _ref11.apply(this, arguments);
         };
       }());
@@ -679,7 +704,7 @@ var Miox = function (_MiddleWare) {
           }, _callee12, _this6);
         }));
 
-        return function (_x11, _x12) {
+        return function (_x12, _x13) {
           return _ref12.apply(this, arguments);
         };
       }());
@@ -725,7 +750,7 @@ var Miox = function (_MiddleWare) {
         });
       };
 
-      this.history = new _history7.default(this);
+      this.history = new _history6.default(this);
       var historyListener = this.history.listen();
       this.pathChange();
       this.searchChange();

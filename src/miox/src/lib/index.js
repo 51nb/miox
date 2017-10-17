@@ -94,8 +94,11 @@ export default class Miox extends MiddleWare {
     return await this.history.go(...args);
   }
   /* istanbul ignore next */
-  async redirect(...args) {
-    return await this.history.redirect(...args);
+  async redirect(url) {
+    const err = new Error('302 Redirect');
+    err.code = 302;
+    err.url = url;
+    throw err;
   }
 
   get request() {
@@ -171,9 +174,17 @@ export default class Miox extends MiddleWare {
       this.err = value;
       /* istanbul ignore if */
       if (this.err.code === 302) {
-        return async() => await this.go(this.err.url);
+        if (this.env === 'server') {
+          throw value;
+        } else {
+          return async() => await this.go(this.err.url);
+        }
       } else {
-        await this.emit(String(value.code), value);
+        try{
+          await this.emit(String(value.code), value);
+        }catch(e) {
+          return await this.error(e);
+        }
       }
     } else {
       this.err = null;
@@ -229,6 +240,7 @@ export default class Miox extends MiddleWare {
         error.code = 404;
       }
     }
+
     const callback = await this.error(error);
     await this.notify(index, !!callback);
     await this.emit('process:end');

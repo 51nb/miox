@@ -1,6 +1,6 @@
 <template>
     <div class="B">
-        <p style="color:#000;" v-go="-1">B Page</p>
+        <p style="color:#000;" v-go="u">B Page</p>
     </div>
 </template>
 <script>
@@ -10,5 +10,6 @@
         name: 'B'
     })
     export default class Index {
+        u = '/aaa'
     }
 </script>

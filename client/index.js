@@ -35,6 +35,9 @@ router.patch('/e', async ctx => {
 });
 
 const app = global.miox = new Miox({ session: true, max: 3 });
+app.on('404', async () => await app.redirect('/d'));
+app.on('process:start', () => console.log('process:start'));
+app.on('process:end', () => console.log('process:end'));
 app.set('engine', Engine);
 app.set('animate', Animate('slide'));
 app.install(VueContainer(Container));

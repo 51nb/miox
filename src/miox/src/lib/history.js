@@ -132,14 +132,6 @@ export default class History extends EventEmitter {
   }
 
   /* istanbul ignore next */
-  async redirect(url) {
-    const err = new Error('302 Redirect');
-    err.code = 302;
-    err.url = url;
-    throw err;
-  }
-
-  /* istanbul ignore next */
   link(url) {
     if (this.app.doing) return;
     this.app.doing = true;
