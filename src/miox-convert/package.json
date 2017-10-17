@@ -1,6 +1,6 @@
 {
   "name": "miox-convert",
-  "version": "5.0.34",
+  "version": "5.0.35",
   "main": "build/index.js",
   "files": [
     "build",

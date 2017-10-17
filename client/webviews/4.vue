@@ -4,10 +4,19 @@
     </div>
 </template>
 <script>
-    import { Component } from 'miox-vue2x-classify';
+    import { Component, life } from 'miox-vue2x-classify';
 
     @Component({
         name: 'E'
     })
-    export default class Index {}
+    export default class Index {
+        @life beforeCreate() {
+            console.log(4, 'beforeCreate');
+        }
+
+        @life created() {
+            this.$parent.text = '5555';
+            console.log(4, 'created');
+        }
+    }
 </script>

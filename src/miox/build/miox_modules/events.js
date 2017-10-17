@@ -12,31 +12,6 @@ var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
 
 var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
 
-var cov_ef7edsaea = function () {
-    var path = '/Users/shenyunjie/CodeBox/miox/src/miox/src/miox_modules/events.js',
-        hash = '014bb3d46f88fc88e6037766a741d48292f8480a',
-        global = new Function('return this')(),
-        gcv = '__coverage__',
-        coverageData = {
-        path: '/Users/shenyunjie/CodeBox/miox/src/miox/src/miox_modules/events.js',
-        statementMap: {},
-        fnMap: {},
-        branchMap: {},
-        s: {},
-        f: {},
-        b: {},
-        _coverageSchema: '332fd63041d2c1bcb487cc26dd0d5f7d97098a6c'
-    },
-        coverage = global[gcv] || (global[gcv] = {});
-
-    if (coverage[path] && coverage[path].hash === hash) {
-        return coverage[path];
-    }
-
-    coverageData.hash = hash;
-    return coverage[path] = coverageData;
-}();
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**

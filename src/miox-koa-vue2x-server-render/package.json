@@ -1,6 +1,6 @@
 {
   "name": "miox-koa-vue2x-server-render",
-  "version": "5.0.34",
+  "version": "5.0.35",
   "main": "build/index.js",
   "files": [
     "build",
@@ -19,7 +19,7 @@
     "webpack-dev-middleware": "^1.12.0",
     "webpack-hot-middleware": "^2.19.1",
     "events": "^1.1.1",
-    "vue-server-renderer": "^2.4.3",
+    "vue-server-renderer": "^2.5.2",
     "webpack-merge": "^4.1.0",
     "webpack-node-externals": "^1.6.0",
     "async-events-listener": "0.0.4"

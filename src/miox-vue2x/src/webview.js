@@ -3,53 +3,53 @@
  */
 
 export default {
-    beforeCreate() {
-        this.$miox.emit('webview:beforeCreate', this);
-    },
+  beforeCreate() {
+    this.$miox.emit('webview:beforeCreate', this);
+  },
 
-    created() {
-        this.$nextTick(() => {
-            this.$emit('webview:created');
-            this.$miox.emit('webview:created', this);
-        });
-    },
+  created() {
+    this.$nextTick(() => {
+      this.$emit('webview:created');
+      this.$miox.emit('webview:created', this);
+    });
+  },
 
-    beforeMount() {
-        this.$miox.emit('webview:beforeMount', this);
-    },
+  beforeMount() {
+    this.$miox.emit('webview:beforeMount', this);
+  },
 
-    mounted() {
-        this.__MioxInjectElement__ = this.$el.parentNode;
-        this.$nextTick(() => {
-            this.$emit('webview:mounted');
-            this.$miox.emit('webview:mounted', this);
-        });
-    },
+  mounted() {
+    this.__MioxInjectElement__ = this.$el.parentNode;
+    this.$nextTick(() => {
+      this.$emit('webview:mounted');
+      this.$miox.emit('webview:mounted', this);
+    });
+  },
 
-    beforeUpdate() {
-        this.$miox.emit('webview:beforeUpdate', this);
-    },
+  beforeUpdate() {
+    this.$miox.emit('webview:beforeUpdate', this);
+  },
 
-    updated() {
-        this.$miox.emit('webview:updated', this);
-    },
+  updated() {
+    this.$miox.emit('webview:updated', this);
+  },
 
-    activated() {
-        this.$miox.emit('webview:activated', this);
-    },
+  activated() {
+    this.$miox.emit('webview:activated', this);
+  },
 
-    deactivated() {
-        this.$miox.emit('webview:deactivated', this);
-    },
+  deactivated() {
+    this.$miox.emit('webview:deactivated', this);
+  },
 
-    beforeDestroy() {
-        this.$miox.emit('webview:beforeDestroy', this);
-    },
+  beforeDestroy() {
+    this.$miox.emit('webview:beforeDestroy', this);
+  },
 
-    destroyed() {
-        if (this.__MioxInjectElement__ && this.__MioxInjectElement__.parentNode) {
-            this.__MioxInjectElement__.parentNode.removeChild(this.__MioxInjectElement__);
-        }
-        this.$miox.emit('webview:destroyed', this);
+  destroyed() {
+    if (this.__MioxInjectElement__ && this.__MioxInjectElement__.parentNode) {
+      this.__MioxInjectElement__.parentNode.removeChild(this.__MioxInjectElement__);
     }
+    this.$miox.emit('webview:destroyed', this);
+  }
 }
