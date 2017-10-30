@@ -9,7 +9,6 @@
 		"transform-vue-jsx",
 		"transform-decorators-legacy",
 		"transform-class-properties",
-		"istanbul",
 		[
 			"transform-runtime",
 			{

@@ -1,6 +1,6 @@
 {
   "name": "miox-compose",
-  "version": "5.0.37",
+  "version": "5.0.38",
   "main": "build/index.js",
   "files": [
     "build",
