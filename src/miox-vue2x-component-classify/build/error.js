@@ -6,7 +6,8 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = error;
 
 var _require = require('./util'),
-    createDecorator = _require.createDecorator;
+    createDecorator = _require.createDecorator,
+    removeVueMethod = _require.removeVueMethod;
 
 var errorPrefixes = ['renderError', 'errorCaptured'];
 
@@ -16,6 +17,7 @@ function error(target, key, descriptor) {
       throw new Error(key + ' is not a error handle in Vue');
     }
     options[key] = descriptor.value;
+    removeVueMethod(options, key);
   })(target, key);
 }
 module.exports = exports['default'];

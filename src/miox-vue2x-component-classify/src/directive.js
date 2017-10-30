@@ -1,4 +1,4 @@
-const { createDecorator } = require('./util');
+const { createDecorator, removeVueMethod } = require('./util');
 
 export default function directive(target, key, descriptor) {
   return (
@@ -8,6 +8,7 @@ export default function directive(target, key, descriptor) {
         const directive = {};
         const value = handle.call(target, directive);
         (options.directives || (options.directives = {}))[key] = value ? value : directive;
+        removeVueMethod(options, key);
       }
     )
   )(target, key);

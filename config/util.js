@@ -13,7 +13,6 @@ const modules = exports.modules = {
     'miox-koa-vue2x-server-render': { build: true, alias: 'src/' },
     'miox-router': { build: true, alias: 'src/' },
     'miox-vue2x': { build: true, alias: 'src/' },
-    'miox-vue2x-classify': { build: true, alias: 'src/' },
     'miox-vue2x-webpack-config': { build: true, alias: 'src/' },
     'miox-vue2x-container': { build: true, alias: 'src/' },
     'miox-react': { build: true, alias: 'src/' },

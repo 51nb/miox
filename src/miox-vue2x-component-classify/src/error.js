@@ -1,4 +1,4 @@
-const { createDecorator } = require('./util');
+const { createDecorator, removeVueMethod } = require('./util');
 const errorPrefixes = ['renderError', 'errorCaptured'];
 
 export default function error(target, key, descriptor) {
@@ -9,6 +9,7 @@ export default function error(target, key, descriptor) {
           throw new Error(key + ' is not a error handle in Vue');
         }
         options[key] = descriptor.value;
+        removeVueMethod(options, key);
       }
     )
   )(target, key);

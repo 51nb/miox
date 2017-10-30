@@ -7,11 +7,13 @@ exports.default = life;
 
 var _require = require('./util'),
     lifeCycles = _require.lifeCycles,
-    createDecorator = _require.createDecorator;
+    createDecorator = _require.createDecorator,
+    removeVueMethod = _require.removeVueMethod;
 
 function life(target, key, descriptor) {
   return createDecorator(function (options, key) {
-    return options[key] = descriptor.value;
+    options[key] = descriptor.value;
+    removeVueMethod(options, key);
   })(target, key);
 }
 module.exports = exports['default'];

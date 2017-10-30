@@ -5,19 +5,21 @@
     </div>
 </template>
 <style lang="less" type="text/less">
-    .dist,.most{
-        width: 100%;
-        height:100%;
-    }
+.dist,
+.most {
+  width: 100%;
+  height: 100%;
+}
 </style>
 <script>
-    import { Component } from 'miox-vue2x-classify';
-    import Engine from 'miox-vue2x';
+import { Component } from "miox-vue2x-component-classify";
+import Engine from "miox-vue2x";
 
-    @Component
-    export default class Page extends Engine.WebView {
-        get mioxContainerElement() {
-            return this.$refs.el;
-        }
-    }
+@Component
+export default class Page extends Engine.WebView {
+  get mioxContainerElement() {
+    console.log(this);
+    return this.$refs.el;
+  }
+}
 </script>

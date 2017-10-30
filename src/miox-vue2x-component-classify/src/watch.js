@@ -1,4 +1,4 @@
-const { createDecorator } = require('./util');
+const { createDecorator, removeVueMethod } = require('./util');
 
 export default function watch(target, key, descriptor) {
   if (typeof target === 'string') {
@@ -13,8 +13,10 @@ function createWatcher(target, key, descriptor) {
   if (/^\./.test(key)) key = key.replace(/^\./, '');
   return (
     createDecorator(
-      (options, key) => 
-      (options.watch || (options.watch = {}))[key] = descriptor.value
+      (options, key) => {
+        (options.watch || (options.watch = {}))[key] = descriptor.value;
+        removeVueMethod(options, key);
+      }
     )
   )(target, key);
 }

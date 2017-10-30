@@ -24,3 +24,9 @@ export function createDecorator(handle) {
     );
   }
 }
+
+export function removeVueMethod(options, methodName) {
+  if (options.methods && options.methods[methodName]) {
+    delete options.methods[methodName];
+  }
+}

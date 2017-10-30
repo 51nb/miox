@@ -4,6 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.createDecorator = createDecorator;
+exports.removeVueMethod = removeVueMethod;
 var lifeCycles = exports.lifeCycles = ['beforeCreate', 'created', 'beforeMount', 'mounted', 'beforeDestroy', 'destroyed', 'beforeUpdate', 'updated', 'activated', 'deactivated'];
 
 function createDecorator(handle) {
@@ -16,4 +17,10 @@ function createDecorator(handle) {
       return handle(options, key, index);
     });
   };
+}
+
+function removeVueMethod(options, methodName) {
+  if (options.methods && options.methods[methodName]) {
+    delete options.methods[methodName];
+  }
 }
