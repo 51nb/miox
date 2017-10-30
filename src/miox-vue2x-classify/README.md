@@ -1,11 +1,6 @@
-# miox-animation
+# miox-vue2x-classify
 
-官方提供的页面切换动画集合
+让 vue 支持 Class 写法
 
 - [document](TODO)
 - license, [MIT](https://opensource.org/licenses/MIT)
-
-
-
-
-

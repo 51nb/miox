@@ -1,11 +1,6 @@
-# miox-animation
+# miox-css
 
-官方提供的页面切换动画集合
+提供了SPA中的全局基础样式
 
 - [document](TODO)
 - license, [MIT](https://opensource.org/licenses/MIT)
-
-
-
-
-
