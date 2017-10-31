@@ -11,7 +11,6 @@ describe('Layer', () => {
     app.req = {
       pathname: '/programming/how-to-node'
     }
-    app.use(router.routes());
     router.patch(
       '/:category/:title',
       async (ctx, next) => {
@@ -23,6 +22,7 @@ describe('Layer', () => {
         await next();
       }
     );
+    app.use(router.routes());
     app.__defineProcessHandle__();
     app.execute(app);
 
@@ -38,13 +38,13 @@ describe('Layer', () => {
       app.req = {
         pathname: '/programming/how-to-node'
       }
-      app.use(router.routes());
       router.patch('/:category/:title', async (ctx, next) => {
         expect(!!ctx.params).toBe(true);
         expect(typeof ctx.params).toBe('object');
         expect(ctx.params.category).toEqual('programming');
         expect(ctx.params.title).toEqual('how-to-node');
       });
+      app.use(router.routes());
       app.__defineProcessHandle__();
       app.execute(app);
     });
@@ -56,12 +56,12 @@ describe('Layer', () => {
       app.req = {
         pathname: '/100%/101%'
       }
-      app.use(router.routes());
       router.patch('/:category/:title', async (ctx, next) => {
         expect(ctx.params.category).toEqual('100%');
         expect(ctx.params.title).toEqual('101%');
         status = 204;
       });
+      app.use(router.routes());
       app.__defineProcessHandle__();
       app.execute(app);
       expect(status).toEqual(204);
@@ -74,7 +74,6 @@ describe('Layer', () => {
       app.req = {
         pathname: '/api/1'
       }
-      app.use(router.routes());
       router.patch(/^\/api\/([^\/]+)\/?/i, async (ctx, next) => {
         expect(!!ctx.captures).toBe(true);
         expect(ctx.captures instanceof Array).toBe(true);
@@ -87,6 +86,7 @@ describe('Layer', () => {
         expect(ctx.captures[0]).toEqual('1');
         status = 204;
       });
+      app.use(router.routes());
       app.__defineProcessHandle__();
       app.execute(app);
       expect(status).toEqual(204);
@@ -99,7 +99,6 @@ describe('Layer', () => {
       app.req = {
         pathname: '/api/101%'
       }
-      app.use(router.routes());
       router.patch(/^\/api\/([^\/]+)\/?/i, async (ctx, next) => {
         expect(!!ctx.captures).toBe(true);
         expect(typeof ctx.captures).toBe('object');
@@ -111,6 +110,7 @@ describe('Layer', () => {
         expect(ctx.captures[0]).toEqual('101%');
         status = 204;
       });
+      app.use(router.routes());
       app.__defineProcessHandle__();
       app.execute(app);
       expect(status).toEqual(204);
@@ -123,7 +123,6 @@ describe('Layer', () => {
       app.req = {
         pathname: '/api'
       }
-      app.use(router.routes());
       router.patch(/^\/api(\/.+)?/i, async (ctx, next) => {
         expect(!!ctx.captures).toBe(true);
         expect(typeof ctx.captures).toBe('object');
@@ -135,6 +134,7 @@ describe('Layer', () => {
         expect(ctx.captures[0]).toEqual(undefined);
         status = 204;
       });
+      app.use(router.routes());
       app.__defineProcessHandle__();
       app.execute(app);
       expect(status).toEqual(204);
@@ -159,73 +159,72 @@ describe('Layer', () => {
     });
   });
 
-  // describe('Layer#param()', () => {
-    // it('composes middleware for param fn', () => {
-    //   const app = new MiddleWare();
-    //   const router = new Router();
-    //   let status;
-    //   app.req = {
-    //     pathname: '/users/3'
-    //   }
-    //   app.use(router.routes());
-    //   router.param('user', async function(id, next) {
-    //     this.user = { name: 'alex', id };
-    //     if (!id) return status = 404;
-    //     await next();
-    //   });
-    //   router.patch('/users/:user', async ctx => {
-    //     expect(ctx.user.name).toBe('alex');
-    //     expect(ctx.user.id).toBe('3');
-    //     status = 204;
-    //   });
-    //   app.__defineProcessHandle__();
-    //   app.execute(app);
-    //   expect(status).toEqual(204);
-    // });
+  describe('Layer#param()', () => {
+    it('composes middleware for param fn', () => {
+      const app = new MiddleWare();
+      const router = new Router();
+      let status;
+      app.req = {
+        pathname: '/users/3'
+      }
+      router.param('user', async function(id, ctx, next) {
+        ctx.user = { name: 'alex', id };
+        if (!id) return status = 404;
+        await next();
+      });
+      router.patch('/users/:user', async ctx => {
+        expect(ctx.user.name).toBe('alex');
+        expect(ctx.user.id).toBe('3');
+        status = 204;
+      });
+      app.use(router.routes());
+      app.__defineProcessHandle__();
+      app.execute(app);
+      expect(status).toEqual(204);
+    });
 
-    // it('ignores params which are not matched', function(done) {
-    //   var app = koa();
-    //   var router = new Router();
-    //   var route = new Layer('/users/:user', ['GET'], [function *(next) {
-    //     this.body = this.user;
-    //   }]);
-    //   route.param('user', function *(id, next) {
-    //     this.user = { name: 'alex' };
-    //     if (!id) return this.status = 404;
-    //     yield next;
-    //   });
-    //   route.param('title', function *(id, next) {
-    //     this.user = { name: 'mark' };
-    //     if (!id) return this.status = 404;
-    //     yield next;
-    //   });
-    //   router.stack.push(route);
-    //   app.use(router.middleware());
-    //   request(http.createServer(app.callback()))
-    //     .get('/users/3')
-    //     .expect(200)
-    //     .end(function(err, res) {
-    //       if (err) return done(err);
-    //       res.should.have.property('body');
-    //       res.body.should.have.property('name', 'alex');
-    //       done();
-    //     });
-    // });
-  // });
+    it('ignores params which are not matched', () => {
+      const app = new MiddleWare();
+      const router = new Router();
+      let status = 200;
+      app.req = {
+        pathname: '/users/3'
+      }
+      const route = new Layer('/users/:user', ['PATCH'], [function (ctx) {
+        expect(ctx.user.name).toBe('alex');
+        expect(ctx.user.id).toBe('3');
+      }]);
+      route.param('user', function (id, ctx, next) {
+        ctx.user = { name: 'alex', id };
+        if (!id) return status = 404;
+        return next();
+      });
+      route.param('title', function (id, ctx, next) {
+        ctx.user = { name: 'mark', id };
+        if (!id) return status = 404;
+        return next();
+      });
+      router.stack.push(route);
+      app.use(router.routes());
+      app.__defineProcessHandle__();
+      app.execute(app);
+      expect(status).toEqual(200);
+    });
+  });
 
-  // describe('Layer#url()', function() {
-  //   it('generates route URL', function() {
-  //     var route = new Layer('/:category/:title', ['get'], [function* () {}], 'books');
-  //     var url = route.url({ category: 'programming', title: 'how-to-node' });
-  //     url.should.equal('/programming/how-to-node');
-  //     url = route.url('programming', 'how-to-node');
-  //     url.should.equal('/programming/how-to-node');
-  //   });
+  describe('Layer#url()', () => {
+    it('generates route URL', () => {
+      var route = new Layer('/:category/:title', ['patch'], [function () {}]);
+      var url = route.url({ category: 'programming', title: 'how-to-node' });
+      expect(url).toBe('/programming/how-to-node');
+      url = route.url('programming', 'how-to-node');
+      expect(url).toBe('/programming/how-to-node');
+    });
 
-  //   it('escapes using encodeURIComponent()', function() {
-  //     var route = new Layer('/:category/:title', ['get'], [function *() {}], 'books');
-  //     var url = route.url({ category: 'programming', title: 'how to node' });
-  //     url.should.equal('/programming/how%20to%20node');
-  //   });
-  // });
+    it('escapes using encodeURIComponent()', () => {
+      var route = new Layer('/:category/:title', ['patch'], [function () {}]);
+      var url = route.url({ category: 'programming', title: 'how to node' });
+      expect(url).toBe('/programming/how%20to%20node');
+    });
+  });
 });

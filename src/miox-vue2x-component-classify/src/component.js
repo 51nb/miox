@@ -18,6 +18,9 @@ export default function VueComponentDecoratorFactory(webView, options = {}) {
     || lifeCycles.indexOf(key) > -1;
 
     if (reject) return;
+    if (key === 'render') {
+      return options.render = webViewPrototype.render;
+    }
 
     const descriptor = Object.getOwnPropertyDescriptor(webViewPrototype, key);
     if (typeof descriptor.value === 'function') {
