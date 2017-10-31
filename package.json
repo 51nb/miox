@@ -15,7 +15,7 @@
     "del": "rm -rf build/",
     "dep": "node cmd/dep.js",
     "git": "git add . && git commit -am \"Auto update\" && git push",
-    "lazy": "npm run version && npm run build && npm run git && npm run post",
+    "lazy": "npm run version && npm run noistanbul && npm run build && npm run hasistanbul && npm run git && npm run post",
     "ssr": "NODE_ENV=dev node ssr/index.js",
     "ssr:debug": "NODE_ENV=production node ssr/index.js",
     "ssr:build": "npm run ssr:client:build && npm run ssr:server:build",
@@ -26,7 +26,9 @@
     "test": "rm -rf coverage/ && node_modules/karma/bin/karma start && cat ./coverage/**/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
     "test:chrome": "node_modules/karma/bin/karma start --chrome",
     "all:build": "npm run del && npm run web:build && npm run ssr:build",
-    "react:dev": "NODE_ENV=dev node_modules/.bin/webpack-dev-server --config config/webpack.react.dev.config.js --hot --progress"
+    "react:dev": "NODE_ENV=dev node_modules/.bin/webpack-dev-server --config config/webpack.react.dev.config.js --hot --progress",
+    "noistanbul": "node cmd/filter.js -i",
+    "hasistanbul": "node cmd/filter.js"
   },
   "dependencies": {
     "async-events-listener": "0.0.4",

@@ -1,21 +1,21 @@
 {
-	"presets": [
-		"es2015",
-		"stage-0",
-		"react"
-	],
-	"plugins": [
-		"add-module-exports",
-		"transform-vue-jsx",
-		"transform-decorators-legacy",
-		"transform-class-properties",
-		"istanbul",
-		[
-			"transform-runtime",
-			{
-				"polyfill": false,
-				"regenerator": true
-			}
-		]
-	]
+  "presets": [
+    "es2015",
+    "stage-0",
+    "react"
+  ],
+  "plugins": [
+    "add-module-exports",
+    "transform-vue-jsx",
+    "transform-decorators-legacy",
+    "transform-class-properties",
+    [
+      "transform-runtime",
+      {
+        "polyfill": false,
+        "regenerator": true
+      }
+    ],
+    "istanbul"
+  ]
 }
