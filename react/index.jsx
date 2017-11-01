@@ -46,8 +46,7 @@ app.on('process:end', web => {
   console.log(22)
 });
 
-
-app.set('engine', Engine);
+app.install(Engine)
 app.use(route.routes());
 
 export default app.listen();
