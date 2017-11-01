@@ -12,7 +12,7 @@
 }
 </style>
 <script>
-import { Component } from "miox-vue2x-component-classify";
+import { Component } from "miox-vue2x-classify";
 import Engine from "miox-vue2x";
 
 @Component

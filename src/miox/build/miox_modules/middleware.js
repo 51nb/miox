@@ -39,14 +39,6 @@ var _mioxCompose = require('miox-compose');
 
 var _mioxCompose2 = _interopRequireDefault(_mioxCompose);
 
-var _mioxConvert = require('miox-convert');
-
-var _mioxConvert2 = _interopRequireDefault(_mioxConvert);
-
-var _isGeneratorFunction = require('is-generator-function');
-
-var _isGeneratorFunction2 = _interopRequireDefault(_isGeneratorFunction);
-
 var _flatten = require('flatten');
 
 var _flatten2 = _interopRequireDefault(_flatten);
@@ -87,11 +79,6 @@ var MiddleWares = function (_EventEmitter) {
                 /* istanbul ignore if */
                 if (typeof cb !== 'function') {
                     throw new Error('middleware must be a function ' + 'but got ' + (typeof cb === 'undefined' ? 'undefined' : (0, _typeof3.default)(cb)));
-                }
-
-                /* istanbul ignore if */
-                if ((0, _isGeneratorFunction2.default)(cb)) {
-                    cb = (0, _mioxConvert2.default)(cb);
                 }
 
                 result.push(cb);

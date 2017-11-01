@@ -1,17 +1,15 @@
 {
   "name": "miox",
-  "version": "5.0.39",
+  "version": "5.1.0",
   "main": "build/index.js",
   "files": [
     "build",
     "package.json"
   ],
   "dependencies": {
-    "is-generator-function": "^1.0.6",
     "flatten": "^1.0.2",
     "is-class": "0.0.4",
     "miox-compose": "^5.0.0",
-    "miox-convert": "^5.0.0",
     "url": "^0.11.0"
   }
 }

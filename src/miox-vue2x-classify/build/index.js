@@ -1,61 +1,32 @@
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
-exports.filter = exports.watch = exports.life = exports.prop = exports.getComponentProperties = exports.removeMethodFromComponent = exports.createDecorator = undefined;
-
-var _util = require('./instance/util');
-
-Object.defineProperty(exports, 'createDecorator', {
-    enumerable: true,
-    get: function get() {
-        return _util.createDecorator;
-    }
-});
-Object.defineProperty(exports, 'removeMethodFromComponent', {
-    enumerable: true,
-    get: function get() {
-        return _util.removeMethodFromComponent;
-    }
-});
-Object.defineProperty(exports, 'getComponentProperties', {
-    enumerable: true,
-    get: function get() {
-        return _util.getComponentProperties;
-    }
-});
+exports.CreateDecorator = exports.error = exports.directive = exports.watch = exports.filter = exports.life = undefined;
 exports.Component = Component;
+exports.RegisterLifeCycle = RegisterLifeCycle;
 
-var _component = require('./instance/component');
+var _component = require('./component');
 
-var _prop2 = require('./instance/prop');
+var _component2 = _interopRequireDefault(_component);
 
-var _prop3 = _interopRequireDefault(_prop2);
-
-var _life2 = require('./instance/life');
-
-var _life3 = _interopRequireDefault(_life2);
-
-var _watch2 = require('./instance/watch');
-
-var _watch3 = _interopRequireDefault(_watch2);
-
-var _filter2 = require('./instance/filter');
-
-var _filter3 = _interopRequireDefault(_filter2);
+var _util = require('./util');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.prop = _prop3.default;
-exports.life = _life3.default;
-exports.watch = _watch3.default;
-exports.filter = _filter3.default;
+var life = exports.life = require('./life');
+var filter = exports.filter = require('./filter');
+var watch = exports.watch = require('./watch');
+var directive = exports.directive = require('./directive');
+var error = exports.error = require('./error');
+var CreateDecorator = exports.CreateDecorator = _util.createDecorator;
 function Component(options) {
-    if (typeof options === 'function') {
-        return (0, _component.componentFactory)(options);
-    }
-    return function (Component) {
-        return (0, _component.componentFactory)(Component, options);
-    };
+  if (typeof options === 'function') return (0, _component2.default)(options);
+  return function (target) {
+    return (0, _component2.default)(target, options);
+  };
+}
+function RegisterLifeCycle() {
+  _util.lifeCycles.push.apply(_util.lifeCycles, arguments);
 }

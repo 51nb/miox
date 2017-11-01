@@ -11,7 +11,7 @@ function VueDecoratorDataFactory(viewModule, Component) {
     var keys = Object.getOwnPropertyNames(viewModule);
     if (viewModule.$options.props) {
       for (var key in viewModule.$options.props) {
-        if (!vm.hasOwnProperty(key)) {
+        if (!viewModule.hasOwnProperty(key)) {
           keys.push(key);
         }
       }
@@ -20,10 +20,10 @@ function VueDecoratorDataFactory(viewModule, Component) {
       if (key.charAt(0) !== '_') {
         Object.defineProperty(_this, key, {
           get: function get() {
-            return vm[key];
+            return viewModule[key];
           },
           set: function set(value) {
-            return vm[key] = value;
+            return viewModule[key] = value;
           }
         });
       }

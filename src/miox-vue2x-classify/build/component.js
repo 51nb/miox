@@ -30,6 +30,9 @@ function VueComponentDecoratorFactory(webView) {
     var reject = key === 'constructor' || /^[\$\_]/.test(key) || lifeCycles.indexOf(key) > -1;
 
     if (reject) return;
+    if (key === 'render') {
+      return options.render = webViewPrototype.render;
+    }
 
     var descriptor = Object.getOwnPropertyDescriptor(webViewPrototype, key);
     if (typeof descriptor.value === 'function') {

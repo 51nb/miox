@@ -11,7 +11,7 @@ import {
   watch,
   directive,
   error
-} from "miox-vue2x-component-classify";
+} from "miox-vue2x-classify";
 
 @Component({
   name: "E"

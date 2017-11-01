@@ -3,7 +3,7 @@ export default function VueDecoratorDataFactory(viewModule, Component) {
     const keys = Object.getOwnPropertyNames(viewModule);
     if (viewModule.$options.props) {
       for (const key in viewModule.$options.props) {
-        if (!vm.hasOwnProperty(key)) {
+        if (!viewModule.hasOwnProperty(key)) {
           keys.push(key);
         }
       }
@@ -11,8 +11,8 @@ export default function VueDecoratorDataFactory(viewModule, Component) {
     keys.forEach(key => {
       if (key.charAt(0) !== '_') {
         Object.defineProperty(this, key, {
-          get: () => vm[key],
-          set: value => vm[key] = value
+          get: () => viewModule[key],
+          set: value => viewModule[key] = value
         })
       }
     });   

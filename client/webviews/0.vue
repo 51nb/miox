@@ -8,7 +8,7 @@
     </ul>
 </template>
 <script>
-    import { Component, life } from 'miox-vue2x-component-classify';
+    import { Component, life } from 'miox-vue2x-classify';
     import v4 from './4.vue';
 
     @Component({

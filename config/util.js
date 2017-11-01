@@ -8,7 +8,6 @@ const modules = exports.modules = {
     'miox': { build: true, alias: 'src/' },
     'miox-css': { build: false, alias: 'index.css' },
     'miox-compose': { build: true, alias: 'src/' },
-    'miox-convert': { build: true, alias: 'src/' },
     'miox-animation': { build: true, alias: 'src/' },
     'miox-koa-vue2x-server-render': { build: true, alias: 'src/' },
     'miox-router': { build: true, alias: 'src/' },
@@ -16,7 +15,7 @@ const modules = exports.modules = {
     'miox-vue2x-webpack-config': { build: true, alias: 'src/' },
     'miox-vue2x-container': { build: true, alias: 'src/' },
     'miox-react': { build: true, alias: 'src/' },
-    'miox-vue2x-component-classify': { build: true, alias: 'src/' },
+    'miox-vue2x-classify': { build: true, alias: 'src/' },
 };
 
 exports.compile = function(cmd, cwd, prefix) {
