@@ -103,6 +103,7 @@ var SessionStorage = function (_Dictionary) {
         return Number(v);
       });
       var i = keys.length;
+      var strict = this.app.options.strict;
       while (i--) {
         var key = keys[i];
         var value = this.get(key);
@@ -110,8 +111,14 @@ var SessionStorage = function (_Dictionary) {
           var pathname = value.pathname,
               search = value.search;
 
-          if (pathname === _pathname && search === _search) {
-            return key;
+          if (strict) {
+            if (pathname === _pathname && search === _search) {
+              return key;
+            }
+          } else {
+            if (pathname === _pathname) {
+              return key;
+            }
           }
         }
       }

@@ -10,6 +10,6 @@
         name: 'B'
     })
     export default class Index {
-        u = '/aaa'
+        u = '/'
     }
 </script>

@@ -66,6 +66,7 @@ export default class SessionStorage extends Dictionary {
   findSession(_pathname, _search) {
     const keys = Object.keys(this.variables).sort().map(v => Number(v));
     let i = keys.length;
+    const strict = this.app.options.strict;
     while (i--) {
       const key = keys[i];
       const value = this.get(key);
@@ -74,8 +75,14 @@ export default class SessionStorage extends Dictionary {
           pathname,
           search
         } = value;
-        if (pathname === _pathname && search === _search) {
-          return key;
+        if (strict) {
+          if (pathname === _pathname && search === _search) {
+            return key;
+          }
+        } else {
+          if (pathname === _pathname) {
+            return key;
+          }
         }
       }
     }

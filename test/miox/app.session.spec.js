@@ -6,6 +6,9 @@ import { sessionIndexName } from 'miox/lib/util';
 class App {
    constructor(url) {
       this.req = new Request(url);
+      this.options = {
+          strict: true
+      }
    }
 }
 
