@@ -18,7 +18,12 @@ var _vue2 = _interopRequireDefault(_vue);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = _engine2.default;
+exports.default = installer;
 
-_engine2.default.WebView = _vue2.default.extend(_webview2.default);
+
+installer.WebView = _engine2.default.WebView = _vue2.default.extend(_webview2.default);
+
+function installer(app) {
+  app.set('engine', _engine2.default);
+}
 module.exports = exports['default'];

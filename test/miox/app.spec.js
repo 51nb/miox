@@ -565,9 +565,9 @@ function progress(options, cb, fn) {
         }
     });
 
-    app.set('engine', Engine);
+    app.install(Engine);
     if (options.animate) {
-        app.set('animate', Animate('slide'));
+        app.install(Animate('slide'));
     }
 
     app.use(route.routes());
