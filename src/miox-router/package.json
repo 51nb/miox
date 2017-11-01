@@ -8,6 +8,6 @@
   ],
   "dependencies": {
     "path-to-regexp": "^2.0.0",
-    "miox-compose": "^5.0.0"
+    "miox-compose": "^5.1.2"
   }
 }
