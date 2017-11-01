@@ -60,32 +60,37 @@
  * all done
  *
  */
-
+/* istanbul ignore next */
 function EventEmitter() {
     this._events = this._events || {};
     this._maxListeners = this._maxListeners || undefined;
 }
+/* istanbul ignore next */
 module.exports = EventEmitter;
 
 // Backwards-compat with node 0.10.x
+/* istanbul ignore next */
 EventEmitter.EventEmitter = EventEmitter;
-
+/* istanbul ignore next */
 EventEmitter.prototype._events = undefined;
+/* istanbul ignore next */
 EventEmitter.prototype._maxListeners = undefined;
 
 // By default EventEmitters will print a warning if more than 10 listeners are
 // added to it. This is a useful default which helps finding memory leaks.
+/* istanbul ignore next */
 EventEmitter.defaultMaxListeners = 10;
 
 // Obviously not all Emitters should be limited to 10. This function allows
 // that to be increased. Set to zero for unlimited.
+/* istanbul ignore next */
 EventEmitter.prototype.setMaxListeners = function(n) {
     if (!isNumber(n) || n < 0 || isNaN(n))
         throw TypeError('n must be a positive number');
     this._maxListeners = n;
     return this;
 };
-
+/* istanbul ignore next */
 EventEmitter.prototype.emit = async function(type) {
     var er, handler, len, args, i, listeners;
 
@@ -142,7 +147,7 @@ EventEmitter.prototype.emit = async function(type) {
 
     return true;
 };
-
+/* istanbul ignore next */
 EventEmitter.prototype.addListener = function(type, listener) {
     var m;
 
@@ -192,9 +197,9 @@ EventEmitter.prototype.addListener = function(type, listener) {
 
     return this;
 };
-
+/* istanbul ignore next */
 EventEmitter.prototype.on = EventEmitter.prototype.addListener;
-
+/* istanbul ignore next */
 EventEmitter.prototype.once = function(type, listener) {
     if (!isFunction(listener))
         throw TypeError('listener must be a function');
@@ -217,6 +222,7 @@ EventEmitter.prototype.once = function(type, listener) {
 };
 
 // emits a 'removeListener' event iff the listener was removed
+/* istanbul ignore next */
 EventEmitter.prototype.removeListener = function(type, listener) {
     var list, position, length, i;
 
@@ -261,7 +267,7 @@ EventEmitter.prototype.removeListener = function(type, listener) {
 
     return this;
 };
-
+/* istanbul ignore next */
 EventEmitter.prototype.removeAllListeners = function(type) {
     var key, listeners;
 
@@ -301,7 +307,7 @@ EventEmitter.prototype.removeAllListeners = function(type) {
 
     return this;
 };
-
+/* istanbul ignore next */
 EventEmitter.prototype.listeners = function(type) {
     var ret;
     if (!this._events || !this._events[type])
@@ -312,7 +318,7 @@ EventEmitter.prototype.listeners = function(type) {
         ret = this._events[type].slice();
     return ret;
 };
-
+/* istanbul ignore next */
 EventEmitter.prototype.listenerCount = function(type) {
     if (this._events) {
         var evlistener = this._events[type];
@@ -324,23 +330,23 @@ EventEmitter.prototype.listenerCount = function(type) {
     }
     return 0;
 };
-
+/* istanbul ignore next */
 EventEmitter.listenerCount = function(emitter, type) {
     return emitter.listenerCount(type);
 };
-
+/* istanbul ignore next */
 function isFunction(arg) {
     return typeof arg === 'function';
 }
-
+/* istanbul ignore next */
 function isNumber(arg) {
     return typeof arg === 'number';
 }
-
+/* istanbul ignore next */
 function isObject(arg) {
     return typeof arg === 'object' && arg !== null;
 }
-
+/* istanbul ignore next */
 function isUndefined(arg) {
     return arg === void 0;
 }

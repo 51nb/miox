@@ -3,8 +3,6 @@
  */
 import { EventEmitter } from './events';
 import compose from 'miox-compose';
-import convert from 'miox-convert';
-import isGeneratorFunction from 'is-generator-function';
 import flatten from 'flatten';
 
 export default class MiddleWares extends EventEmitter {
@@ -23,16 +21,13 @@ export default class MiddleWares extends EventEmitter {
         const result = [];
         for (let i = 0; i < args.length; i++) {
             let cb = args[i];
+            
+            /* istanbul ignore if */
             if (typeof cb !== 'function') {
                 throw new Error(
                     'middleware must be a function ' +
                     'but got ' + typeof cb
                 );
-            }
-
-            // runtime convert generator function to ...
-            if (isGeneratorFunction(cb)) {
-                cb = convert(cb);
             }
 
             result.push(cb);

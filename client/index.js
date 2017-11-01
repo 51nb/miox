@@ -12,7 +12,6 @@ import D from './webviews/3.vue';
 import E from './webviews/4.vue';
 import Container from './webviews/container.vue';
 
-
 const router = new Router();
 
 router.patch('/', async ctx => {
@@ -28,7 +27,6 @@ router.patch('/c', async ctx => {
 });
 
 router.patch('/d', async ctx => {
-    debugger;
     await ctx.render(D);
 });
 
@@ -37,8 +35,11 @@ router.patch('/e', async ctx => {
 });
 
 const app = global.miox = new Miox({ session: true, max: 3 });
+app.on('404', async () => await app.redirect('/d'));
+app.on('process:start', () => console.log('process:start'));
+app.on('process:end', () => console.log('process:end'));
 app.set('engine', Engine);
 app.set('animate', Animate('slide'));
-// app.install(VueContainer(Container));
+app.install(VueContainer(Container));
 app.use(router.routes());
 export default app.listen();

@@ -42,7 +42,6 @@ export default class Dictionary extends EventEmitter {
         });
     }
 
-    // why mark variable name is used, maybe key is better
     /**
      * 判断某个值存在或有效
      * @param mark
@@ -62,7 +61,6 @@ export default class Dictionary extends EventEmitter {
         }
     }
 
-    // 返回一个稀疏数组?? 不是，是一个对象，非数组
     /**
      * 过滤符合条件的数据
      * @param fn
