@@ -1,11 +1,6 @@
-# miox-animation
+# miox-vue2x
 
-官方提供的页面切换动画集合
+miox 驱动 vue@2.x 的渲染引擎
 
 - [document](TODO)
 - license, [MIT](https://opensource.org/licenses/MIT)
-
-
-
-
-

@@ -1,11 +1,6 @@
-# miox-animation
+# miox-router
 
-官方提供的页面切换动画集合
+miox-router，类 koa-router 的中间件
 
 - [document](TODO)
 - license, [MIT](https://opensource.org/licenses/MIT)
-
-
-
-
-
