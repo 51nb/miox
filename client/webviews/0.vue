@@ -1,5 +1,5 @@
 <template>
-    <ul>
+    <ul v-aaa>
         <li v-go:push="b">B</li>
         <li v-go="c">C</li>
         <li><a href="javascript:void(0);" v-link="d">Baidu</a></li>
@@ -8,7 +8,7 @@
     </ul>
 </template>
 <script>
-    import { Component, life } from 'miox-vue2x-classify';
+    import { Component, life, watch, directive } from 'miox-vue2x-classify';
     import v4 from './4.vue';
 
     @Component({
@@ -21,7 +21,12 @@
         b = '/b?a=1';
         c = '/c';
         d = 'http://baidu.com';
+        time = 1;
         text = 'uuuuu';
+
+        get ctime() {
+            return this.time;
+        }
 
         @life beforeCreate() {
             console.log(0, 'beforeCreate');
@@ -29,6 +34,30 @@
 
         @life created() {
             console.log(0, 'created');
+        }
+
+        @life mounted() {
+            setTimeout(() => {
+                this.time = 2;
+            }, 3000);
+        }
+
+        @watch 'this.ctime'(val) {
+            console.log('change time to', val)
+        }
+
+        // @directive static aaa = {
+        //     inserted() {
+        //         console.log('inserted 2')
+        //     }
+        // }
+
+        @directive aaa() {
+            return {
+                inserted() {
+                    console.log('inserted 2')
+                }
+            }
         }
     }
 </script>

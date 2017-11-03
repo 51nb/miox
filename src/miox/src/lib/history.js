@@ -107,7 +107,6 @@ export default class History extends EventEmitter {
 
   async go(obj, animate) {
     this.animateName = animate;
-    console.log(this.animateName)
     if (typeof obj === 'number') {
       if (obj === 0) return;
       if (this.session) {
