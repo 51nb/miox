@@ -11,8 +11,11 @@ export default webView => {
     body.appendChild(element);
     app.once('app:start', async() => {
       const el = await new Promise((resolve, reject) => {
-        const vm = new webView();
-        vm.$on('webview:mounted', () => resolve(vm.mioxContainerElement));
+        const vm = new webView({
+          mounted() {
+            resolve(vm.mioxContainerElement);
+          }
+        });
         vm.$mount(element);
       });
 
