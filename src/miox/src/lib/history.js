@@ -18,6 +18,7 @@ export default class History extends EventEmitter {
     this.stacks = [];
     this.action = null;
     this.direction = 0;
+    this.animateName = null;
     this.title = global.document.title;
     this.popState = app.options.popState || (
       app.env === 'client' &&
@@ -81,8 +82,9 @@ export default class History extends EventEmitter {
     }
   }
 
-  async push(url) {
+  async push(url, animate) {
     this.action = 'push';
+    this.animateName = animate;
     /* istanbul ignore if */
     if (this.popState) {
       global.history.pushState(null, this.title, url);
@@ -103,7 +105,9 @@ export default class History extends EventEmitter {
     }
   }
 
-  async go(obj) {
+  async go(obj, animate) {
+    this.animateName = animate;
+    console.log(this.animateName)
     if (typeof obj === 'number') {
       if (obj === 0) return;
       if (this.session) {
@@ -120,14 +124,14 @@ export default class History extends EventEmitter {
       const index = this.session.findSession(pathname, sortQuery);
 
       if (index === undefined) {
-        return await this.push(obj);
+        return await this.push(obj, animate);
       }
 
       if (this.session.current !== index) {
-        return this.go(index - this.session.current);
+        return this.go(index - this.session.current, animate);
       }
     } else {
-      await this.push(obj);
+      await this.push(obj, animate);
     }
   }
 
@@ -172,6 +176,7 @@ export default class History extends EventEmitter {
 
   async change(prev, next) {
     await this.compare(prev, next).then(() => this.clear());
+    this.animateName = null;
   }
 
   listen() {

@@ -21,7 +21,7 @@ export default class Animate {
     async leave(node) {
         if (!node) return;
         await this.app.emit('animate:leave:before', node);
-        const animationName = this.animateName;
+        const animationName = this.app.history.animateName || this.animateName;
         const direction = directionMap[this.app.history.direction];
         const cls = `page-${animationName}-out-${direction}`;
         node.classList.add(cls);
@@ -32,7 +32,7 @@ export default class Animate {
     async enter(node) {
         if (!node) return;
         await this.app.emit('animate:enter:before', node);
-        const animationName = this.animateName;
+        const animationName = this.app.history.animateName || this.animateName;
         const direction = directionMap[this.app.history.direction];
         const cls = `page-${animationName}-in-${direction}`;
         node.classList.add(cls);

@@ -1,6 +1,6 @@
 <template>
     <ul>
-        <li v-go="b">B</li>
+        <li v-go:push="b">B</li>
         <li v-go="c">C</li>
         <li><a href="javascript:void(0);" v-link="d">Baidu</a></li>
         <v4></v4>
