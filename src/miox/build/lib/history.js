@@ -58,6 +58,7 @@ var History = function (_EventEmitter) {
     _this.stacks = [];
     _this.action = null;
     _this.direction = 0;
+    _this.animateName = null;
     _this.title = global.document.title;
     _this.popState = app.options.popState || app.env === 'client' && global.history && typeof global.history.pushState === 'function';
 
@@ -159,31 +160,32 @@ var History = function (_EventEmitter) {
   }, {
     key: 'push',
     value: function () {
-      var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(url) {
+      var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(url, animate) {
         return _regenerator2.default.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
                 this.action = 'push';
+                this.animateName = animate;
                 /* istanbul ignore if */
 
                 if (!this.popState) {
-                  _context2.next = 7;
+                  _context2.next = 8;
                   break;
                 }
 
                 global.history.pushState(null, this.title, url);
-                _context2.next = 5;
+                _context2.next = 6;
                 return this.change(this.request, new _request2.default(this.location()));
 
-              case 5:
-                _context2.next = 8;
+              case 6:
+                _context2.next = 9;
                 break;
 
-              case 7:
+              case 8:
                 global.location.hash = url;
 
-              case 8:
+              case 9:
               case 'end':
                 return _context2.stop();
             }
@@ -191,7 +193,7 @@ var History = function (_EventEmitter) {
         }, _callee2, this);
       }));
 
-      function push(_x2) {
+      function push(_x2, _x3) {
         return _ref2.apply(this, arguments);
       }
 
@@ -232,7 +234,7 @@ var History = function (_EventEmitter) {
         }, _callee3, this);
       }));
 
-      function replace(_x3) {
+      function replace(_x4) {
         return _ref3.apply(this, arguments);
       }
 
@@ -241,69 +243,71 @@ var History = function (_EventEmitter) {
   }, {
     key: 'go',
     value: function () {
-      var _ref4 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4(obj) {
+      var _ref4 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4(obj, animate) {
         var _ref5, pathname, sortQuery, index;
 
         return _regenerator2.default.wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
+                this.animateName = animate;
+
                 if (!(typeof obj === 'number')) {
-                  _context4.next = 5;
+                  _context4.next = 6;
                   break;
                 }
 
                 if (!(obj === 0)) {
-                  _context4.next = 3;
+                  _context4.next = 4;
                   break;
                 }
 
                 return _context4.abrupt('return');
 
-              case 3:
+              case 4:
                 if (this.session) {
                   this.direction = obj > 1 ? 1 : -1;
                 }
                 return _context4.abrupt('return', global.history.go(obj));
 
-              case 5:
+              case 6:
                 _ref5 = new _request2.default(obj), pathname = _ref5.pathname, sortQuery = _ref5.sortQuery;
 
                 if (!this.session) {
-                  _context4.next = 16;
+                  _context4.next = 17;
                   break;
                 }
 
                 index = this.session.findSession(pathname, sortQuery);
 
                 if (!(index === undefined)) {
-                  _context4.next = 12;
+                  _context4.next = 13;
                   break;
                 }
 
-                _context4.next = 11;
-                return this.push(obj);
-
-              case 11:
-                return _context4.abrupt('return', _context4.sent);
+                _context4.next = 12;
+                return this.push(obj, animate);
 
               case 12:
+                return _context4.abrupt('return', _context4.sent);
+
+              case 13:
                 if (!(this.session.current !== index)) {
-                  _context4.next = 14;
+                  _context4.next = 15;
                   break;
                 }
 
-                return _context4.abrupt('return', this.go(index - this.session.current));
+                return _context4.abrupt('return', this.go(index - this.session.current, animate));
 
-              case 14:
-                _context4.next = 18;
+              case 15:
+                _context4.next = 19;
                 break;
 
-              case 16:
-                _context4.next = 18;
-                return this.push(obj);
+              case 17:
+                _context4.next = 19;
+                return this.push(obj, animate);
 
-              case 18:
+              case 19:
               case 'end':
                 return _context4.stop();
             }
@@ -311,7 +315,7 @@ var History = function (_EventEmitter) {
         }, _callee4, this);
       }));
 
-      function go(_x4) {
+      function go(_x5, _x6) {
         return _ref4.apply(this, arguments);
       }
 
@@ -400,7 +404,7 @@ var History = function (_EventEmitter) {
         }, _callee5, this);
       }));
 
-      function compare(_x5, _x6) {
+      function compare(_x7, _x8) {
         return _ref6.apply(this, arguments);
       }
 
@@ -422,6 +426,9 @@ var History = function (_EventEmitter) {
                 });
 
               case 2:
+                this.animateName = null;
+
+              case 3:
               case 'end':
                 return _context6.stop();
             }
@@ -429,7 +436,7 @@ var History = function (_EventEmitter) {
         }, _callee6, this);
       }));
 
-      function change(_x7, _x8) {
+      function change(_x9, _x10) {
         return _ref7.apply(this, arguments);
       }
 

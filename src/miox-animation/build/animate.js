@@ -68,7 +68,7 @@ var Animate = function () {
                                 return this.app.emit('animate:leave:before', node);
 
                             case 4:
-                                animationName = this.animateName;
+                                animationName = this.app.history.animateName || this.animateName;
                                 direction = directionMap[this.app.history.direction];
                                 cls = 'page-' + animationName + '-out-' + direction;
 
@@ -115,7 +115,7 @@ var Animate = function () {
                                 return this.app.emit('animate:enter:before', node);
 
                             case 4:
-                                animationName = this.animateName;
+                                animationName = this.app.history.animateName || this.animateName;
                                 direction = directionMap[this.app.history.direction];
                                 cls = 'page-' + animationName + '-in-' + direction;
 

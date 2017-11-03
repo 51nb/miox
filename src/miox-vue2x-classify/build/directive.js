@@ -13,8 +13,11 @@ function directive(target, key, descriptor) {
   return createDecorator(function (options, key) {
     var handle = descriptor.value;
     var directive = {};
-    var value = handle.call(target, directive);
+
+    var value = typeof handle === 'function' ? handle.call(target, directive) : handle || {};
+
     (options.directives || (options.directives = {}))[key] = value ? value : directive;
+
     removeVueMethod(options, key);
   })(target, key);
 }

@@ -8,11 +8,7 @@ exports.default = function (ctx) {
   keys.forEach(function (key) {
     if (typeof ctx[key] === 'function') {
       _vue2.default.prototype['$' + key] = function () {
-        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-          args[_key] = arguments[_key];
-        }
-
-        return ctx[key].apply(ctx, args);
+        return ctx[key].apply(ctx, arguments);
       };
       _vue2.default.directive(key, historyRedirect(ctx, key));
     }
@@ -29,41 +25,27 @@ var keys = ['push', 'go', 'replace', 'redirect', 'link']; /**
                                                            * Created by evio on 2017/3/22.
                                                            */
 
+
 /* istanbul ignore next */
 function historyRedirect(ctx, key) {
-  var options = {};
-  options.bind = function (el, binding) {
-    el.addEventListener('click', binding.__redirectInjector__ = function () {
-      var modifiers = binding.modifiers || {};
-      var options = {};
-      binding.realValue = binding.value;
-
-      if (ctx.history.url === binding.realValue) return;
-
-      if (modifiers.argument) {
-        options.animate = modifiers.argument;
+  return {
+    bind: function bind(el, binding) {
+      el.addEventListener('click', binding.__redirectInjector__ = bindDirectiveAction(ctx, key, binding));
+    },
+    unbind: function unbind(el, binding) {
+      if (binding.__redirectInjector__) {
+        el.removeEventListener('click', binding.__redirectInjector__);
       }
-
-      if (modifiers.alone) {
-        options.cache = false;
-      }
-
-      if (typeof ctx[key] === 'function') {
-        ctx[key](binding.realValue, options);
-      }
-    });
-  };
-
-  options.unbind = function (el, binding) {
-    if (binding.__redirectInjector__) {
-      el.removeEventListener('click', binding.__redirectInjector__);
     }
   };
+}
 
-  options.componentUpdated = function (el, binding) {
-    binding.realValue = binding.value;
+/* istanbul ignore next */
+function bindDirectiveAction(ctx, key, binding) {
+  return function () {
+    if (ctx.req.href === binding.value) return;
+    if (/^http(s?)\:\/\//i.test(binding.value)) return ctx.link(binding.value);
+    ctx[key](binding.value, binding.arg);
   };
-
-  return options;
 }
 module.exports = exports['default'];

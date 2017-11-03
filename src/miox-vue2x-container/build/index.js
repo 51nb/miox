@@ -38,9 +38,10 @@ exports.default = function (webView) {
             case 0:
               _context.next = 2;
               return new Promise(function (resolve, reject) {
-                var vm = new webView();
-                vm.$on('webview:mounted', function () {
-                  return resolve(vm.mioxContainerElement);
+                var vm = new webView({
+                  mounted: function mounted() {
+                    resolve(vm.mioxContainerElement);
+                  }
                 });
                 vm.$mount(element);
               });

@@ -113,8 +113,8 @@ var Engine = function () {
                       case 'web':
                         Arguments.el = _this.createWebViewRoot();
                         break;
+                      /* istanbul ignore next */
                       case 'client':
-                        /* istanbul ignore next */
                         if (_this.ctx.installed) {
                           Arguments.el = _this.createWebViewRoot();
                         }
@@ -379,10 +379,10 @@ var Engine = function () {
   }]);
   return Engine;
 }();
+/* istanbul ignore next */
+
 
 exports.default = Engine;
-
-
 function checkWebViewObject(webview) {
   if (!(0, _isClass2.default)(webview) && typeof webview !== 'function') {
     try {
