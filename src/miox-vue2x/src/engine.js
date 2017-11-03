@@ -65,8 +65,8 @@ export default class Engine {
           case 'web':
             Arguments.el = this.createWebViewRoot();
             break;
-          case 'client':
-            /* istanbul ignore next */
+          /* istanbul ignore next */
+          case 'client': 
             if (this.ctx.installed) {
               Arguments.el = this.createWebViewRoot();
             }
@@ -152,7 +152,7 @@ export default class Engine {
     }
   }
 }
-
+/* istanbul ignore next */
 function checkWebViewObject(webview) {
   if (!isClass(webview) && typeof webview !== 'function') {
     try {
