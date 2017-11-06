@@ -399,7 +399,7 @@ var Miox = function (_MiddleWare) {
                       switch (_context6.prev = _context6.next) {
                         case 0:
                           _context6.next = 2;
-                          return _this3.go(_this3.err.url);
+                          return _this3.push(_this3.err.url);
 
                         case 2:
                           return _context6.abrupt('return', _context6.sent);
@@ -689,14 +689,20 @@ var Miox = function (_MiddleWare) {
                 case 0:
                   _this6.set('request', next instanceof _request2.default ? next : new _request2.default(next));
                   _this6.set('response', new _response2.default());
-                  _context12.next = 4;
+
+                  if (!(engine && engine.hashchange)) {
+                    _context12.next = 5;
+                    break;
+                  }
+
+                  _context12.next = 5;
                   return engine.hashchange(_this6.webView, prev, next);
 
-                case 4:
-                  _context12.next = 6;
+                case 5:
+                  _context12.next = 7;
                   return _this6.emit('hashchange', prev, next);
 
-                case 6:
+                case 7:
                 case 'end':
                   return _context12.stop();
               }

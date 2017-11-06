@@ -177,7 +177,7 @@ export default class Miox extends MiddleWare {
         if (this.env === 'server') {
           throw value;
         } else {
-          return async() => await this.go(this.err.url);
+          return async() => await this.push(this.err.url);
         }
       } else {
         try{
@@ -277,7 +277,9 @@ export default class Miox extends MiddleWare {
     this.history.on('hashchange', async(next, prev) => {
       this.set('request', next instanceof Request ? next : new Request(next));
       this.set('response', new Response());
-      await engine.hashchange(this.webView, prev, next);
+      if (engine && engine.hashchange) {
+        await engine.hashchange(this.webView, prev, next);
+      }
       await this.emit('hashchange', prev, next);
     });
   }

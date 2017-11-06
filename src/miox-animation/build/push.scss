@@ -1,7 +1,5 @@
-.page-push-in,
-.page-push-out{
-    &-forward,
-    &-backward{
+.page-push-in{
+    &-forward{
         &.mx-webview{
             overflow-x: unset;
             overflow: unset;
@@ -17,7 +15,6 @@
                 background-image: linear-gradient(to bottom,transparent,rgba(0,0,0,0.2));
             }
         }
-
     }
 }
 
@@ -26,11 +23,11 @@
         z-index: 2;
         animation:push-in-forward $defaultDuration ease;
         &::before{
+            display: block;
             animation:shadow-fadein $defaultDuration ease-out;
         }
     }
     &-backward{
-        // animation:push-in-backward $defaultDuration ease;
         &::before{
             display: none;
         }
@@ -39,8 +36,6 @@
 
 .page-push-out{
     &-forward{
-        // animation: push-out-forward $defaultDuration ease;
-        box-shadow: 0 0 10px #666;
         &::before{
             display: none;
         }
@@ -49,6 +44,7 @@
         z-index: 2;
         animation: push-out-backward $defaultDuration ease;
         &::before{
+            display: none;
             animation:shadow-fadeout $defaultDuration ease-in;
         } 
     }
@@ -63,15 +59,6 @@
         transform: translateY(0);
     }
 }
-@keyframes push-in-backward{
-    0%{
-        // transform: scale(0.96);
-        // box-shadow: 0 0 20px #666;
-    }
-    100%{
-        transform: scale(1);
-    }
-}
 
 @keyframes push-out-backward{
     0%{
@@ -82,15 +69,6 @@
     }
 }
 
-@keyframes push-out-forward{
-    0%{
-        transform: scale(1);
-    }
-    100%{
-        transform: scale(0.96);
-        box-shadow: 0 0 20px #666;
-    }
-}
 @keyframes shadow-fadein{
     0%{
         opacity: 0;

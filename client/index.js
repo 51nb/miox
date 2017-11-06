@@ -35,7 +35,7 @@ router.patch('/e', async ctx => {
 });
 
 const app = global.miox = new Miox({ session: true, max: 3 });
-app.on('404', async () => await app.redirect('/d'));
+app.on('404', async () => await app.redirect('/'));
 app.on('process:start', () => console.log('process:start'));
 app.on('process:end', () => console.log('process:end'));
 app.install(Animate('slide'), Engine);
