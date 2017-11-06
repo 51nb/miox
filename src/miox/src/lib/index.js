@@ -38,7 +38,6 @@ export default class Miox extends MiddleWare {
     this.cache = new Dictionary();
     this.plugin = new Plugin(this);
     this.installed = false;
-    this.err = null;
     this.doing = false;
     this.clientMounted = false;
 
@@ -171,13 +170,12 @@ export default class Miox extends MiddleWare {
 
   async error(value) {
     if (value instanceof Error || Object.prototype.toString.call(value) === '[object Error]') {
-      this.err = value;
       /* istanbul ignore if */
-      if (this.err.code === 302) {
+      if (value.code === 302) {
         if (this.env === 'server') {
           throw value;
         } else {
-          return async() => await this.push(this.err.url);
+          return async () => await this.push(value.url);
         }
       } else {
         try{
@@ -187,7 +185,6 @@ export default class Miox extends MiddleWare {
         }
       }
     } else {
-      this.err = null;
       await this.emit('200', this.webView);
     }
   }

@@ -95,7 +95,6 @@ var Miox = function (_MiddleWare) {
     _this.cache = new _dictionary2.default();
     _this.plugin = new _plugin2.default(_this);
     _this.installed = false;
-    _this.err = null;
     _this.doing = false;
     _this.clientMounted = false;
 
@@ -373,33 +372,30 @@ var Miox = function (_MiddleWare) {
             switch (_context7.prev = _context7.next) {
               case 0:
                 if (!(value instanceof Error || Object.prototype.toString.call(value) === '[object Error]')) {
-                  _context7.next = 22;
+                  _context7.next = 21;
                   break;
                 }
 
-                this.err = value;
-                /* istanbul ignore if */
-
-                if (!(this.err.code === 302)) {
-                  _context7.next = 10;
+                if (!(value.code === 302)) {
+                  _context7.next = 9;
                   break;
                 }
 
                 if (!(this.env === 'server')) {
-                  _context7.next = 7;
+                  _context7.next = 6;
                   break;
                 }
 
                 throw value;
 
-              case 7:
+              case 6:
                 return _context7.abrupt('return', (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee6() {
                   return _regenerator2.default.wrap(function _callee6$(_context6) {
                     while (1) {
                       switch (_context6.prev = _context6.next) {
                         case 0:
                           _context6.next = 2;
-                          return _this3.push(_this3.err.url);
+                          return _this3.push(value.url);
 
                         case 2:
                           return _context6.abrupt('return', _context6.sent);
@@ -412,43 +408,42 @@ var Miox = function (_MiddleWare) {
                   }, _callee6, _this3);
                 })));
 
-              case 8:
-                _context7.next = 20;
+              case 7:
+                _context7.next = 19;
                 break;
 
-              case 10:
-                _context7.prev = 10;
-                _context7.next = 13;
+              case 9:
+                _context7.prev = 9;
+                _context7.next = 12;
                 return this.emit(String(value.code), value);
 
-              case 13:
-                _context7.next = 20;
+              case 12:
+                _context7.next = 19;
                 break;
 
-              case 15:
-                _context7.prev = 15;
-                _context7.t0 = _context7['catch'](10);
-                _context7.next = 19;
+              case 14:
+                _context7.prev = 14;
+                _context7.t0 = _context7['catch'](9);
+                _context7.next = 18;
                 return this.error(_context7.t0);
 
-              case 19:
+              case 18:
                 return _context7.abrupt('return', _context7.sent);
 
-              case 20:
-                _context7.next = 25;
+              case 19:
+                _context7.next = 23;
                 break;
 
-              case 22:
-                this.err = null;
-                _context7.next = 25;
+              case 21:
+                _context7.next = 23;
                 return this.emit('200', this.webView);
 
-              case 25:
+              case 23:
               case 'end':
                 return _context7.stop();
             }
           }
-        }, _callee7, this, [[10, 15]]);
+        }, _callee7, this, [[9, 14]]);
       }));
 
       function error(_x5) {
