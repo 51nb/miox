@@ -1,12 +1,12 @@
 {
   "name": "miox-vue2x-classify",
-  "version": "5.1.7",
+  "version": "5.1.8",
   "main": "build/index.js",
   "files": [
     "build",
     "package.json"
   ],
-  "dependencies": {
+  "peerDependencies": {
     "vue": "^2.5.2"
   }
 }
