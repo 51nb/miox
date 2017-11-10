@@ -254,7 +254,9 @@ export default async(app, engine, webview, data) => {
         break;
     }
 
-    await destroyWebViews(remindExtra);
+    if (app.webView !== remindExtra) {
+      await destroyWebViews(remindExtra);
+    }
   }
 
   /**

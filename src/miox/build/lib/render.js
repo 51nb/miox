@@ -535,7 +535,7 @@ exports.default = function () {
 
           case 97:
             if (!(app.history.stacks.length > app.options.max)) {
-              _context4.next = 107;
+              _context4.next = 108;
               break;
             }
 
@@ -552,10 +552,15 @@ exports.default = function () {
             return _context4.abrupt('break', 105);
 
           case 105:
-            _context4.next = 107;
+            if (!(app.webView !== remindExtra)) {
+              _context4.next = 108;
+              break;
+            }
+
+            _context4.next = 108;
             return destroyWebViews(remindExtra);
 
-          case 107:
+          case 108:
 
             /**
              * 此时我们可以完全认定，
@@ -576,13 +581,13 @@ exports.default = function () {
 
             if (app.tick) delete app.tick;
             // 触发额外事件
-            _context4.next = 113;
+            _context4.next = 114;
             return resolveEventEmitter(webViews.events);
 
-          case 113:
+          case 114:
             return _context4.abrupt('return', webViews.activeWebView);
 
-          case 114:
+          case 115:
           case 'end':
             return _context4.stop();
         }
