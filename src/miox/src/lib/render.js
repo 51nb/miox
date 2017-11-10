@@ -254,7 +254,11 @@ export default async(app, engine, webview, data) => {
         break;
     }
 
-    if (app.webView !== remindExtra) {
+    // 如果是redirect:302，同时之前的webview与现在新增的webview是同一个，
+    // 那么我们不销毁
+    if (app.redirectAction && app.webView === remindExtra) {
+      delete app.redirectAction;
+    } else {
       await destroyWebViews(remindExtra);
     }
   }

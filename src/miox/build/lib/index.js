@@ -394,11 +394,9 @@ var Miox = function (_MiddleWare) {
                     while (1) {
                       switch (_context6.prev = _context6.next) {
                         case 0:
-                          _context6.next = 2;
-                          return _this3.push(value.url);
-
-                        case 2:
-                          return _context6.abrupt('return', _context6.sent);
+                          _this3.redirectAction = true;
+                          _context6.next = 3;
+                          return _this3.go(value.url);
 
                         case 3:
                         case 'end':

@@ -175,7 +175,10 @@ export default class Miox extends MiddleWare {
         if (this.env === 'server') {
           throw value;
         } else {
-          return async () => await this.push(value.url);
+          return async () => {
+            this.redirectAction = true;
+            await this.go(value.url);
+          }
         }
       } else {
         try{
