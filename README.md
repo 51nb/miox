@@ -21,7 +21,7 @@ As of today, almost every web front-end project in 51 credit card is using Miox 
 
 ## Documentation
 
-You can find the React documentation [on the website](https://51nb.github.io/miox-doc).
+You can find the Miox documentation [on the website](https://51nb.github.io/miox-doc).
 It is divided into several sections:
 
 - [Get Started](https://51nb.github.io/miox-doc/docs/index.html)
@@ -79,7 +79,7 @@ This example will render "Hello World!" into a container on the page.
 
 ## Installation
 
-Miox is available as the react package on [npm](https://www.npmjs.com/). 
+Miox is available as the miox package on [npm](https://www.npmjs.com/). 
 
 We provide a scaffold to facilitate the installation of the project. Once the project is installed, you can start writing business logic.
 
