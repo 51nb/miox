@@ -101,7 +101,7 @@ The main purpose of this repository is to continue to evolve Miox, making it fas
 
 ## License
 
-React is [MIT licensed](https://opensource.org/licenses/MIT).
+Miox is [MIT licensed](https://opensource.org/licenses/MIT).
 
 Copyright (c) 2015-present, [evio(沈赟杰)](https://github.com/cevio) - 51信用卡管家 杭州恩牛网络技术有限公司
 
