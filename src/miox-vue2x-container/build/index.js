@@ -30,7 +30,7 @@ exports.default = function (webView) {
     var body = global.document.body;
     var element = global.document.createElement('div');
     body.appendChild(element);
-    app.once('app:start', (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
+    app.on('app:start', (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
       var el;
       return _regenerator2.default.wrap(function _callee$(_context) {
         while (1) {
