@@ -8,14 +8,16 @@
 [![NPM Downloads](https://img.shields.io/npm/dm/miox.svg?style=flat)](https://www.npmjs.org/package/miox)
 [![miox starter](https://img.shields.io/badge/miox-starter-brightgreen.svg)](https://www.npmjs.org/package/miox)
 
-[Miox](https://github.com/51nb/miox) is a SPA management framework。
-在传统web开发中，浏览器会帮助开发者管理会话历史以及页面的创建、销毁、切入切出等生命行为，
-在SPA开发中，这些工作需要由SPA的管理框架来实现，miox 就是做了这样的工作。
+[Miox](https://github.com/51nb/miox) is an SPA management framework.
 
-- miox 支持任何渲染引擎，就是说，使用 miox，开发者仍可以使用 react/vue 来编写业务代码。
-- miox 专注做 SPA 的运行容器，因此它具有良好的扩展性，可以与 redux/vuex，SSR 等技术结合应用。
+In classic web development, browser creates and manages a series of life cycle events of web page, such as session, history, page creation, destroy, appear, disapear, on which developer can process there own logic.
 
-目前 Miox 在51信用卡全线业务中均有使用，PC端和移动端都有覆盖。
+In an SPA application, developers has to deal with all these events by themselves, or by an framework that deals with them. Miox is yet another framework deals with them.
+
+- What makes Miox special, is that it supports any render core, which means with Miox, developer can simultaneously introduce Miox into their projects and stay with his favrite react or vue.
+- Miox focuses on being an SPA runtime container, with such limited small goal, it developed the ability to easily integrate with most essential technologies, including redux/vuex, SSR and so on.
+
+As of today, almost every web front-end project in 51 credit card is using Miox as there SPA framework, on both PC and Mobile side, which mean Miox is already widely used and tested in production.
 
 ## Documentation
 
