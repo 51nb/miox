@@ -1,4 +1,4 @@
-<p align="center"><a href="https://51nb.github.io/miox-doc" target="_blank"><img src="http://7xtj22.com1.z0.glb.clouddn.com/miox-120x120.svg" /></a></p>
+<p align="center"><a href="https://51nb.github.io/miox-doc" target="_blank"><img src="http://7xtj22.com1.z0.glb.clouddn.com/miox-120x120.svg" width="350" /></a></p>
 
 # Modern Infrastructure Of Complex SPA
 
