@@ -12,7 +12,7 @@
 
 In classic web development, browser creates and manages a series of lifecycle activities of web page, such as session history, page creation, discard, pageshow, pagehide, on which developer can process there own logic.
 
-In an SPA application, developers has to deal with all these events by themselves, or by an framework that deals with them. Miox is yet another framework deals with them.
+In an SPA application, developers have to deal with all these events by themselves, or by an framework that deals with them. Miox is yet another framework deals with them.
 
 - What makes Miox special, is that it supports any render core, which means with Miox, developer can simultaneously introduce Miox into their projects and stay with his favrite react or vue.
 - Miox focuses on being an SPA runtime, with such limited small goal, it developed the ability to easily integrate with most essential technologies, including redux/vuex, SSR and so on.
