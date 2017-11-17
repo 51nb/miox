@@ -1,15 +1,7 @@
 import onTransitionEnd from './transition';
-
 const animationNames = ['slide', 'push'];
-const directionMap = {
-    '0': 'none',
-    '-1': 'backward',
-    '1': 'forward'
-};
-const times = {
-    'push': 300,
-    'slide': 300
-};
+const directionMap = { '0': 'none', '-1': 'backward', '1': 'forward' };
+const times = { 'push': 300, 'slide': 300 };
 
 export default class Animate {
     constructor(app, name) {
@@ -18,23 +10,19 @@ export default class Animate {
         this.time = times[this.animateName] || 300;
     }
 
-    async leave(node) {
+    async leave(node, name, direction) {
         if (!node) return;
         await this.app.emit('animate:leave:before', node);
-        const animationName = this.app.history.animateName || this.animateName;
-        const direction = directionMap[this.app.history.direction];
-        const cls = `page-${animationName}-out-${direction}`;
+        const cls = `page-${name || this.animateName}-out-${directionMap[direction]}`;
         node.classList.add(cls);
         await this.animated(node, cls);
         await this.app.emit('animate:leave:after', node);
     }
 
-    async enter(node) {
+    async enter(node, name, direction) {
         if (!node) return;
         await this.app.emit('animate:enter:before', node);
-        const animationName = this.app.history.animateName || this.animateName;
-        const direction = directionMap[this.app.history.direction];
-        const cls = `page-${animationName}-in-${direction}`;
+        const cls = `page-${name || this.animateName}-in-${directionMap[direction]}`;
         node.classList.add(cls);
         await this.animated(node, cls);
         await this.app.emit('animate:enter:after', node);

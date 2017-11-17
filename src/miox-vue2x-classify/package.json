@@ -1,6 +1,6 @@
 {
   "name": "miox-vue2x-classify",
-  "version": "5.1.10",
+  "version": "5.1.11",
   "main": "build/index.js",
   "files": [
     "build",

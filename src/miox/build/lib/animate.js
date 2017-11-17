@@ -19,29 +19,28 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  */
 exports.default = function () {
   var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(app, prevNode, nextNode) {
-    var animate;
+    var animate, animateName, animateDirection, hasAnimate;
     return _regenerator2.default.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
             animate = app.plugin.get('animate');
-
+            animateName = app.history.animateName;
+            animateDirection = app.history.direction;
+            hasAnimate = app.installed && app.history.session && animate && animate.leave && animate.enter;
 
             nextNode && nextNode.classList.add('active');
+            prevNode && prevNode.classList.remove('active');
 
-            if (!(animate && app.installed && app.history.session)) {
-              _context.next = 5;
+            if (!hasAnimate) {
+              _context.next = 9;
               break;
             }
 
-            _context.next = 5;
-            return Promise.all([animate.leave(prevNode), animate.enter(nextNode)]);
+            _context.next = 9;
+            return Promise.all([animate.leave(prevNode, animateName, animateDirection), animate.enter(nextNode, animateName, animateDirection)]);
 
-          case 5:
-
-            prevNode && prevNode.classList.remove('active');
-
-          case 6:
+          case 9:
           case 'end':
             return _context.stop();
         }

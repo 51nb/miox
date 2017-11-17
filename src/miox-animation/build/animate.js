@@ -28,15 +28,8 @@ var _transition2 = _interopRequireDefault(_transition);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var animationNames = ['slide', 'push'];
-var directionMap = {
-    '0': 'none',
-    '-1': 'backward',
-    '1': 'forward'
-};
-var times = {
-    'push': 300,
-    'slide': 300
-};
+var directionMap = { '0': 'none', '-1': 'backward', '1': 'forward' };
+var times = { 'push': 300, 'slide': 300 };
 
 var Animate = function () {
     function Animate(app, name) {
@@ -50,8 +43,8 @@ var Animate = function () {
     (0, _createClass3.default)(Animate, [{
         key: 'leave',
         value: function () {
-            var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(node) {
-                var animationName, direction, cls;
+            var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(node, name, direction) {
+                var cls;
                 return _regenerator2.default.wrap(function _callee$(_context) {
                     while (1) {
                         switch (_context.prev = _context.next) {
@@ -68,19 +61,17 @@ var Animate = function () {
                                 return this.app.emit('animate:leave:before', node);
 
                             case 4:
-                                animationName = this.app.history.animateName || this.animateName;
-                                direction = directionMap[this.app.history.direction];
-                                cls = 'page-' + animationName + '-out-' + direction;
+                                cls = 'page-' + (name || this.animateName) + '-out-' + directionMap[direction];
 
                                 node.classList.add(cls);
-                                _context.next = 10;
+                                _context.next = 8;
                                 return this.animated(node, cls);
 
-                            case 10:
-                                _context.next = 12;
+                            case 8:
+                                _context.next = 10;
                                 return this.app.emit('animate:leave:after', node);
 
-                            case 12:
+                            case 10:
                             case 'end':
                                 return _context.stop();
                         }
@@ -88,7 +79,7 @@ var Animate = function () {
                 }, _callee, this);
             }));
 
-            function leave(_x) {
+            function leave(_x, _x2, _x3) {
                 return _ref.apply(this, arguments);
             }
 
@@ -97,8 +88,8 @@ var Animate = function () {
     }, {
         key: 'enter',
         value: function () {
-            var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(node) {
-                var animationName, direction, cls;
+            var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(node, name, direction) {
+                var cls;
                 return _regenerator2.default.wrap(function _callee2$(_context2) {
                     while (1) {
                         switch (_context2.prev = _context2.next) {
@@ -115,19 +106,17 @@ var Animate = function () {
                                 return this.app.emit('animate:enter:before', node);
 
                             case 4:
-                                animationName = this.app.history.animateName || this.animateName;
-                                direction = directionMap[this.app.history.direction];
-                                cls = 'page-' + animationName + '-in-' + direction;
+                                cls = 'page-' + (name || this.animateName) + '-in-' + directionMap[direction];
 
                                 node.classList.add(cls);
-                                _context2.next = 10;
+                                _context2.next = 8;
                                 return this.animated(node, cls);
 
-                            case 10:
-                                _context2.next = 12;
+                            case 8:
+                                _context2.next = 10;
                                 return this.app.emit('animate:enter:after', node);
 
-                            case 12:
+                            case 10:
                             case 'end':
                                 return _context2.stop();
                         }
@@ -135,7 +124,7 @@ var Animate = function () {
                 }, _callee2, this);
             }));
 
-            function enter(_x2) {
+            function enter(_x4, _x5, _x6) {
                 return _ref2.apply(this, arguments);
             }
 
@@ -163,7 +152,7 @@ var Animate = function () {
                 }, _callee3, this);
             }));
 
-            function animated(_x3, _x4) {
+            function animated(_x7, _x8) {
                 return _ref3.apply(this, arguments);
             }
 
