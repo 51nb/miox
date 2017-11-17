@@ -19,7 +19,7 @@
     })
     export default class Home {
         b = '/b?a=1';
-        c = '/cdddd';
+        c = '/c';
         d = 'http://baidu.com';
         time = 1;
         text = 'uuuuu';

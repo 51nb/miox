@@ -39,6 +39,6 @@ app.on('404', async () => await app.redirect('/'));
 app.on('process:start', () => console.log('process:start'));
 app.on('process:end', () => console.log('process:end'));
 app.install(Animate('slide'), Engine);
-app.install(VueContainer(Container));
+//app.install(VueContainer(Container));
 app.use(router.routes());
 export default app.listen();
