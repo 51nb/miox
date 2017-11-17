@@ -27,20 +27,19 @@ exports.default = function () {
             animate = app.plugin.get('animate');
 
 
-            if (prevNode) {
-              prevNode.classList.remove('active');
-            }
-            if (nextNode) {
-              nextNode.classList.add('active');
-            }
+            nextNode && nextNode.classList.add('active');
 
             if (!(animate && app.installed && app.history.session)) {
-              _context.next = 6;
+              _context.next = 5;
               break;
             }
 
-            _context.next = 6;
+            _context.next = 5;
             return Promise.all([animate.leave(prevNode), animate.enter(nextNode)]);
+
+          case 5:
+
+            prevNode && prevNode.classList.remove('active');
 
           case 6:
           case 'end':
