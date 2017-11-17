@@ -76,6 +76,11 @@ export default class ExamplePage extends React.Component {
 
 This example will render "Hello World!" into a container on the page.
 
+## Demo
+
+- On mobile, you can visit [here](https://github.com/51nb/miox-demo-member-level).
+- On pc, comming soon...
+
 
 ## Installation
 
