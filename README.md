@@ -81,7 +81,7 @@ This example will render "Hello World!" into a container on the page.
 ## Demo
 
 - On mobile, you can visit [here](https://github.com/51nb/miox-demo-member-level).
-- [Miox demo for basic use](https://github.com/51nb/miox-demo-basic-use).
+- [Miox demo for basic using](https://github.com/51nb/miox-demo-basic-use).
 
 
 ## Installation
