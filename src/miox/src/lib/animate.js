@@ -7,11 +7,17 @@ export default async function renderWebViewWithAnimate(app, prevNode, nextNode) 
   const animateDirection = app.history.direction;
   const hasAnimate = app.installed && app.history.session && animate && animate.leave && animate.enter;
   nextNode && nextNode.classList.add('active');
-  prevNode && prevNode.classList.remove('active');
+  if (prevNode) {
+    prevNode.classList.remove('active');
+    prevNode.classList.add('inactive');
+  }
   if (hasAnimate) {
     await Promise.all([
       animate.leave(prevNode, animateName, animateDirection),
       animate.enter(nextNode, animateName, animateDirection)
     ]);
+  }
+  if (prevNode) {
+    prevNode.classList.remove('inactive');
   }
 }

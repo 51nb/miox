@@ -445,14 +445,18 @@ body,
 }
 
 .mx-webview{
-    overflow: auto;
     position: absolute;
     top:0;
     left:0;
+    z-index: 0;
+}
+
+.mx-webview > * {
+    height: 100%;
+    display: block;
     overflow-x: hidden;
     overflow-y: auto;
     background-color: #fff;
-    z-index: 0;
 }
 
 .mx-webview.active{
