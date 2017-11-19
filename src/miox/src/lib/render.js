@@ -26,8 +26,7 @@ export default async(app, engine, webview, data) => {
   const webViews = {
     // 当前显示页面的实例
     existsWebView: existsWebViewConfigs ?
-      existsWebViewConfigs.basic.dic.get(existsWebViewConfigs.mark) :
-      null,
+      existsWebViewConfigs.basic.dic.get(existsWebViewConfigs.mark) : null,
     // 被激活的页面实例
     activeWebView: null,
     // 事件
@@ -66,10 +65,14 @@ export default async(app, engine, webview, data) => {
   // newCacheWebView: 从缓存中拿到的新的页面实例
   let oldCacheWebView, pushWebViewExtras, remindExtra, newCacheWebView = webview.dic.get(mark);
 
+  // 每次进入前触发`webview:beforeEnter`事件
+  // newCacheWebView可能不存在 
+  // 如果存在，必定表示是从缓存中拿到的
+  await app.emit('webview:beforeEnter', newCacheWebView);
+
   // 当缓存中不存在新的页面实例的时候
   // 我们重新创建并且标记新的激活页面实例
   if (!newCacheWebView) {
-    await app.emit('webview:beforeEnter');
     newCacheWebView = await createNewCachedWebView();
   }
 
@@ -347,7 +350,9 @@ export default async(app, engine, webview, data) => {
         const vars = app.history.session.variables;
         const strict = app.options.strict;
         for (const i in vars) {
-          const mark = strict && vars[i].search ? `${vars[i].pathname}:${vars[i].search}` : vars[i].pathname;
+          const mark = strict && vars[i].search 
+            ? `${vars[i].pathname}:${vars[i].search}` 
+            : vars[i].pathname;
           if (mark === object.__MioxMark__) {
             return Number(i);
           }

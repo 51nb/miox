@@ -108,6 +108,10 @@ More commands, please read [here](https://github.com/51nb/miox-cli).
 
 The main purpose of this repository is to continue to evolve Miox, making it faster and easier to use. Development of Miox happens in the open on GitHub, and we are grateful to the community for contributing bugfixes and improvements. 
 
+## Change logs
+
+You can read the change logs [here](https://github.com/51nb/miox/blob/master/CHANGELOG.md).
+
 ## License
 
 Miox is [MIT licensed](https://opensource.org/licenses/MIT).
