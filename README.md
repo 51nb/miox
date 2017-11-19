@@ -110,7 +110,7 @@ The main purpose of this repository is to continue to evolve Miox, making it fas
 
 ## Change logs
 
-You can read the change logs [here](https://github.com/51nb/miox/blob/master/CHANGELOG.md).
+You can read the change logs [here](CHANGLOG.md).
 
 ## License
 
