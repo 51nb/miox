@@ -2,6 +2,10 @@
 
 > Since the 5.1.11 version, we will provide change logs for each version of the update.
 
+## v5.1.14 - Pending...
+
+- 修正`dictionary`中key变量全部字符串化的Bug.
+
 ## v5.1.13
 
 - 去掉`index.css`中的`padding` `margin`
