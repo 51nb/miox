@@ -539,6 +539,13 @@ body,
   z-index: 0;
 }
 
+.mx-webview.active {
+  z-index: 2;
+}
+.mx-webview.inactive {
+  z-index: 1;
+}
+
 .mx-webview>*:first-child {
   height: 100%!important;
   display: block!important;
@@ -547,8 +554,4 @@ body,
   padding: 0;
   margin: 0;
   background-color: #fff;
-}
-
-.mx-webview.active {
-  z-index: 1;
 }
