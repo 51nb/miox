@@ -1,6 +1,6 @@
 {
   "name": "miox-router",
-  "version": "5.1.11",
+  "version": "5.1.12",
   "main": "build/index.js",
   "files": [
     "build",
@@ -8,6 +8,6 @@
   ],
   "dependencies": {
     "path-to-regexp": "^2.0.0",
-    "miox-compose": "^5.1.11"
+    "miox-compose": "^5.1.12"
   }
 }

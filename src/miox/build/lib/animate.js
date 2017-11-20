@@ -30,7 +30,10 @@ exports.default = function () {
             hasAnimate = app.installed && app.history.session && animate && animate.leave && animate.enter;
 
             nextNode && nextNode.classList.add('active');
-            prevNode && prevNode.classList.remove('active');
+            if (prevNode) {
+              prevNode.classList.remove('active');
+              prevNode.classList.add('inactive');
+            }
 
             if (!hasAnimate) {
               _context.next = 9;
@@ -41,6 +44,11 @@ exports.default = function () {
             return Promise.all([animate.leave(prevNode, animateName, animateDirection), animate.enter(nextNode, animateName, animateDirection)]);
 
           case 9:
+            if (prevNode) {
+              prevNode.classList.remove('inactive');
+            }
+
+          case 10:
           case 'end':
             return _context.stop();
         }

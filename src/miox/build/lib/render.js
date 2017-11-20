@@ -266,18 +266,19 @@ exports.default = function () {
 
             oldCacheWebView = void 0, pushWebViewExtras = void 0, remindExtra = void 0, newCacheWebView = webview.dic.get(mark);
 
-            // 当缓存中不存在新的页面实例的时候
-            // 我们重新创建并且标记新的激活页面实例
+            // 每次进入前触发`webview:beforeEnter`事件
+            // newCacheWebView可能不存在 
+            // 如果存在，必定表示是从缓存中拿到的
 
+            _context4.next = 17;
+            return app.emit('webview:beforeEnter', newCacheWebView);
+
+          case 17:
             if (newCacheWebView) {
               _context4.next = 21;
               break;
             }
 
-            _context4.next = 18;
-            return app.emit('webview:beforeEnter');
-
-          case 18:
             _context4.next = 20;
             return createNewCachedWebView();
 
