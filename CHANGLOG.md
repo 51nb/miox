@@ -2,7 +2,7 @@
 
 > Since the 5.1.11 version, we will provide change logs for each version of the update.
 
-## v5.1.14 - Pending...
+## v5.1.14
 
 - 修正`dictionary`中key变量全部字符串化的Bug.
 
