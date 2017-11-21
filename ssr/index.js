@@ -9,6 +9,8 @@ const serverProConfig = require('../config/webpack.server.pro.config');
 
 const app = new Koa();
 const renderer = new ServerSideRenderer(app);
+
+// 使用Miox中间件接管Koa中间件
 renderer.connect(
     renderer.isProd ? clientProConfig : clientDevConfig,
     renderer.isProd ? serverProConfig : serverDevConfig,

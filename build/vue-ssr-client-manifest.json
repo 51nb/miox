@@ -1,15 +1,15 @@
 {
   "publicPath": "",
   "all": [
-    "vendor.490d3b3be1.js",
-    "app.490d3b3be1.js",
-    "manifest.490d3b3be1.js",
-    "common.490d3b3be1.css"
+    "vendor.9bc785dc5c.js",
+    "app.9bc785dc5c.js",
+    "manifest.9bc785dc5c.js",
+    "common.9bc785dc5c.css"
   ],
   "initial": [
-    "manifest.490d3b3be1.js",
-    "vendor.490d3b3be1.js",
-    "app.490d3b3be1.js"
+    "manifest.9bc785dc5c.js",
+    "vendor.9bc785dc5c.js",
+    "app.9bc785dc5c.js"
   ],
   "async": [],
   "modules": {

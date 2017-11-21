@@ -12,7 +12,7 @@ class A extends React.Component {
     this.clickCallback = this.click.bind(this);
   }
   webViewDidEnter() {
-    console.log('enter')
+    console.log('enter');
   }
   click() {
     this.$push('/b');
@@ -36,7 +36,7 @@ route.patch('/b', async ctx => {
 });
 
 app.on('200', web => {
-  console.log(web)
+  console.log(web);
 });
 
 app.on('process:start', web => {
