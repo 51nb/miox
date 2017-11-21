@@ -116,5 +116,5 @@ You can read the change logs [here](CHANGLOG.md).
 
 Miox is [MIT licensed](https://opensource.org/licenses/MIT).
 
-Copyright (c) 2015-present, [evio(沈赟杰)](https://github.com/cevio) - 51信用卡管家 杭州恩牛网络技术有限公司
+Copyright (c) 2015-present, [evio(沈赟杰)](https://github.com/cevio) - 51 credit.Inc [杭州恩牛网络技术有限公司](http://www.u51.com).
 
