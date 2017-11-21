@@ -19,6 +19,11 @@ In an SPA application, developers have to deal with all these events by themselv
 
 As of today, almost every web front-end project in 51 credit card is using Miox as there SPA framework, on both PC and mobile sides, which means Miox is already widely used and tested in production.
 
+## Demo
+
+- On mobile, you can visit [here](https://github.com/51nb/miox-demo-member-level). This is one of the U51 products.
+- **[Miox demo for basic using](https://github.com/51nb/miox-demo-basic-use)**.
+
 ## Documentation
 
 You can find the Miox documentation [on the website](https://51nb.github.io/miox-doc).
@@ -77,11 +82,6 @@ export default class ExamplePage extends React.Component {
 ```
 
 This example will render "Hello World!" into a container on the page.
-
-## Demo
-
-- On mobile, you can visit [here](https://github.com/51nb/miox-demo-member-level).
-- [Miox demo for basic using](https://github.com/51nb/miox-demo-basic-use).
 
 
 ## Installation
