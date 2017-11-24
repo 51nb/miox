@@ -2,6 +2,20 @@
 
 > Since the 5.1.11 version, we will provide change logs for each version of the update.
 
+## 5.1.15 pending - beta
+
+- `miox-router` 新增`static`方法，用来简化路由队列。
+
+**static**方法演示:
+
+```javascript
+route.static({
+  '/a/:id': WebviewA,
+  '/b/:id': WebviewB,
+  ...
+})
+```
+
 ## v5.1.14
 
 - 修正`dictionary`中key变量全部字符串化的Bug.

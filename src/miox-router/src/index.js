@@ -23,6 +23,16 @@ export default class Router {
     return this.patch(...args);
   }
 
+  /* istanbul ignore next */
+  'static'(options = {}) {
+    for (const uri in options) {
+      this.patch(
+        uri, 
+        async ctx => await ctx.render(options[uri])
+      );
+    }
+  }
+
   /**
    * Create `router.verb()` methods, where *verb* is one of the HTTP verbs such
    * as `router.get()` or `router.post()`.
