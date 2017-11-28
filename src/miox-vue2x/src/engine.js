@@ -121,11 +121,14 @@ export default class Engine {
   createWebViewRoot() {
     if (!global.document) return;
     const element = global.document.createElement('div');
+    const container = global.document.createElement('div');
     const wrapElement = global.document.createElement('div');
 
     this.ctx.element.appendChild(element);
-    element.appendChild(wrapElement);
+    element.appendChild(container);
+    container.appendChild(wrapElement);
     element.classList.add('mx-webview');
+    container.classList.add('mx-window');
 
     return wrapElement;
   }

@@ -69,7 +69,15 @@ class MioxKoaVue2xServerSideRenderer extends EventEmitter {
         const template = fs.readFileSync(this.options.html, 'utf8');
         return template.replace(
             '<!--vue-ssr-outlet-->',
-            `<div class="mx-app"><div class="mx-webviews"><div class="mx-webview active"><!--vue-ssr-outlet--></div></div></div>`
+            `<div class="mx-app">
+                <div class="mx-webviews">
+                    <div class="mx-webview active">
+                        <div class="mx-window">
+                            <!--vue-ssr-outlet-->
+                        </div>
+                    </div>
+                </div>
+            </div>`
         )
     }
 

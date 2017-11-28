@@ -94,7 +94,7 @@ var ReactEngine = function () {
                 element = this.element(target);
 
                 _reactDom2.default.unmountComponentAtNode(element);
-                element.parentNode.removeChild(element);
+                element.parentNode.parentNode.removeChild(element.parentNode);
 
               case 3:
               case 'end':
@@ -270,11 +270,14 @@ var ReactEngine = function () {
     value: function createWebViewRoot() {
       if (!global.document) return;
       var element = global.document.createElement('div');
+      var container = global.document.createElement('div');
 
       this.ctx.element.appendChild(element);
+      element.appendChild(container);
       element.classList.add('mx-webview');
+      container.classList.add('mx-window');
 
-      return element;
+      return container;
     }
   }, {
     key: 'ssr',

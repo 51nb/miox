@@ -116,7 +116,7 @@ var MioxKoaVue2xServerSideRenderer = function (_EventEmitter) {
         key: 'resolveTemplate',
         value: function resolveTemplate() {
             var template = fs.readFileSync(this.options.html, 'utf8');
-            return template.replace('<!--vue-ssr-outlet-->', '<div class="mx-app"><div class="mx-webviews"><div class="mx-webview active"><!--vue-ssr-outlet--></div></div></div>');
+            return template.replace('<!--vue-ssr-outlet-->', '<div class="mx-app">\n                <div class="mx-webviews">\n                    <div class="mx-webview active">\n                        <div class="mx-window">\n                            <!--vue-ssr-outlet-->\n                        </div>\n                    </div>\n                </div>\n            </div>');
         }
     }, {
         key: 'createRenderer',

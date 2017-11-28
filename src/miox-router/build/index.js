@@ -60,6 +60,47 @@ var Router = function () {
       return this.patch.apply(this, arguments);
     }
 
+    /* istanbul ignore next */
+
+  }, {
+    key: 'static',
+    value: function _static() {
+      var _this = this;
+
+      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+      var _loop = function _loop(uri) {
+        _this.patch(uri, function () {
+          var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(ctx) {
+            return _regenerator2.default.wrap(function _callee$(_context) {
+              while (1) {
+                switch (_context.prev = _context.next) {
+                  case 0:
+                    _context.next = 2;
+                    return ctx.render(options[uri]);
+
+                  case 2:
+                    return _context.abrupt('return', _context.sent);
+
+                  case 3:
+                  case 'end':
+                    return _context.stop();
+                }
+              }
+            }, _callee, _this);
+          }));
+
+          return function (_x3) {
+            return _ref.apply(this, arguments);
+          };
+        }());
+      };
+
+      for (var uri in options) {
+        _loop(uri);
+      }
+    }
+
     /**
      * Create `router.verb()` methods, where *verb* is one of the HTTP verbs such
      * as `router.get()` or `router.post()`.
@@ -389,24 +430,24 @@ var Router = function () {
       }
 
       return this.all(source, function () {
-        var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(ctx) {
-          return _regenerator2.default.wrap(function _callee$(_context) {
+        var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(ctx) {
+          return _regenerator2.default.wrap(function _callee2$(_context2) {
             while (1) {
-              switch (_context.prev = _context.next) {
+              switch (_context2.prev = _context2.next) {
                 case 0:
-                  _context.next = 2;
+                  _context2.next = 2;
                   return ctx.redirect(destination);
 
                 case 2:
                 case 'end':
-                  return _context.stop();
+                  return _context2.stop();
               }
             }
-          }, _callee, this);
+          }, _callee2, this);
         }));
 
-        return function (_x2) {
-          return _ref.apply(this, arguments);
+        return function (_x4) {
+          return _ref2.apply(this, arguments);
         };
       }());
     }
@@ -424,7 +465,7 @@ var Router = function () {
   }, {
     key: 'register',
     value: function register(path, methods, middleware) {
-      var _this = this;
+      var _this2 = this;
 
       var opts = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
 
@@ -455,7 +496,7 @@ var Router = function () {
 
       // add parameter middleware
       Object.keys(this.params).forEach(function (param) {
-        return route.param(param, _this.params[param]);
+        return route.param(param, _this2.params[param]);
       });
       stack.push(route);
       return route;

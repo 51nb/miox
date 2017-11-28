@@ -19,7 +19,7 @@ export default {
   },
 
   mounted() {
-    this.__MioxInjectElement__ = this.$el.parentNode;
+    this.__MioxInjectElement__ = this.$el.parentNode.parentNode;
     this.$nextTick(() => {
       this.$emit('webview:mounted');
       this.$miox.emit('webview:mounted', this);

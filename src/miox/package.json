@@ -1,6 +1,6 @@
 {
   "name": "miox",
-  "version": "5.1.14",
+  "version": "5.1.15",
   "main": "build/index.js",
   "files": [
     "build",
@@ -9,7 +9,7 @@
   "dependencies": {
     "flatten": "^1.0.2",
     "is-class": "0.0.4",
-    "miox-compose": "^5.1.14",
+    "miox-compose": "^5.1.15",
     "url": "^0.11.0"
   }
 }

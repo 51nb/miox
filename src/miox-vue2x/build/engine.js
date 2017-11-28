@@ -313,11 +313,14 @@ var Engine = function () {
     value: function createWebViewRoot() {
       if (!global.document) return;
       var element = global.document.createElement('div');
+      var container = global.document.createElement('div');
       var wrapElement = global.document.createElement('div');
 
       this.ctx.element.appendChild(element);
-      element.appendChild(wrapElement);
+      element.appendChild(container);
+      container.appendChild(wrapElement);
       element.classList.add('mx-webview');
+      container.classList.add('mx-window');
 
       return wrapElement;
     }

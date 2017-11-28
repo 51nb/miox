@@ -30,7 +30,7 @@ export default class ReactEngine {
   async destroy(target) {
     const element = this.element(target);
     ReactDom.unmountComponentAtNode(element);
-    element.parentNode.removeChild(element);
+    element.parentNode.parentNode.removeChild(element.parentNode);
   }
 
   async active(target) {
@@ -74,11 +74,14 @@ export default class ReactEngine {
   createWebViewRoot(){
     if (!global.document) return;
     const element = global.document.createElement('div');
+    const container = global.document.createElement('div');
 
     this.ctx.element.appendChild(element);
+    element.appendChild(container);
     element.classList.add('mx-webview');
+    container.classList.add('mx-window');
 
-    return element;
+    return container;
   }
 
   ssr() {

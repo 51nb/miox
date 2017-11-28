@@ -25,7 +25,7 @@ exports.default = {
   mounted: function mounted() {
     var _this2 = this;
 
-    this.__MioxInjectElement__ = this.$el.parentNode;
+    this.__MioxInjectElement__ = this.$el.parentNode.parentNode;
     this.$nextTick(function () {
       _this2.$emit('webview:mounted');
       _this2.$miox.emit('webview:mounted', _this2);

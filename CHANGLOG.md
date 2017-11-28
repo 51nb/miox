@@ -2,9 +2,10 @@
 
 > Since the 5.1.11 version, we will provide change logs for each version of the update.
 
-## 5.1.15 pending - beta
+## 5.1.15
 
 - `miox-router` 新增`static`方法，用来简化路由队列。
+- 为每个新增的webview内嵌一层`.mx-window`节点，用来解决组件第一个元素被直接覆盖样式的问题。
 
 **static**方法演示:
 
@@ -14,6 +15,20 @@ route.static({
   '/b/:id': WebviewB,
   ...
 })
+```
+
+**`.mx-window`** class =>
+
+```html
+<div class="mx-app">
+  <div class="mx-webviews">
+    <div class="mx-webview">
+      <div class="mx-window active">
+        <div>hello world<p>adfaf</p></div>
+      </div>
+    </div>
+  </div>
+</div>
 ```
 
 ## v5.1.14
