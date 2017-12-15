@@ -82,6 +82,10 @@ export default async(app, engine, webview, data) => {
     oldCacheWebView = oldCacheWebViewConstructor.dic.get(mark);
   }
 
+  if (newCacheWebView && app.history.stacks.indexOf(newCacheWebView) > -1) {
+    webViews.events.Active = newCacheWebView;
+  }
+
   /**
    * 此时我们应该非常注意一下参数：
    * newCacheWebView: 从缓存中尝试拿到的新页面实例
@@ -273,15 +277,6 @@ export default async(app, engine, webview, data) => {
    */
   webViews.events.Leave = webViews.existsWebView;
   webViews.events.Enter = webViews.activeWebView;
-
-  // active条件是
-  // 1. 它步数进入的对象
-  // 2. 存在新的newCacheWebView
-  // 3. app.history.stacks中不存在存在新的newCacheWebView
-  // 试想一下，这应该是一种唤起行为
-  if (!webViews.events.Enter && newCacheWebView && app.history.stacks.indexOf(newCacheWebView) > -1) {
-    webViews.events.Active = newCacheWebView;
-  }
 
   if (app.tick) delete app.tick;
   // 触发额外事件

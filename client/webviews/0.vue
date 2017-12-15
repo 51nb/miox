@@ -40,6 +40,9 @@
             setTimeout(() => {
                 this.time = 2;
             }, 3000);
+            // this.$on('webview:active', () => {
+            //     alert(111111);
+            // })
         }
 
         @watch 'this.ctime'(val) {

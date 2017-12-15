@@ -2,6 +2,18 @@
 
 > Since the 5.1.11 version, we will provide change logs for each version of the update.
 
+## 5.1.16
+
+- 解决webview跳转时候的`webview:active`事件不触发的问题。
+
+```javascript
+@life mounted() {
+  this.$on('webveiw:active', () => {
+    console.log('webview active');
+  })
+}
+```
+
 ## 5.1.15
 
 - `miox-router` 新增`static`方法，用来简化路由队列。

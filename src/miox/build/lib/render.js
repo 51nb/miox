@@ -293,6 +293,10 @@ exports.default = function () {
               oldCacheWebView = oldCacheWebViewConstructor.dic.get(mark);
             }
 
+            if (newCacheWebView && app.history.stacks.indexOf(newCacheWebView) > -1) {
+              webViews.events.Active = newCacheWebView;
+            }
+
             /**
              * 此时我们应该非常注意一下参数：
              * newCacheWebView: 从缓存中尝试拿到的新页面实例
@@ -321,21 +325,21 @@ exports.default = function () {
             // 那么直接添加即可，无需其他处理
 
             if (!(app.history.stacks.length === 0)) {
-              _context4.next = 29;
+              _context4.next = 30;
               break;
             }
 
             app.history.stacks.push(newCacheWebView);
             app.tick = -1;
-            _context4.next = 86;
+            _context4.next = 87;
             break;
 
-          case 29:
+          case 30:
             _context4.t0 = action;
-            _context4.next = _context4.t0 === 'push' ? 32 : _context4.t0 === 'replace' ? 46 : 52;
+            _context4.next = _context4.t0 === 'push' ? 33 : _context4.t0 === 'replace' ? 47 : 53;
             break;
 
-          case 32:
+          case 33:
             app.tick = -1;
 
             /**
@@ -361,74 +365,74 @@ exports.default = function () {
             newCacheWebViewIndex = pushWebViewExtras.indexOf(newCacheWebView);
 
             if (!(newCacheWebViewIndex > -1)) {
-              _context4.next = 42;
+              _context4.next = 43;
               break;
             }
 
             pushWebViewExtras.splice(newCacheWebViewIndex, 1);
-            _context4.next = 40;
+            _context4.next = 41;
             return destroyWebViews(pushWebViewExtras);
 
-          case 40:
-            _context4.next = 45;
+          case 41:
+            _context4.next = 46;
             break;
 
-          case 42:
-            _context4.next = 44;
+          case 43:
+            _context4.next = 45;
             return destroyWebViews(pushWebViewExtras);
-
-          case 44:
-            app.history.stacks.push(newCacheWebView);
 
           case 45:
-            return _context4.abrupt('break', 86);
+            app.history.stacks.push(newCacheWebView);
 
           case 46:
+            return _context4.abrupt('break', 87);
+
+          case 47:
             if (!oldCacheChangeStatus) {
-              _context4.next = 49;
+              _context4.next = 50;
               break;
             }
 
-            _context4.next = 49;
+            _context4.next = 50;
             return destroyWebViews(oldCacheWebView);
 
-          case 49:
-            _context4.next = 51;
+          case 50:
+            _context4.next = 52;
             return destroyWebViews(webViews.existsWebView, newCacheWebView);
 
-          case 51:
-            return _context4.abrupt('break', 86);
-
           case 52:
+            return _context4.abrupt('break', 87);
+
+          case 53:
             if (!oldCacheChangeStatus) {
-              _context4.next = 57;
+              _context4.next = 58;
               break;
             }
 
-            _context4.next = 55;
+            _context4.next = 56;
             return destroyWebViews(oldCacheWebView, newCacheWebView);
 
-          case 55:
-            _context4.next = 86;
+          case 56:
+            _context4.next = 87;
             break;
 
-          case 57:
+          case 58:
             if (!(app.history.stacks.indexOf(newCacheWebView) === -1)) {
-              _context4.next = 86;
+              _context4.next = 87;
               break;
             }
 
             if (!(app.history.direction === 0)) {
-              _context4.next = 63;
+              _context4.next = 64;
               break;
             }
 
             app.history.stacks.push(newCacheWebView);
             app.tick = -1;
-            _context4.next = 86;
+            _context4.next = 87;
             break;
 
-          case 63:
+          case 64:
             // reduce: 从session的当前索引移步到现在需要达到的索引的时候需要的步数
             reduce = app.history.session ? app.history.session.current - (app.index || 0) : 0;
 
@@ -446,7 +450,7 @@ exports.default = function () {
             sourceIndex = app.webView.historyIndex;
 
             if (!targetWebView) {
-              _context4.next = 85;
+              _context4.next = 86;
               break;
             }
 
@@ -458,35 +462,35 @@ exports.default = function () {
             // 无论方向与否，都是一直的表现
 
             if (!(sourceIndex - reduce < targetIndex)) {
-              _context4.next = 76;
+              _context4.next = 77;
               break;
             }
 
             app.tick = 1;
             insertStacks(index, newCacheWebView);
-            _context4.next = 83;
+            _context4.next = 84;
             break;
 
-          case 76:
+          case 77:
             if (!(sourceIndex - reduce > targetIndex)) {
-              _context4.next = 81;
+              _context4.next = 82;
               break;
             }
 
             app.tick = -1;
             insertStacks(index + 1, newCacheWebView);
-            _context4.next = 83;
+            _context4.next = 84;
             break;
 
-          case 81:
-            _context4.next = 83;
+          case 82:
+            _context4.next = 84;
             return destroyWebViews(targetWebView, newCacheWebView);
 
-          case 83:
-            _context4.next = 86;
+          case 84:
+            _context4.next = 87;
             break;
 
-          case 85:
+          case 86:
             // 当对应的页面实例不存在
             // 说明是一种刷新页面行为
             if (app.history.direction < 0) {
@@ -497,7 +501,7 @@ exports.default = function () {
               insertStacks(index + 1, newCacheWebView);
             }
 
-          case 86:
+          case 87:
 
             webViews.activeWebView = newCacheWebView;
 
@@ -511,62 +515,62 @@ exports.default = function () {
             // 那么直接返回，不做任何动画。
 
             if (webViews.activeWebViewElement) {
-              _context4.next = 92;
+              _context4.next = 93;
               break;
             }
 
-            _context4.next = 91;
+            _context4.next = 92;
             return resolveEventEmitter(app, webViews.events);
 
-          case 91:
+          case 92:
             return _context4.abrupt('return', webViews.activeWebView);
 
-          case 92:
+          case 93:
             if (!webViews.existsWebViewElement) {
-              _context4.next = 95;
+              _context4.next = 96;
               break;
             }
 
-            _context4.next = 95;
+            _context4.next = 96;
             return app.emit('webview:beforeLeave', webViews.existsWebView);
 
-          case 95:
-            _context4.next = 97;
+          case 96:
+            _context4.next = 98;
             return (0, _animate2.default)(app, webViews.existsWebViewElement, webViews.activeWebViewElement);
 
-          case 97:
+          case 98:
             if (!(app.history.stacks.length > app.options.max)) {
-              _context4.next = 111;
+              _context4.next = 112;
               break;
             }
 
             _context4.t1 = app.tick;
-            _context4.next = _context4.t1 === 1 ? 101 : _context4.t1 === -1 ? 103 : 105;
+            _context4.next = _context4.t1 === 1 ? 102 : _context4.t1 === -1 ? 104 : 106;
             break;
 
-          case 101:
+          case 102:
             remindExtra = app.history.stacks[app.history.stacks.length - 1];
-            return _context4.abrupt('break', 105);
+            return _context4.abrupt('break', 106);
 
-          case 103:
+          case 104:
             remindExtra = app.history.stacks[0];
-            return _context4.abrupt('break', 105);
+            return _context4.abrupt('break', 106);
 
-          case 105:
+          case 106:
             if (!(app.redirectAction && app.webView === remindExtra)) {
-              _context4.next = 109;
+              _context4.next = 110;
               break;
             }
 
             delete app.redirectAction;
-            _context4.next = 111;
+            _context4.next = 112;
             break;
 
-          case 109:
-            _context4.next = 111;
+          case 110:
+            _context4.next = 112;
             return destroyWebViews(remindExtra);
 
-          case 111:
+          case 112:
 
             /**
              * 此时我们可以完全认定，
@@ -575,15 +579,6 @@ exports.default = function () {
              */
             webViews.events.Leave = webViews.existsWebView;
             webViews.events.Enter = webViews.activeWebView;
-
-            // active条件是
-            // 1. 它步数进入的对象
-            // 2. 存在新的newCacheWebView
-            // 3. app.history.stacks中不存在存在新的newCacheWebView
-            // 试想一下，这应该是一种唤起行为
-            if (!webViews.events.Enter && newCacheWebView && app.history.stacks.indexOf(newCacheWebView) > -1) {
-              webViews.events.Active = newCacheWebView;
-            }
 
             if (app.tick) delete app.tick;
             // 触发额外事件
