@@ -268,7 +268,7 @@ export default class Router {
   routes() {
     const router = this;
     const dispatch = function dispatch(ctx, next) {
-      const path = router.opts.routerPath || ctx.routerPath || ctx.path || ctx.req.pathname;
+      const path = ctx.req.pathname;
       const matched = router.match(path, 'PATCH');
       let layerChain, layer, i;
 
