@@ -1,6 +1,6 @@
 {
   "name": "miox-animation",
-  "version": "5.1.17",
+  "version": "5.1.19",
   "main": "build/index.js",
   "files": [
     "build",
